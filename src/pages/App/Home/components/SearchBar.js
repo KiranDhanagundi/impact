@@ -12,7 +12,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { FaSearch } from "react-icons/fa";
-import SwipeableViews from "react-swipeable-views";
+// import SwipeableViews from "react-swipeable-views";
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");

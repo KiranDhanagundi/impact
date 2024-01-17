@@ -1,13 +1,11 @@
 import React from "react";
-import { Flex, Grid, SimpleGrid, useColorModeValue } from "@chakra-ui/react";
-import BarChart from "../../../components/Charts/BarChart";
+import { Flex, SimpleGrid, useColorModeValue } from "@chakra-ui/react";
 import {
   CartIcon,
   DocumentIcon,
   GlobeIcon,
   WalletIcon,
 } from "../../../components/Icons/Icons";
-import ActiveUsers from "./components/ActiveUsers";
 import MiniStatistics from "./components/MiniStatistics";
 
 export default function Dashboard() {
@@ -41,19 +39,6 @@ export default function Dashboard() {
           icon={<CartIcon h={"24px"} w={"24px"} color={iconBoxInside} />}
         />
       </SimpleGrid>
-      {/* <Grid
-        templateColumns={{ sm: "1fr", lg: "1.3fr 1.7fr" }}
-        templateRows={{ sm: "repeat(2, 1fr)", lg: "1fr" }}
-        gap="24px"
-        mb={{ lg: "26px" }}
-        mt="10px"
-      >
-        <ActiveUsers
-          title={"Active Users"}
-          percentage={23}
-          chart={<BarChart />}
-        />
-      </Grid> */}
     </Flex>
   );
 }

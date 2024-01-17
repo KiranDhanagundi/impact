@@ -13,7 +13,7 @@ import {
   Badge,
   Icon,
 } from "@chakra-ui/react";
-import { Link as ReactRouterLink, useHistory } from "react-router-dom";
+import { Link as ReactRouterLink } from "react-router-dom";
 import RemoveCartItems from "./RemoveCartItems";
 import { DownloadIcon } from "@chakra-ui/icons";
 
@@ -31,7 +31,7 @@ const CartProducts = ({ cartItem }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onOpen } = useDisclosure();
 
   const handleDelete = (event) => {
     // Prevent the default link behavior if the event is defined

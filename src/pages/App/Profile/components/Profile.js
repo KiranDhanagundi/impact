@@ -1,10 +1,8 @@
 import {
   Box,
   Flex,
-  Image,
   Text,
   Button,
-  Spacer,
   Stack,
   Link,
   Icon,
@@ -26,18 +24,15 @@ import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 import UserProjects from "./UserProjects";
 import EditProfile from "./EditProfile";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { FaShare } from "react-icons/fa";
 import { FaShareAlt } from "react-icons/fa";
-import { EmailIcon } from "@chakra-ui/icons";
 
-const Profile = ({}) => {
+const Profile = () => {
   const {
     isOpen: isEditModalOpen,
     onOpen: onEditModalOpen,
     onClose: onEditModalClose,
   } = useDisclosure();
 
-  // const { title, description, imageUrl, author, dateTime, price } = product;
   const profileInfo = {
     firstName: "Elon Musk",
     lastName: " Usa",
@@ -63,7 +58,6 @@ const Profile = ({}) => {
         "https://miro.medium.com/v2/resize:fit:1100/format:webp/1*0DoUT3wzcxy89nm1tkd0qQ.png",
       author: "John Doe",
       dateTime: "Jan 1,2024",
-      // rating:"20"
       price: "2",
       avatar: "https://bit.ly/sage-adebayo",
       category: "Technology",
@@ -124,22 +118,6 @@ const Profile = ({}) => {
 
   const { hasCopied, onCopy } = useClipboard(profileUrl);
 
-  const handleShareClick = async () => {
-    // Get the current URL
-    try {
-      const currentUrl = window.location.href;
-      await navigator.clipboard.writeText(currentUrl);
-
-      // Perform the action to share the URL
-      // You can use a library like react-share or implement your custom sharing logic here
-
-      // For example, showing a simple alert with the URL
-      alert(`Share this profile: ${currentUrl}`);
-    } catch (error) {
-      console.error("Error copying to clipboard:", error);
-    }
-  };
-
   return (
     <Flex mt="10px" w="100%" minH="90vH" overflow="auto" direction="column">
       <Box
@@ -180,7 +158,6 @@ const Profile = ({}) => {
               >
                 Edit Profile
               </Button>
-              {/* Edit Profile Modal */}
               <EditProfile
                 profileInfo={profileInfo}
                 isOpen={isEditModalOpen}

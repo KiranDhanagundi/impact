@@ -7,21 +7,13 @@ import {
   Image,
   Box,
 } from "@chakra-ui/react";
-import PropTypes from "prop-types";
 import React from "react";
 import { Link } from "react-router-dom";
 import globe from "../../../assets/img/globe-bg3.png";
 
-export default function Hero({
-  title,
-  subtitle,
-  image,
-  ctaLink,
-  ctaText,
-  user,
-  dashboard,
-  ...rest
-}) {
+const Hero = () => {
+  const user = { user: "user" };
+
   return (
     <Flex
       align="center"
@@ -31,7 +23,6 @@ export default function Hero({
       minH="50vh"
       w="100%"
       px={8}
-      {...rest}
       marginTop={"20px"}
     >
       <Stack
@@ -47,7 +38,7 @@ export default function Hero({
           color="#0648b3"
           textAlign={["center", "center", "left", "left"]}
         >
-          {title}
+          {"Share your ideas with the World..!"}
         </Heading>
         <Heading
           as="h2"
@@ -57,10 +48,10 @@ export default function Hero({
           color="#0648b3"
           textAlign={["center", "center", "left", "left"]}
         >
-          {subtitle}
+          {"Earn while you sleep"}
         </Heading>
         {!user ? (
-          <Link to={ctaLink}>
+          <Link to={"/app/signup"}>
             <Button
               colorScheme="primary.100"
               bg="primary.500"
@@ -70,11 +61,11 @@ export default function Hero({
               lineHeight="1"
               size="md"
             >
-              {ctaText}
+              {"Create your account now"}
             </Button>
           </Link>
         ) : (
-          <Link to={dashboard}>
+          <Link to={"/app/home"}>
             <Button
               bg="#0648b3"
               color={"white"}
@@ -84,7 +75,7 @@ export default function Hero({
               lineHeight="1"
               size="md"
             >
-              Go to Dashboard
+              Explore Products
             </Button>
           </Link>
         )}
@@ -102,21 +93,6 @@ export default function Hero({
       </Box>
     </Flex>
   );
-}
-
-Hero.propTypes = {
-  title: PropTypes.string,
-  subtitle: PropTypes.string,
-  image: PropTypes.string,
-  ctaText: PropTypes.string,
-  ctaLink: PropTypes.string,
 };
 
-Hero.defaultProps = {
-  title: "landing page",
-  subtitle:
-    "This is the subheader section where you describe the basic benefits of your product",
-  image: "https://source.unsplash.com/collection/404339/800x600",
-  ctaText: "Create your account now",
-  ctaLink: "/signup",
-};
+export default Hero;

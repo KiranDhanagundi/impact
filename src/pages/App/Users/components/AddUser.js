@@ -1,13 +1,12 @@
 import React from "react";
 import {
-  Box,
   Modal,
   ModalCloseButton,
   FormControl,
   FormLabel,
   Input,
   Button,
-  useDisclosure,
+  // useDisclosure,
   ModalHeader,
   ModalOverlay,
   ModalContent,
@@ -19,7 +18,7 @@ function AddUser({ isOpen, onClose }) {
   // const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
-  const finalRef = React.useRef(null);
+  // const finalRef = React.useRef(null);
 
   return (
     <>

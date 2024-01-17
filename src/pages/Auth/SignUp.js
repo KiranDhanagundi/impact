@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Box,
   Button,
   Flex,
   FormControl,
@@ -22,10 +21,8 @@ import {
 } from "../../components/Icons/Icons";
 
 function SignUp() {
-  const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.700", "white");
   const bgColor = useColorModeValue("white", "gray.700");
-  const bgIcons = useColorModeValue("teal.200", "rgba(255, 255, 255, 0.5)");
 
   const google = () => {
     window.open("http://localhost:5000/auth/google", "_self");
@@ -219,7 +216,7 @@ function SignUp() {
                 color="#0648b3"
                 ms="5px"
                 fontWeight="bold"
-                to="/auth/signin"
+                to="/app/signin"
               >
                 Sign In
               </Link>

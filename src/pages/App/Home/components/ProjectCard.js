@@ -9,7 +9,7 @@ import {
   Icon,
   Badge,
 } from "@chakra-ui/react";
-import { Link as ReactRouterLink, useHistory } from "react-router-dom";
+import { Link as ReactRouterLink } from "react-router-dom";
 import { DownloadIcon } from "@chakra-ui/icons";
 
 const ProductCard = ({ product }) => {

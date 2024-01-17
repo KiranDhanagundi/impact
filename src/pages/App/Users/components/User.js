@@ -169,6 +169,7 @@ const usersData = [
 const UsersList = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.users);
+  console.log("user", state);
 
   useEffect(() => {
     dispatch(actions.fetchUserRequest());
@@ -177,7 +178,7 @@ const UsersList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 10; // Set the number of users per page
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedUser, setSelectedUser] = useState(null);
+  // const [selectedUser, setSelectedUser] = useState(null);
 
   // Calculate current users to display based on pagination
   const indexOfLastUser = currentPage * usersPerPage;

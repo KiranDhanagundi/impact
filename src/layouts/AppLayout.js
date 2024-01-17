@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ChakraProvider, Portal, useDisclosure } from "@chakra-ui/react";
 import "@fontsource/roboto/400.css";
@@ -14,8 +14,6 @@ import routes from "../routes";
 
 export default function AppLayout(props) {
   const { ...rest } = props;
-
-  const [fixed, setFixed] = useState(false);
 
   // functions for changing the states from components
   const getRoute = () => {
@@ -90,17 +88,13 @@ export default function AppLayout(props) {
     });
   };
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onOpen } = useDisclosure();
   document.documentElement.dir = "ltr";
 
   return (
     <ChakraProvider theme={theme} resetCss={false}>
       <MainPanel
-        w={{
-          base: "100%",
-          // xl: "calc(100% - 275px)",
-          // xl: "1270px",
-        }}
+        w="100%"
         pt="15px"
         align="center"
         overflow="hidden"
@@ -109,10 +103,8 @@ export default function AppLayout(props) {
         <Portal>
           <AppNavbar
             onOpen={onOpen}
-            logoText={"impact"}
             brandText={getActiveRoute(routes)}
             secondary={getActiveNavbar(routes)}
-            fixed={fixed}
             {...rest}
           />
         </Portal>
@@ -121,7 +113,7 @@ export default function AppLayout(props) {
             <PanelContainer>
               <Switch>
                 {getRoutes(routes)}
-                <Redirect from="/app" to="/app/dashboard" />
+                <Redirect from="/app" to="/app/public" />
               </Switch>
             </PanelContainer>
           </PanelContent>

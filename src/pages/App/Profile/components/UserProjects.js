@@ -13,7 +13,7 @@ import {
   Badge,
   Icon,
 } from "@chakra-ui/react";
-import { Link as ReactRouterLink, useHistory } from "react-router-dom";
+import { Link as ReactRouterLink } from "react-router-dom";
 import EditProductModal from "../../Products/components/EditProduct";
 import { DownloadIcon } from "@chakra-ui/icons";
 import DeleteProduct from "../../Products/components/DeleteProduct";
@@ -31,9 +31,9 @@ const UserProjects = ({ product }) => {
   } = product;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const history = useHistory();
+  // const history = useHistory();
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  // const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 

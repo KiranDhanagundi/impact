@@ -21,6 +21,10 @@ import AddProduct from "./pages/App/Products/components/AddProduct.js";
 import EditProduct from "./pages/App/Products/components/EditProduct.js";
 import ProductDetails from "./pages/App/Products/components/ProductDetails.js";
 import Cart from "./pages/App/Products/components/Cart.js";
+import PublicHome from "./pages/Public/components/Home";
+import SignIn from "./pages/Auth/SignIn";
+import SignUp from "./pages/Auth/SignUp";
+
 var appRoutes = [
   {
     id: "app0",
@@ -145,6 +149,30 @@ var appRoutes = [
     name: "Cart",
     icon: <FaTools />,
     component: Cart,
+    layout: "/app",
+  },
+  {
+    id: "app14",
+    path: "/public",
+    name: "public",
+    icon: <FaTools />,
+    component: PublicHome,
+    layout: "/app",
+  },
+  {
+    id: "app15",
+    path: "/signin",
+    name: "Signin",
+    icon: <FaTools />,
+    component: SignIn,
+    layout: "/app",
+  },
+  {
+    id: "app16",
+    path: "/signup",
+    name: "Signup",
+    icon: <FaTools />,
+    component: SignUp,
     layout: "/app",
   },
 ];

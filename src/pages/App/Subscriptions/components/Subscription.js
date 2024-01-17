@@ -2,12 +2,10 @@ import React from "react";
 import {
   Box,
   Button,
-  Center,
   Container,
   Flex,
   Heading,
   SimpleGrid,
-  Stack,
   Text,
 } from "@chakra-ui/react";
 

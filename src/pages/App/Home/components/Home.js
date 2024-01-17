@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  Button,
-  Flex,
-  Grid,
-  Icon,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import avatar2 from "../../../../assets/img/avatar1.png";
-
+import { Flex, Grid } from "@chakra-ui/react";
 import Card from "../../../../components/Card/Card";
 import CardBody from "../../../../components/Card/CardBody";
 
@@ -24,7 +15,6 @@ const products = [
       "https://miro.medium.com/v2/resize:fit:1100/format:webp/1*0DoUT3wzcxy89nm1tkd0qQ.png",
     author: "John Doe",
     dateTime: "Jan 1,2024",
-    // rating:"20"
     price: "5",
     avatar: "https://bit.ly/sage-adebayo",
     numberOfDownloads: "500",
@@ -168,10 +158,8 @@ const products = [
 ];
 
 const Home = () => {
-  const textColor = useColorModeValue("gray.700", "white");
-
   return (
-    <Flex  w="100%" minH="90vH" overflow="auto">
+    <Flex w="100%" minH="90vH" overflow="auto">
       <Card mt="10px" p="5px" bg="none">
         <SearchBar />
         <CardBody px="5px">

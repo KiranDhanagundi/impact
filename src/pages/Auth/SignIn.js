@@ -1,11 +1,9 @@
 import React from "react";
 import {
-  Box,
   Flex,
   Button,
   FormControl,
   FormLabel,
-  Heading,
   Input,
   Link,
   Switch,
@@ -23,10 +21,8 @@ import {
 } from "../../components/Icons/Icons";
 
 function SignIn() {
-  const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.700", "#0648b3");
   const bgColor = useColorModeValue("white", "gray.700");
-  const bgIcons = useColorModeValue("teal.200", "rgba(255, 255, 255, 0.5)");
 
   const google = () => {
     window.open("http://localhost:5000/auth/google", "_self");
@@ -91,6 +87,7 @@ function SignIn() {
               border="1px solid lightgray"
               cursor="pointer"
               transition="all .25s ease"
+              onClick={google}
             >
               <Link href="#">
                 <Icon as={GoogleIcon} w="30px" h="30px" />
@@ -212,7 +209,7 @@ function SignIn() {
                 as={ReactRouterLink}
                 ms="5px"
                 fontWeight="bold"
-                to="/auth/Signup"
+                to="/app/signup"
               >
                 Sign Up
               </Link>

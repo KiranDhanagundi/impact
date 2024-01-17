@@ -7,7 +7,6 @@ import {
   Th,
   Thead,
   Tr,
-  useDisclosure,
   Flex,
   Icon,
   Text,
@@ -40,12 +39,12 @@ const rolesData = [
 
 const AccessManagement = () => {
   const [selectedRole, setSelectedRole] = useState(null);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  // const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isAddRoleModalOpen, setIsAddRoleModalOpen] = useState(false);
-  const [rolesDatas, setRolesDatas] = useState(rolesData);
+  const [setRolesDatas] = useState(rolesData);
 
   const handleDelete = (role) => {
     console.log("you clicked delete", role);

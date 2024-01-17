@@ -1,22 +1,8 @@
-import {
-  Box,
-  Flex,
-  Image,
-  Text,
-  Button,
-  Spacer,
-  Stack,
-  Link,
-  Icon,
-  Grid,
-  Heading,
-} from "@chakra-ui/react";
-import Card from "../../../../components/Card/Card";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import CartProducts from "./CartProducts";
-import CardHeader from "../../../../components/Card/CardHeader";
 import CartOrderSummary from "./CartOrderSummary";
 
-const Cart = ({}) => {
+const Cart = () => {
   const cartItems = [
     {
       id: "Product01",
@@ -27,7 +13,6 @@ const Cart = ({}) => {
         "https://miro.medium.com/v2/resize:fit:1100/format:webp/1*0DoUT3wzcxy89nm1tkd0qQ.png",
       author: "John Doe",
       dateTime: "Jan 1,2024",
-      // rating:"20"
       price: 5,
       avatar: "https://bit.ly/sage-adebayo",
       numberOfDownloads: "200",
@@ -77,6 +62,7 @@ const Cart = ({}) => {
           //   borderWidth={"1px"}
           mr="5px"
           w="auto"
+          mt="5px"
           direction={"column"}
         >
           {/* <Text align={"start"}>Cart Items</Text> */}
@@ -84,7 +70,7 @@ const Cart = ({}) => {
             <CartProducts key={index} cartItem={cartItem} />
           ))}
         </Flex>
-        <Flex w={{ base: "100%", sm: "100%", md: "30%", xl: "30%" }}>
+        <Flex mt="5px" w={{ base: "100%", sm: "100%", md: "30%", xl: "30%" }}>
           <CartOrderSummary cartItems={cartItems} />
         </Flex>
       </Flex>

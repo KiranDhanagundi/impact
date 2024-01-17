@@ -1,25 +1,9 @@
-import {
-  Box,
-  Flex,
-  Image,
-  Text,
-  Button,
-  Spacer,
-  Stack,
-  Link,
-  Icon,
-  Grid,
-  Heading,
-} from "@chakra-ui/react";
+import { Box, Flex, Button, Link, Icon, Grid, Heading } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
-import CreateProject from "../../Notifications/components/Notification";
-
 import { Link as ReactRouterLink } from "react-router-dom";
-
 import UserProjects from "../../Profile/components/UserProjects";
-import { Navigate } from "react-router";
 
-const Products = ({}) => {
+const Products = () => {
   const products = [
     {
       title: "AI predictions: Top 13 AI trends for 2024",
@@ -85,10 +69,6 @@ const Products = ({}) => {
       numberOfDownloads: "200",
     },
   ];
-  // const handleCreateNewProject = () => {
-  //   Navigate("/app/notifications");
-  // };
-  // <Route path="/app / notifications" component={CreateProject} />;
 
   return (
     <Flex mt="10px" w="100%" minH="90vH" overflow="auto" direction="column">
@@ -117,7 +97,6 @@ const Products = ({}) => {
             <Icon as={FaPlus} fontSize="md" mb="12px" />
             <Link
               fontSize="md"
-              // color="#0648b3"
               as={ReactRouterLink}
               ms="5px"
               fontWeight="normal"

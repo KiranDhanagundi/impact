@@ -15,20 +15,20 @@ import {
   Text,
   Select,
   Textarea,
-  NumberInput,
+  // NumberInput,
   InputGroup,
   InputLeftElement,
-  Stack,
+  // Stack,
   Avatar,
   Badge,
   Icon,
   Divider,
   Heading,
 } from "@chakra-ui/react";
-import Card from "../../../../components/Card/Card";
+// import Card from "../../../../components/Card/Card";
 import { DownloadIcon } from "@chakra-ui/icons";
-import SwipeableViews from "react-swipeable-views";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+// import SwipeableViews from "react-swipeable-views";
+// import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const AddProduct = () => {
   const [title, setTitle] = useState("");
@@ -55,15 +55,14 @@ const AddProduct = () => {
       return;
     }
 
-    const newProject = {
-      title,
-      imageUrl,
-      description,
-      category,
-      price,
-    };
+    // const newProject = {
+    //   title,
+    //   imageUrl,
+    //   description,
+    //   category,
+    //   price,
+    // };
 
-    console.log("New Project:", newProject);
     toast({
       title: "Product created successfully.",
       status: "success",

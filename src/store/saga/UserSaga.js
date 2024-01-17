@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import * as actions from "../../pages/App/Users/actions";
-import { fetchUserList } from "../services/appServices";
+// import { fetchUserList } from "../services/appServices";
 
 // function* fetchUsers() {
 //   try {

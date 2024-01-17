@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
-  Box,
   Button,
   Modal,
   ModalOverlay,
@@ -20,24 +19,9 @@ import {
 } from "@chakra-ui/react";
 
 function EditProfile({ isOpen, onClose, profileInfo }) {
-  const [showProfile, setShowProfile] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-
-  const handleClick = () => {
-    setShowProfile(true);
-  };
-
-  const handleEditProfile = () => {
-    setShowEditModal(true);
-  };
-
-  useEffect(() => {
-    // You can use the profileInfo prop to update the state or perform any other actions
-    // For example, setShowEditModal(true) to show the modal initially when profileInfo is available
-  }, [profileInfo]);
+  useEffect(() => {}, [profileInfo]);
 
   const handleCloseEditModal = () => {
-    setShowEditModal(false);
     onClose();
   };
 

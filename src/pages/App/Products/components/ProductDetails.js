@@ -7,10 +7,7 @@ import {
   Button,
   Spacer,
   Box,
-  AspectRatio,
   Image,
-  Rating,
-  Link,
   Flex,
   Avatar,
   Divider,
@@ -18,12 +15,8 @@ import {
   Icon,
   SimpleGrid,
   Badge,
-  Stack,
-  Center,
 } from "@chakra-ui/react";
 import Card from "../../../../components/Card/Card";
-import { Link as ReactRouterLink } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
 import ProductCard from "../../Home/components/ProjectCard";
 import { DownloadIcon } from "@chakra-ui/icons";
 import SwipeableViews from "react-swipeable-views";
@@ -304,17 +297,6 @@ const ProductDetails = ({ props }) => {
               <Text color="gray.500">Description:</Text>
               <Text fontSize="md">{product.description}</Text>
             </VStack>
-            {/* <Box mt="30px" align="center">
-              <Button
-                w={{ base: "100px", xl: "150px", md: "200px", sm: "300px" }}
-                bg="#0a48b3"
-                color="white"
-                onClick={handleAddToCart}
-                fontSize="xs"
-              >
-                Add to Cart
-              </Button>
-            </Box> */}
           </Box>
         </Flex>
 
