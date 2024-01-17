@@ -1,20 +1,23 @@
-// // store.js
-// import { createStore, applyMiddleware } from "redux";
-// import createSagaMiddleware from "redux-saga";
-// import usersReducer from "./reducers/usersReducer";
-// import authReducer from "./reducers/authReducer";
-// import { watchFetchUsers } from "./saga/UserSaga";
-// import { watchLogin, watchSignup } from "./saga/AuthSaga";
+// store.js
 
-// const sagaMiddleware = createSagaMiddleware();
-// const store = createStore(
-//   usersReducer,
-//   authReducer,
-//   applyMiddleware(sagaMiddleware)
-// );
+import { configureStore } from "@reduxjs/toolkit";
+import createSagaMiddleware from "redux-saga";
+import rootReducer from "./reducers/rootReducer";
+import rootSaga from "./saga/rootSaga";
 
-// sagaMiddleware.run(watchFetchUsers);
-// sagaMiddleware.run(watchLogin);
-// sagaMiddleware.run(watchSignup);
+// create the saga middleware
+const sagaMiddleware = createSagaMiddleware();
+const middleware = [sagaMiddleware];
 
-// export default store;
+// mount it on the Store
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: () => {
+    return middleware;
+  },
+});
+
+// then run the saga
+sagaMiddleware.run(rootSaga);
+
+export default store;

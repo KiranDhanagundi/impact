@@ -16,8 +16,8 @@ import Card from "../../../../components/Card/Card";
 import AddUser from "./AddUser";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import * as actions from "../actions";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../actions";
 
 const usersData = [
   {
@@ -167,12 +167,12 @@ const usersData = [
 ];
 
 const UsersList = () => {
-  // const dispatch = useDispatch();
-  // const { userData, loading, error } = useSelector((state) => state.users);
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.users);
 
-  // useEffect(() => {
-  //   dispatch(actions.fetchUserRequest());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(actions.fetchUserRequest());
+  }, [dispatch]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 10; // Set the number of users per page
