@@ -153,10 +153,11 @@ function SignIn() {
               Email
             </FormLabel>
             <Input
+              id="email"
               borderRadius="md"
               mb="5px"
               fontSize="sm"
-              type="text"
+              type="email"
               placeholder="Your email adress"
               size="lg"
             />
@@ -164,6 +165,7 @@ function SignIn() {
               Password
             </FormLabel>
             <Input
+              id="password"
               borderRadius="md"
               mb="5px"
               fontSize="sm"
@@ -207,7 +209,7 @@ function SignIn() {
               <Link
                 color="#0648b3"
                 as={ReactRouterLink}
-                ms="5px"
+                ms="10px"
                 fontWeight="bold"
                 to="/app/signup"
               >

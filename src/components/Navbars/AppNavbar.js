@@ -70,7 +70,7 @@ const AppNavbar = () => {
     return (
       <Text
         mb={{ base: isLast ? 0 : 8, sm: 0 }}
-        mr={{ base: 0, sm: isLast ? 0 : 8 }}
+        mr={{ base: 0, sm: isLast ? 0 : 5 }}
         display="block"
         {...rest}
       >
@@ -91,7 +91,6 @@ const AppNavbar = () => {
         justify="space-between"
         lineHeight="12px"
         minH="50px"
-        mt="0px"
       >
         {/* <AppSidebar routes={routes} /> */}
         <Flex ml="10px" align="center">
@@ -121,170 +120,163 @@ const AppNavbar = () => {
             </MenuItem>
           </Flex>
         </Box>
-        <Link to="/app/notifications">
-          <IconButton
-            bg="none"
-            color={"black"}
-            aria-label="Notifications"
-            icon={<FiBell />}
-          />
-        </Link>
-        <Link to="/app/cart">
-          <IconButton
-            mr="10px"
-            bg="none"
-            aria-label="Cart"
-            icon={<FaCartPlus />}
-          />
-        </Link>
-        {!user ? (
-          <MenuItem to="/app/signin">
-            <Button
-              size="sm"
-              borderRadius="md"
-              color="white"
-              bg="#0648b3"
-              _hover={{
-                bg: ["primary.500"],
-              }}
-            >
-              Sign In
-            </Button>
-          </MenuItem>
-        ) : (
-          ""
-        )}
-        {user ? (
-          <Menu mr="20px" minH="100px">
-            <MenuButton
-              as={Button}
-              rounded="full"
-              variant="button"
-              cursor="pointer"
-              minW={0}
-            >
-              <Flex color="white" align="center">
-                <Avatar size="sm" src="https://bit.ly/sage-adebayo" />
-                <Box color="gray.700" mr="10px" ml={2}>
-                  Elon Musk
-                </Box>
-              </Flex>
-            </MenuButton>
-            <MenuList p="0px" mr="20px">
-              <MenuItem p="0px">
-                <Link to="/app/profile">
-                  <IconButton
-                    bg="none"
-                    aria-label="Profile"
-                    icon={<FiUser />}
-                  />
-                  Profile
-                </Link>
-              </MenuItem>
-              <MenuItem p="0px">
-                <Link to="/app/products">
-                  <IconButton
-                    bg="none"
-                    aria-label="Products"
-                    icon={<FaStore />}
-                  />
-                  Products
-                </Link>
-              </MenuItem>
-              <MenuItem p="0px">
-                <Link to="/app/dashboard">
-                  <IconButton
-                    bg="none"
-                    aria-label="Dashboard"
-                    icon={<MdOutlineDashboard />}
-                  />
-                  Dashboard
-                </Link>
-              </MenuItem>
-              <MenuItem p="0px">
-                <Link to="/app/cart">
-                  <IconButton
-                    bg="none"
-                    aria-label="Cart"
-                    icon={<FaCartPlus />}
-                  />
-                  Cart
-                </Link>
-              </MenuItem>
-              <Divider />
-              <MenuItem p="0px">
-                <Link to="/app/subscriptions">
-                  <IconButton
-                    bg="none"
-                    aria-label="Subscription"
-                    icon={<MdOutlineSubscriptions />}
-                  />
-                  Subsciption
-                </Link>
-              </MenuItem>
-              <MenuItem p="0px">
-                <Link to="/app/settings">
-                  <IconButton
-                    bg="none"
-                    aria-label="Settings"
-                    icon={<FiSettings />}
-                  />
-                  Settings
-                </Link>
-              </MenuItem>
-              <Divider />
-              <MenuItem p="0px">
-                <Link to="/app/orders">
-                  <IconButton
-                    bg="none"
-                    aria-label="Order"
-                    icon={<FaRegListAlt />}
-                  />
-                  Order
-                </Link>
-              </MenuItem>
-              <MenuItem p="0px">
-                <Link to="/app/users">
-                  <IconButton bg="none" aria-label="User" icon={<FaList />} />
-                  Users
-                </Link>
-              </MenuItem>
-              <MenuItem p="0px">
-                <Link to="/app/payments">
-                  <IconButton
-                    bg="none"
-                    aria-label="Payments"
-                    icon={<MdOutlinePayment />}
-                  />
-                  Payments
-                </Link>
-              </MenuItem>
-              <MenuItem p="0px">
-                <Link to="/app/access">
-                  <IconButton
-                    bg="none"
-                    aria-label="Access"
-                    icon={<FaTools />}
-                  />
-                  Access
-                </Link>
-              </MenuItem>
-              <Divider />
-              <MenuItem p="0px">
-                <Link to="/home">
-                  <IconButton
-                    bg="none"
-                    aria-label="Logout"
-                    icon={<FiLogOut />}
-                  />
-                  Logout
-                </Link>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        ) : (
-          ""
-        )}
+        <Flex align="center">
+          {user ? (
+            <Link to="/app/notifications">
+              <IconButton
+                bg="none"
+                color={"black"}
+                aria-label="Notifications"
+                icon={<FiBell />}
+              />
+            </Link>
+          ) : (
+            ""
+          )}
+          <Link to="/app/cart">
+            <IconButton bg="none" aria-label="Cart" icon={<FaCartPlus />} />
+          </Link>
+          {!user ? (
+            <MenuItem to="/app/signin">
+              <Button
+                fontWeight="normal"
+                size="sm"
+                borderRadius="md"
+                color="white"
+                bg="#0648b3"
+              >
+                Sign In
+              </Button>
+            </MenuItem>
+          ) : (
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded="full"
+                variant="button"
+                cursor="pointer"
+              >
+                <Flex color="white" align="center">
+                  <Avatar size="sm" src="https://bit.ly/sage-adebayo" />
+                  <Box color="gray.700" ml={2}>
+                    Elon Musk
+                  </Box>
+                </Flex>
+              </MenuButton>
+              <MenuList p="opx" mr="20px">
+                <MenuItem>
+                  <Link to="/app/profile">
+                    <IconButton
+                      bg="none"
+                      aria-label="Profile"
+                      icon={<FiUser />}
+                    />
+                    Profile
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/app/products">
+                    <IconButton
+                      bg="none"
+                      aria-label="Products"
+                      icon={<FaStore />}
+                    />
+                    Products
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/app/dashboard">
+                    <IconButton
+                      bg="none"
+                      aria-label="Dashboard"
+                      icon={<MdOutlineDashboard />}
+                    />
+                    Dashboard
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/app/cart">
+                    <IconButton
+                      bg="none"
+                      aria-label="Cart"
+                      icon={<FaCartPlus />}
+                    />
+                    Cart
+                  </Link>
+                </MenuItem>
+                <Divider />
+                <MenuItem>
+                  <Link to="/app/subscriptions">
+                    <IconButton
+                      bg="none"
+                      aria-label="Subscription"
+                      icon={<MdOutlineSubscriptions />}
+                    />
+                    Subsciption
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/app/settings">
+                    <IconButton
+                      bg="none"
+                      aria-label="Settings"
+                      icon={<FiSettings />}
+                    />
+                    Settings
+                  </Link>
+                </MenuItem>
+                <Divider />
+                <MenuItem>
+                  <Link to="/app/orders">
+                    <IconButton
+                      bg="none"
+                      aria-label="Order"
+                      icon={<FaRegListAlt />}
+                    />
+                    Order
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/app/users">
+                    <IconButton bg="none" aria-label="User" icon={<FaList />} />
+                    Users
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/app/payments">
+                    <IconButton
+                      bg="none"
+                      aria-label="Payments"
+                      icon={<MdOutlinePayment />}
+                    />
+                    Payments
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/app/access">
+                    <IconButton
+                      bg="none"
+                      aria-label="Access"
+                      icon={<FaTools />}
+                    />
+                    Access
+                  </Link>
+                </MenuItem>
+                <Divider />
+                <MenuItem>
+                  <Link to="/home">
+                    <IconButton
+                      bg="none"
+                      aria-label="Logout"
+                      icon={<FiLogOut />}
+                    />
+                    Logout
+                  </Link>
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          )}
+        </Flex>
       </Flex>
     </Box>
   );

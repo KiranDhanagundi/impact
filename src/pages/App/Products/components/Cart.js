@@ -70,7 +70,7 @@ const Cart = () => {
             <CartProducts key={index} cartItem={cartItem} />
           ))}
         </Flex>
-        <Flex mt="5px" w={{ base: "100%", sm: "100%", md: "30%", xl: "30%" }}>
+        <Flex mt="5px" w={{ base: "100%", sm: "100%", md: "30%", xl: "42%" }}>
           <CartOrderSummary cartItems={cartItems} />
         </Flex>
       </Flex>

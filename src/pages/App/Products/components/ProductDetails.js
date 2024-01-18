@@ -136,12 +136,10 @@ const ProductDetails = ({ props }) => {
   return (
     <Flex mt="10px" w="100%" minH="90vH" overflow="auto" direction="row">
       <Card
-        // borderWidth="1px"
         borderRadius="md"
         overflow="hidden"
         width="auto"
         boxShadow="md"
-        p="2"
         bg="white"
         align="start"
       >
@@ -268,13 +266,21 @@ const ProductDetails = ({ props }) => {
                   </Badge>
                 </Flex>
                 <Spacer />
-                <Flex mt={{ base: "10px" }} align={"center"}>
+                <Flex
+                  mt={{
+                    base: "0px",
+                    sm: "15px",
+                    md: "0px",
+                    xl: "0px",
+                  }}
+                  align={"center"}
+                >
                   <Text mr="20px" fontSize="xl" fontWeight="bold">
                     ${product.price}
                   </Text>
                   <Box>
                     <Button
-                      w="100px"
+                      fontWeight="normal"
                       bg="#0a48b3"
                       color="white"
                       onClick={handleAddToCart}

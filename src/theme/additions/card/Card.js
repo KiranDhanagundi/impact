@@ -1,6 +1,6 @@
 const Card = {
   baseStyle: {
-    p: "22px",
+    p: { base: "0px", sm: "5px", md: "5px", xl: "0px", lg: "0px" },
     display: "flex",
     flexDirection: "column",
     width: "100%",

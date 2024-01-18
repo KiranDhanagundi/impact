@@ -159,10 +159,10 @@ const products = [
 
 const Home = () => {
   return (
-    <Flex w="100%" minH="90vH" overflow="auto">
-      <Card mt="10px" p="5px" bg="none">
+    <Flex w="100%" minH="90vH" overflow="auto" direction="column">
+      <Card mt="10px" bg="none">
         <SearchBar />
-        <CardBody px="5px">
+        <CardBody>
           <Grid
             templateColumns={{ sm: "1fr", md: "1fr", xl: "1fr 1fr" }}
             templateRows={{ sm: "1fr 1fr 1fr auto", md: "1fr 1fr", xl: "1fr" }}

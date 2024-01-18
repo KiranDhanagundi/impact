@@ -11,10 +11,11 @@ import {
   Flex,
   Input,
   Icon,
+  Divider,
 } from "@chakra-ui/react";
 import Card from "../../../../components/Card/Card";
 import AddUser from "./AddUser";
-import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import { FaPencilAlt, FaPlus, FaTrashAlt } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../actions";
@@ -189,9 +190,9 @@ const UsersList = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <Flex mt="10px" w="auto" minH="90vH" overflow="auto">
-      <Card borderWidth={"1px"} w="auto">
-        <Box w="auto">
+    <Flex mt="10px" w="100%" minH="90vH" overflow="auto">
+      <Card p="2" w="100%" boxShadow="md" borderRadius="md" borderWidth="1px">
+        <Box align="start" w="100%" direction="row">
           <Input
             w="200px"
             p={2}
@@ -238,21 +239,20 @@ const UsersList = () => {
             // onChange={handleSearchChange}
           />
           <Button
+            leftIcon={<FaPlus />}
+            fontWeight="normal"
             borderRadius="md"
             bg="#0648b3"
             color="white"
-            px={2}
-            h={8}
-            mr="0px"
             size="sm"
-            w="90px"
             onClick={onOpen}
           >
-            Add User
+            User
           </Button>
         </Box>
         <AddUser isOpen={isOpen} onClose={onClose} />
-        <Table variant="simple" size="sm">
+        <Divider mt="5px" />
+        <Table mt="5px" variant="simple" size="sm">
           <Thead>
             <Tr>
               <Th>ID</Th>
@@ -304,7 +304,7 @@ const UsersList = () => {
             ))}
           </Tbody>
         </Table>
-        <Box mt={2}>
+        <Box align="start" mt={1}>
           {Array.from({
             length: Math.ceil(usersData.length / usersPerPage),
           }).map((_, index) => (

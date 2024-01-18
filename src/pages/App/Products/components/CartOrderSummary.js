@@ -55,7 +55,7 @@ const CartOrderSummary = ({ cartItems }) => {
         color="white"
         bg="#0a48b3"
         size="md"
-        fontSize="sm"
+        fontWeight="normal"
         rightIcon={<FaArrowRight />}
       >
         Checkout

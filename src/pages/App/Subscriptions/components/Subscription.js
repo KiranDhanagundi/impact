@@ -11,7 +11,7 @@ import {
 
 const Subscription = () => {
   return (
-    <Flex bg="white" w="100%" minH="90vh">
+    <Flex w="100%" minH="90vh" direction="column">
       <Box as="section" id="plans">
         <Container maxW="6xl" py={10}>
           <Heading as="h2" textAlign="center" mb={5}>

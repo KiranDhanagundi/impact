@@ -8,7 +8,7 @@ import PaymentMethod from "./components/PaymentMethod";
 
 function Payments() {
   return (
-    <Flex direction="column" pt={{ base: "10px", md: "10px" }}>
+    <Flex direction="column" pt={{ base: "10px", md: "10px" }} minH="90vH">
       <Grid templateColumns={{ sm: "1fr", lg: "2fr 1.2fr" }} templateRows="1fr">
         <Box>
           <Grid

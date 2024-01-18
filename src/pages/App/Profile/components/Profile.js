@@ -122,7 +122,7 @@ const Profile = () => {
     <Flex mt="10px" w="100%" minH="90vH" overflow="auto" direction="column">
       <Box
         borderWidth="1px"
-        borderRadius="md"
+        borderTopRadius="md"
         overflow="hidden"
         width="auto"
         boxShadow="md"
@@ -284,7 +284,7 @@ const Profile = () => {
             <Tab>Dashboard</Tab>
           </TabList>
           <TabPanels>
-            <TabPanel>
+            <TabPanel p="0px" mt="10px">
               <Grid
                 templateColumns={{ sm: "1fr", md: "1fr", xl: "1fr 1fr" }}
                 templateRows={{
