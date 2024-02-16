@@ -37,13 +37,13 @@ const Profile = () => {
   } = useDisclosure();
 
   const profileInfo = {
-    firstName: "Elon Musk",
+    firstName: "Impact Dev",
     lastName: " Usa",
-    fullName: "Elon Musk Usa",
+    fullName: "Impact Dev",
     about:
-      "Hi, I’m Elon Musk If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term.the answer is no. If two equally difficult paths, choose the one more painful in the short term",
+      "Hi, I’m Impact Dev If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term.the answer is no. If two equally difficult paths, choose the one more painful in the short term",
     imageUrl: "https://bit.ly/sage-adebayo",
-    email: "elonmusk@impact.com",
+    email: "impactdev@impact.com",
     mobile: "8095891156",
     location: "United States",
     socialMedia: {

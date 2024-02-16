@@ -39,14 +39,14 @@ const AllOrders = () => {
   const currentUsers = allTransactions?.data
     ?.filter((transaction) => {
       if (searchTerm === "") {
-        return transaction;
-      } else if (
-        transaction.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        transaction.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (transaction.status &&
-          transaction.status.toLowerCase().includes(searchTerm.toLowerCase()))
-      ) {
-        return transaction;
+        return true; // Include all transactions if searchTerm is empty
+      } else {
+        return (
+          transaction.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          transaction.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (transaction.status &&
+            transaction.status.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
       }
     })
     ?.slice(indexOfFirstUser, indexOfLastUser);

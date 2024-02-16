@@ -115,7 +115,7 @@ const UserProjects = ({ product }) => {
           />
           <Text fontSize="xs" color="gray.500">
             {/* {author} */}
-            {"Elon Musk"}
+            {"Impact Dev"}
           </Text>
           <Text fontSize="xs" color="gray.500" ml="2">
             {/* | {dateTime} */}

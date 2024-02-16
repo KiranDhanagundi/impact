@@ -110,7 +110,7 @@ const ProductCard = ({ product }) => {
         >
           <Avatar size="2xs" mr="2" src={"https://bit.ly/broken-link"} />
           <Text fontSize="xs" color="gray.500">
-            {"Elon Musk"}
+            {"Impact Dev"}
           </Text>
           <Text fontSize="xs" color="gray.500" ml="2">
             | {"Feb 6 2024"}

@@ -170,7 +170,7 @@ const AppNavbar = () => {
                 <Flex color="white" align="center">
                   <Avatar size="sm" src="https://bit.ly/sage-adebayo" />
                   <Box color="gray.700" ml={2}>
-                    Elon Musk
+                    Impact Dev
                   </Box>
                 </Flex>
               </MenuButton>

@@ -39,8 +39,8 @@ const AddProduct = () => {
   const [prices, setPrices] = useState("");
   const toast = useToast();
   const defaultImageSrc = "https://via.placeholder.com/150";
-  const author = "Elon Musk";
-  const dateTime = "Feb 6,2024";
+  const author = "Impact Dev";
+  const dateTime = "Feb 17,2024";
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory(); // Initialize useHistory hook
 
