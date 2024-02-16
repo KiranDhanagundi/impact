@@ -1,9 +1,10 @@
 const AWSConfig = {
-  accessKeyId: "YOUR_ACCESS_KEY_ID",
-  secretAccessKey: "YOUR_SECRET_ACCESS_KEY",
-  region: "YOUR_AWS_REGION",
-  bucketName: "YOUR_S3_BUCKET_NAME",
-  s3URL: "YOUR_S3_URL",
+  accessKeyId: "AKIA4YRVISMBS7RZUXPC",
+  secretAccessKey: "VRP0nWQ5UeUcRunERKAHmPDEVY / o + FyXWKuOmSZU",
+  region: "us-west-1",
+  bucketName: "impactdevconfig",
+  fileName: "impactdevconfig.json",
+  s3URL: "s3://impactdevconfig/impactdevconfig.json",
 };
 
 export default AWSConfig;

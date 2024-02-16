@@ -282,7 +282,7 @@ const Profile = () => {
                   bg="transparent"
                   color="gray.500"
                   borderWidth="1px "
-                  borderRadius="md"
+                  borderRadius="xl"
                   h="170px"
                   mb="2px"
                   boxShadow="md"

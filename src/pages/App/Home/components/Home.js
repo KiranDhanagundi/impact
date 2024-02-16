@@ -5,6 +5,8 @@ import CardBody from "../../../../components/Card/CardBody";
 import ProductCard from "./ProjectCard";
 import SearchBar from "./SearchBar";
 import { useState } from "react";
+// import AWSConfig from "../../../../utils/Config";
+// import fetchFileFromS3 from "../../../../utils/Properties";
 
 const Home = () => {
   const [productList, setProductList] = useState("");
@@ -36,6 +38,8 @@ const Home = () => {
     console.log("Product list or its properties are undefined.");
   }
 
+  // const config = fetchFileFromS3(AWSConfig.fileName);
+  // console.log("config", config);
   return (
     <Flex w="100%" minH="90vH" overflow="auto" direction="column">
       <Card bg="none">

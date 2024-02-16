@@ -53,7 +53,7 @@ const UserProjects = ({ product }) => {
       <Box
         position="relative"
         borderWidth="1px"
-        borderRadius="md"
+        borderRadius="xl"
         overflow="hidden"
         width="auto"
         boxShadow="md"
@@ -69,7 +69,7 @@ const UserProjects = ({ product }) => {
             src={images[0]}
             alt={name}
             boxSize={{ base: "200px", md: "100", sm: "80px" }}
-            borderRadius="sm"
+            borderRadius="md"
             minW={{ base: "150px", md: "100px", sm: "80px" }}
             minH={{ base: "150px", md: "100px", sm: "80px" }}
             transition="transform 0.2s ease"
