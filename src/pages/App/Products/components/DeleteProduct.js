@@ -18,13 +18,18 @@ const DeleteProduct = ({ isOpen, onClose, product, onConfirm }) => {
         <ModalHeader color={"#0648b3"}>Confirm Deletion</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          Are you sure you want to Delete "{product?.title}"?
+          Are you sure you want to Delete "{product?.name}"?
         </ModalBody>
         <ModalFooter>
-          <Button size="sm" colorScheme="red" onClick={onConfirm}>
+          <Button
+            fontWeight="normal"
+            size="sm"
+            colorScheme="red"
+            onClick={onConfirm}
+          >
             Delete
           </Button>
-          <Button size="sm" ml={3} onClick={onClose}>
+          <Button fontWeight="normal" size="sm" ml={3} onClick={onClose}>
             Cancel
           </Button>
         </ModalFooter>

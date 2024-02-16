@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { FiBell, FiLogOut, FiSettings, FiUser } from "react-icons/fi";
+import { css } from "@emotion/react";
 
 import {
   FaStore,
@@ -21,6 +22,7 @@ import {
   FaCartPlus,
   FaRegListAlt,
   FaTools,
+  FaBlog,
 } from "react-icons/fa";
 
 import {
@@ -39,6 +41,15 @@ const AppNavbar = () => {
   const toggleMenu = () => setShow(!show);
 
   const [user, setUser] = useState(null);
+  const customScrollbar = css`
+    ::-webkit-scrollbar {
+      width: 4px; /* Set the width of the scrollbar */
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: lightgray; /* Set the color of the scrollbar thumb */
+      border-radius: 4px; /* Set the border radius of the scrollbar thumb */
+    }
+  `;
 
   useEffect(() => {
     const getUser = () => {
@@ -86,7 +97,7 @@ const AppNavbar = () => {
         as="nav"
         shadow="md"
         align="center"
-        maxW={{ xl: "1270px", lg: "960px" }}
+        maxW={{ xl: "1300px" }}
         mx="auto"
         justify="space-between"
         lineHeight="12px"
@@ -163,8 +174,13 @@ const AppNavbar = () => {
                   </Box>
                 </Flex>
               </MenuButton>
-              <MenuList p="opx" mr="20px">
-                <MenuItem>
+              <MenuList
+                p="0px"
+                maxHeight="400px"
+                overflowY="auto"
+                css={customScrollbar}
+              >
+                <MenuItem _hover={{ bg: "gray.100" }}>
                   <Link to="/app/profile">
                     <IconButton
                       bg="none"
@@ -174,17 +190,27 @@ const AppNavbar = () => {
                     Profile
                   </Link>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem _hover={{ bg: "gray.100" }}>
                   <Link to="/app/products">
                     <IconButton
                       bg="none"
-                      aria-label="Products"
+                      aria-label=" My Products"
                       icon={<FaStore />}
                     />
-                    Products
+                    My Products
                   </Link>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem _hover={{ bg: "gray.100" }}>
+                  <Link to="/app/blogs">
+                    <IconButton
+                      bg="none"
+                      aria-label="Blogs"
+                      icon={<FaBlog />}
+                    />
+                    My Blogs
+                  </Link>
+                </MenuItem>
+                <MenuItem _hover={{ bg: "gray.100" }}>
                   <Link to="/app/dashboard">
                     <IconButton
                       bg="none"
@@ -194,7 +220,7 @@ const AppNavbar = () => {
                     Dashboard
                   </Link>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem _hover={{ bg: "gray.100" }}>
                   <Link to="/app/cart">
                     <IconButton
                       bg="none"
@@ -205,7 +231,7 @@ const AppNavbar = () => {
                   </Link>
                 </MenuItem>
                 <Divider />
-                <MenuItem>
+                <MenuItem _hover={{ bg: "gray.100" }}>
                   <Link to="/app/subscriptions">
                     <IconButton
                       bg="none"
@@ -215,7 +241,7 @@ const AppNavbar = () => {
                     Subsciption
                   </Link>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem _hover={{ bg: "gray.100" }}>
                   <Link to="/app/settings">
                     <IconButton
                       bg="none"
@@ -226,23 +252,23 @@ const AppNavbar = () => {
                   </Link>
                 </MenuItem>
                 <Divider />
-                <MenuItem>
+                <MenuItem _hover={{ bg: "gray.100" }}>
                   <Link to="/app/orders">
                     <IconButton
                       bg="none"
-                      aria-label="Order"
+                      aria-label="Orders"
                       icon={<FaRegListAlt />}
                     />
-                    Order
+                    Orders
                   </Link>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem _hover={{ bg: "gray.100" }}>
                   <Link to="/app/users">
                     <IconButton bg="none" aria-label="User" icon={<FaList />} />
                     Users
                   </Link>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem _hover={{ bg: "gray.100" }}>
                   <Link to="/app/payments">
                     <IconButton
                       bg="none"
@@ -252,7 +278,7 @@ const AppNavbar = () => {
                     Payments
                   </Link>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem _hover={{ bg: "gray.100" }}>
                   <Link to="/app/access">
                     <IconButton
                       bg="none"
@@ -263,7 +289,7 @@ const AppNavbar = () => {
                   </Link>
                 </MenuItem>
                 <Divider />
-                <MenuItem>
+                <MenuItem _hover={{ bg: "gray.100" }}>
                   <Link to="/home">
                     <IconButton
                       bg="none"

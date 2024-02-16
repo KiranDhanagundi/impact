@@ -1,79 +1,67 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Button, Icon, Text } from "@chakra-ui/react";
 import CartProducts from "./CartProducts";
 import CartOrderSummary from "./CartOrderSummary";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux"; // Import useSelector hook
+import { FaArrowRight, FaShoppingCart } from "react-icons/fa";
 
 const Cart = () => {
-  const cartItems = [
-    {
-      id: "Product01",
-      title: "AI predictions: Top 13 AI trends for 2024",
-      description:
-        "Explore the future with our comprehensive guide to the top 13 AI trends anticipated for 2024.",
-      imageUrl:
-        "https://miro.medium.com/v2/resize:fit:1100/format:webp/1*0DoUT3wzcxy89nm1tkd0qQ.png",
-      author: "John Doe",
-      dateTime: "Jan 1,2024",
-      price: 5,
-      avatar: "https://bit.ly/sage-adebayo",
-      numberOfDownloads: "200",
-    },
-    {
-      id: "Product01",
-      title: "UX/UI Design Trends Going Into 2024",
-      description:
-        "Description for Product UX/UI Design Trends Going Into 2024",
-      imageUrl:
-        "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*Nm1_iC89eUi3Eb0JeVqUPg.jpeg",
-      author: "John Doe",
-      dateTime: "Jan 1,2024",
-      price: 1,
-      avatar: "https://bit.ly/sage-adebayo",
-      numberOfDownloads: "200",
-    },
-    {
-      id: "Product01",
-      title:
-        "The Making of Apple’s Emoji: How designing these tiny icons changed my life",
-      description:
-        "Description for ProductThe Making of Apple’s Emoji: How designing these tiny icons changed my life",
-      imageUrl:
-        "https://miro.medium.com/v2/resize:fit:1100/format:webp/1*BniKIhT3c54sIEuPtzRQKw.jpeg",
-      author: "John Doe",
-      dateTime: "Jan 1,2024",
-      price: 0,
-      avatar: "https://bit.ly/sage-adebayo",
-      numberOfDownloads: "200",
-    },
-  ];
+  // Access cart items from the Redux store
+  const cartItem = useSelector((state) => state.cart.items);
 
   return (
-    <Flex mt="10px" w="100%" minH="90vH" overflow="auto" direction="column">
+    <Flex w="100%" minH="90vH" overflow="auto" direction="column">
       <Box align="start" mb="10px">
         <Heading as="h4" size="md">
-          Back
+          Cart
         </Heading>
       </Box>
-
-      <Flex
-        w="100%"
-        direction={{ base: "row", sm: "column-reverse", md: "row", xl: "row" }}
-      >
+      {cartItem.length !== 0 ? (
         <Flex
-          //   borderWidth={"1px"}
-          mr="5px"
-          w="auto"
-          mt="5px"
-          direction={"column"}
+          w="100%"
+          direction={{
+            base: "row",
+            sm: "column-reverse",
+            md: "row",
+            xl: "row",
+          }}
         >
-          {/* <Text align={"start"}>Cart Items</Text> */}
-          {cartItems.map((cartItem, index) => (
-            <CartProducts key={index} cartItem={cartItem} />
-          ))}
+          <Flex
+            //   borderWidth={"1px"}
+            mr="5px"
+            maxW={{ base: "100%", sm: "100%", md: "500px", xl: "800px" }}
+            mt="5px"
+            direction={"column"}
+            w="100%"
+          >
+            {cartItem.map((cartItem, index) => (
+              <CartProducts key={index} cartItem={cartItem} />
+            ))}
+          </Flex>
+          <Flex mt="5px" w={{ base: "100%", sm: "100%", md: "40%", xl: "42%" }}>
+            <CartOrderSummary cartItems={cartItem} />
+          </Flex>
         </Flex>
-        <Flex mt="5px" w={{ base: "100%", sm: "100%", md: "30%", xl: "42%" }}>
-          <CartOrderSummary cartItems={cartItems} />
-        </Flex>
-      </Flex>
+      ) : (
+        <Box>
+          <Icon as={FaShoppingCart} boxSize={10} mr="5px" color="gray.500" />
+          <Text fontSize="md" fontWeight="normal" mb="5px">
+            No products in the cart
+          </Text>
+          <Link to="/app/home">
+            <Button
+              mt="10px"
+              color="white"
+              bg="#0a48b3"
+              size="md"
+              fontWeight="normal"
+              rightIcon={<FaArrowRight />}
+            >
+              Browse products
+            </Button>
+          </Link>
+        </Box>
+      )}
     </Flex>
   );
 };

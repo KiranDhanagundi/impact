@@ -8,56 +8,82 @@ import {
   Link,
   Icon,
   Badge,
+  Button,
+  Spacer,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { DownloadIcon } from "@chakra-ui/icons";
+import { useDispatch } from "react-redux";
+import { FaCartPlus } from "react-icons/fa";
 
 const ProductCard = ({ product }) => {
   const {
-    title,
+    // id,
+    // object,
+    // active,
+    // attributes,
+    // created,
+    // default_price,
     description,
-    imageUrl,
-    author,
-    dateTime,
-    price,
-    avatar,
-    numberOfDownloads,
+    images,
+    // metadata,
+    name,
+    // package_dimensions,
+    // shippable,
+    // statement_descriptor,
+    // tax_code,
+    // type,
+    // unit_label,
+    // updated,
+    // url,
+    prices,
   } = product;
+
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    dispatch({ type: "ADD_TO_CART", payload: product });
+  };
 
   return (
     <Link
       as={ReactRouterLink}
-      to={`/app/productdetails`}
+      to={`/app/productdetails/${product.id}`}
       style={{ textDecoration: "none" }}
     >
       <Box
         borderWidth="1px"
+        position="relative"
         borderRadius="md"
         overflow="hidden"
-        width="auto"
-        boxShadow="sm"
+        width="100%"
+        boxShadow="md"
         p="2"
-        bg="white"
+        h="170px"
+        transition="box-shadow 0.3s ease"
+        _hover={{
+          boxShadow: "xl",
+        }}
       >
         <Stack direction="row" spacing="4" width="full">
           <Image
-            src={imageUrl}
-            alt={title}
+            src={images[0]}
+            alt={name}
             boxSize={{ base: "200px", md: "100", sm: "80px" }}
-            objectFit="cover"
             borderRadius="sm"
             minW={{ base: "150px", md: "100px", sm: "80px" }}
             minH={{ base: "150px", md: "100px", sm: "80px" }}
-            mr="1px"
+            transition="transform 0.2s ease"
+            _hover={{ transform: "scale(1.05)" }}
           />
-          <Stack spacing="0.5">
+          <Stack align="start" spacing="0.5">
             <Box align={"start"} H={"100px"}>
               <Text
-                noOfLines="3"
+                noOfLines="2"
                 fontWeight="bold"
-                fontSize={{ base: "lg", sm: "md" }}
+                fontSize={{ base: "lg", sm: "xs", md: "sm", xl: "sm" }}
               >
-                {title}
+                {name.toLowerCase()}
               </Text>
               <Text
                 noOfLines="2"
@@ -68,36 +94,43 @@ const ProductCard = ({ product }) => {
                 {description}
               </Text>
             </Box>
+            <Box align="start" mt="5px" as="button" fontWeight="bold">
+              {"$" + prices[0].unit_amount}
+            </Box>
           </Stack>
         </Stack>
-        <Flex align="center" mt="10px">
-          <Avatar
-            size="2xs"
-            mr="2"
-            src={avatar ? avatar : "https://bit.ly/broken-link"}
-          />
+        <Flex
+          position="absolute"
+          bottom="1px"
+          p="2"
+          left="0"
+          right="0"
+          alignItems="center"
+          mt="10px"
+        >
+          <Avatar size="2xs" mr="2" src={"https://bit.ly/broken-link"} />
           <Text fontSize="xs" color="gray.500">
-            {author}
+            {"Elon Musk"}
           </Text>
           <Text fontSize="xs" color="gray.500" ml="2">
-            | {dateTime}
+            | {"Feb 6 2024"}
           </Text>
-          <Box
-            m="10px"
-            as="button"
-            borderRadius="md"
-            bg="#0a48b3"
-            color="white"
-            px={2}
-            h={5}
-            w="60px"
-          >
-            {"$ " + price}
-          </Box>
-          <Badge mr="10px" colorScheme="green">
+          <Badge ml="10px" colorScheme="green">
             <Icon as={DownloadIcon} me="4px" />
-            {numberOfDownloads}
+            {"1"}
           </Badge>
+          <Spacer />
+          <Button
+            boxShadow="sm"
+            color={"#0a48b3"}
+            variant={"outline"}
+            onClick={handleAddToCart}
+            fontSize="xs"
+            h="30px"
+            p="8px"
+          >
+            <Icon as={FaCartPlus} boxSize={4} />
+          </Button>
         </Flex>
       </Box>
     </Link>

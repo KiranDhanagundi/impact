@@ -3,7 +3,13 @@ import {
   MdOutlineSubscriptions,
   MdOutlinePayment,
 } from "react-icons/md";
-import { FaList, FaCartPlus, FaRegListAlt, FaTools } from "react-icons/fa";
+import {
+  FaList,
+  FaCartPlus,
+  FaRegListAlt,
+  FaTools,
+  FaBlog,
+} from "react-icons/fa";
 import { FiBell } from "react-icons/fi";
 import { HomeIcon, PersonIcon, SettingsIcon } from "./components/Icons/Icons";
 import Home from "./pages/App/Home/components/Home";
@@ -24,7 +30,10 @@ import Cart from "./pages/App/Products/components/Cart.js";
 import PublicHome from "./pages/Public/components/Home";
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
-
+import Checkout from "./pages/App/Products/components/Checkout.js";
+import { StripeMessage } from "./pages/App/Products/components/StripeMessage";
+import Blogs from "./pages/App/Blogs/components/Blogs.js";
+import EditProductModal from "./pages/App/Products/components/EditProduct.js";
 var appRoutes = [
   {
     id: "app0",
@@ -47,7 +56,7 @@ var appRoutes = [
   {
     id: "app2",
     path: "/products",
-    name: "Products",
+    name: "My Products",
     icon: <FaCartPlus color="inherit" />,
     component: Product,
     layout: "/app",
@@ -56,7 +65,7 @@ var appRoutes = [
   {
     id: "app3",
     path: "/orders",
-    name: "Order",
+    name: "Orders",
     icon: <FaRegListAlt color="inherit" />,
     component: Order,
     layout: "/app",
@@ -137,7 +146,7 @@ var appRoutes = [
   },
   {
     id: "app12",
-    path: "/productdetails",
+    path: "/productdetails/:productId",
     name: "Product Details",
     icon: <FaTools />,
     component: ProductDetails,
@@ -173,6 +182,39 @@ var appRoutes = [
     name: "Signup",
     icon: <FaTools />,
     component: SignUp,
+    layout: "/app",
+  },
+  {
+    id: "app17",
+    path: "/checkout",
+    name: "Checkout",
+    icon: <FaTools />,
+    component: Checkout,
+    layout: "/app",
+  },
+  {
+    id: "app17",
+    path: "/return",
+    name: "StripeMessage",
+    icon: <FaTools />,
+    component: StripeMessage,
+    layout: "/app",
+  },
+  {
+    id: "app18",
+    path: "/blogs",
+    name: "My Blogs",
+    icon: <FaBlog color="inherit" />,
+    component: Blogs,
+    layout: "/app",
+    access: true,
+  },
+  {
+    id: "app18",
+    path: "/productedit/:productId",
+    name: "Edit Product",
+    icon: <FaBlog color="inherit" />,
+    component: EditProductModal,
     layout: "/app",
   },
 ];

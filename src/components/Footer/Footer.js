@@ -13,7 +13,7 @@ export default function Footer() {
     <Box
       bg={useColorModeValue("gray.50", "gray.900")}
       w="100%"
-      maxW={{ xl: "1270px", lg: "960px" }}
+      maxW={{ xl: "1300px", lg: "960px" }}
     >
       <Box
         mb="0px"

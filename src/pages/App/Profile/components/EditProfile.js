@@ -194,15 +194,15 @@ function EditProfile({ isOpen, onClose, profileInfo }) {
         </ModalBody>
 
         <ModalFooter>
-          <Button mr={3} onClick={handleCloseEditModal}>
+          <Button fontSize="sm" h="36px" mr={3} onClick={handleCloseEditModal}>
             Cancel
           </Button>
           <Button
             variant="outline"
             colorScheme="blue"
-            minW="90px"
+            minW="80px"
             h="36px"
-            fontSize="xs"
+            fontSize="sm"
             onClick={handleCloseEditModal}
           >
             Save

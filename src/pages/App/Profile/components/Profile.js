@@ -18,6 +18,7 @@ import {
   useClipboard,
   IconButton,
   Divider,
+  Heading,
 } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
@@ -25,6 +26,8 @@ import UserProjects from "./UserProjects";
 import EditProfile from "./EditProfile";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { FaShareAlt } from "react-icons/fa";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const Profile = () => {
   const {
@@ -49,85 +52,59 @@ const Profile = () => {
       twitterUrl: "https://twitter",
     },
   };
-  const products = [
-    {
-      title: "AI predictions: Top 13 AI trends for 2024",
-      description:
-        "Explore the future with our comprehensive guide to the top 13 AI trends anticipated for 2024.",
-      imageUrl:
-        "https://miro.medium.com/v2/resize:fit:1100/format:webp/1*0DoUT3wzcxy89nm1tkd0qQ.png",
-      author: "John Doe",
-      dateTime: "Jan 1,2024",
-      price: "2",
-      avatar: "https://bit.ly/sage-adebayo",
-      category: "Technology",
-      numberOfDownloads: "200",
-    },
-    {
-      title: "UX/UI Design Trends Going Into 2024",
-      description:
-        "Description for Product UX/UI Design Trends Going Into 2024",
-      imageUrl:
-        "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*Nm1_iC89eUi3Eb0JeVqUPg.jpeg",
-      author: "John Doe",
-      dateTime: "Jan 1,2024",
-      price: "1",
-      avatar: "https://bit.ly/sage-adebayo",
-      numberOfDownloads: "200",
-    },
-    {
-      title:
-        "The Making of Apple’s Emoji: How designing these tiny icons changed my life",
-      description:
-        "Description for ProductThe Making of Apple’s Emoji: How designing these tiny icons changed my life",
-      imageUrl:
-        "https://miro.medium.com/v2/resize:fit:1100/format:webp/1*BniKIhT3c54sIEuPtzRQKw.jpeg",
-      author: "John Doe",
-      dateTime: "Jan 1,2024",
-      price: "0",
-      avatar: "https://bit.ly/sage-adebayo",
-      numberOfDownloads: "200",
-    },
-    {
-      title: "UX/UI Design Trends Going Into 2024",
-      description:
-        "Description for Product UX/UI Design Trends Going Into 2024",
-      imageUrl:
-        "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*Nm1_iC89eUi3Eb0JeVqUPg.jpeg",
-      author: "John Doe",
-      dateTime: "Jan 5,2024",
-      price: "5",
-      avatar: "https://bit.ly/sage-adebayo",
-      numberOfDownloads: "200",
-    },
-    {
-      title: "AI predictions: Top 13 AI trends for 2024",
-      description:
-        "Explore the future with our comprehensive guide to the top 13 AI trends anticipated for 2024.",
-      imageUrl:
-        "https://miro.medium.com/v2/resize:fit:1100/format:webp/1*0DoUT3wzcxy89nm1tkd0qQ.png",
-      author: "John Doe",
-      dateTime: "Jan 1,2024",
-      // rating:"20"
-      price: "5",
-      avatar: "https://bit.ly/sage-adebayo",
-      numberOfDownloads: "200",
-    },
-  ];
+
   const profileUrl = window.location.href;
 
   const { hasCopied, onCopy } = useClipboard(profileUrl);
 
+  const [productList, setProductList] = useState("");
+  useEffect(() => {
+    // fetch products on page load
+    fetch("/v1/products/search", {
+      method: "GET",
+      query: "active:'true' AND metadata['user_id']:'Kiran123'",
+    })
+      .then((res) => res.json())
+      .then((data) => setProductList(data));
+  }, []);
+
+  let productsLists = {};
+
+  // Check if productList and its properties are defined
+  if (productList && productList.products && productList.prices) {
+    // Map over productList.products and combine prices
+    productsLists = {
+      products: productList.products.map((product) => {
+        return {
+          ...product,
+          prices: productList.prices.filter(
+            (price) => price.product === product.id
+          ),
+        };
+      }),
+    };
+  } else {
+    // Handle the case where productList or its properties are undefined
+    console.log("Product list or its properties are undefined.");
+    // You can assign a default value or handle the situation accordingly
+  }
+
+  console.log("userProdList", productsLists);
+
   return (
-    <Flex mt="10px" w="100%" minH="90vH" overflow="auto" direction="column">
+    <Flex w="100%" minH="90vH" overflow="auto" direction="column">
+      <Box align="start" mb="10px">
+        <Heading as="h4" size="md">
+          Profile
+        </Heading>
+      </Box>
       <Box
         borderWidth="1px"
         borderTopRadius="md"
         overflow="hidden"
         width="auto"
-        boxShadow="md"
+        boxShadow="xl"
         p="2"
-        bg="white"
       >
         <Stack
           direction={{ base: "column", sm: "column", md: "row", xl: "row" }}
@@ -142,14 +119,15 @@ const Profile = () => {
                 name={profileInfo.fullName}
                 src="https://bit.ly/sage-adebayo"
               />
-              <Text mb="5px" fontSize="md" fontWeight="bold" color="gray.900">
+              <Text mb="10px" fontSize="md" fontWeight="bold" color="gray.900">
                 {profileInfo.fullName}
               </Text>
             </Flex>
             <Flex justify="center" align="center" direction="row" mb="10px">
               <Button
                 variant="outline"
-                colorScheme="blue"
+                // colorScheme="blue"
+                color={"#0a48b3"}
                 W="70px"
                 h="36px"
                 fontSize="xs"
@@ -170,6 +148,7 @@ const Profile = () => {
                 hasArrow
               >
                 <IconButton
+                  h="36px"
                   icon={<FaShareAlt />}
                   aria-label="Share profile"
                   onClick={onCopy}
@@ -186,7 +165,7 @@ const Profile = () => {
                 fontWeight="normal"
                 me="10px"
               >
-                About:{" "}
+                About Me:{" "}
               </Text>
               <Text fontSize="md" color="gray.500" fontWeight="400">
                 {profileInfo.about}
@@ -286,13 +265,17 @@ const Profile = () => {
           <TabPanels>
             <TabPanel p="0px" mt="10px">
               <Grid
-                templateColumns={{ sm: "1fr", md: "1fr", xl: "1fr 1fr" }}
+                templateColumns={{
+                  sm: "1fr",
+                  md: "1fr 1fr",
+                  xl: "1fr 1fr 1fr",
+                }}
                 templateRows={{
                   sm: "1fr 1fr 1fr auto",
                   md: "1fr 1fr",
                   xl: "1fr",
                 }}
-                gap="4px"
+                gap="8px"
               >
                 <Button
                   p="0px"
@@ -302,6 +285,7 @@ const Profile = () => {
                   borderRadius="md"
                   h="170px"
                   mb="2px"
+                  boxShadow="md"
                 >
                   <Flex
                     direction="column"
@@ -320,9 +304,15 @@ const Profile = () => {
                     </Link>
                   </Flex>
                 </Button>
-                {products.map((product, index) => (
-                  <UserProjects key={index} product={product} />
-                ))}
+                {productsLists &&
+                productsLists.products &&
+                productsLists.products.length > 0 ? (
+                  productsLists.products.map((product, index) => (
+                    <UserProjects key={index} product={product} />
+                  ))
+                ) : (
+                  <Text align="center">No data found</Text>
+                )}
               </Grid>
             </TabPanel>
             <TabPanel>

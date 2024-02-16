@@ -10,10 +10,14 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { FaArrowRight } from "react-icons/fa";
+import { Link, useHistory, useLocation } from "react-router-dom";
 
 const CartOrderSummary = ({ cartItems }) => {
+  const history = useHistory();
+  const location = useLocation();
+
   const calculateTotal = () => {
-    return cartItems.reduce((total, product) => total + product.price, 0);
+    return cartItem.reduce((total, item) => total + item.unit_amount, 0);
   };
 
   const calculateTax = () => {
@@ -23,18 +27,32 @@ const CartOrderSummary = ({ cartItems }) => {
     return tax;
   };
 
-  return (
-    <Box w="100%" borderWidth="1px" borderRadius="md" p="4">
+  const cartItem = cartItems.map((item) => {
+    return {
+      ...item.product,
+      price_id: item.prices[0].id,
+      unit_amount: item.prices[0].unit_amount,
+    };
+  });
+
+  const handleCheckout = () => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("cartItems", JSON.stringify(cartItems));
+    history.push(`/app/checkout`);
+  };
+
+  return cartItem.length !== 0 ? (
+    <Box w="100%" minW={"500px"} borderWidth="1px" borderRadius="md" p="4">
       <Heading color={"#0a48b3"} as="h2" size="md" mb="4">
         Order Summary
       </Heading>
       <Divider />
       <VStack mt="5px" spacing="6" align="start">
-        {cartItems.map((product) => (
-          <HStack key={product.id} spacing="10">
-            <Text>{product.id}</Text>
+        {cartItem.map((item, index) => (
+          <HStack key={item.id} spacing="10">
+            <Text>items {index + 1}</Text>
             <Spacer />
-            <Text>${product.price}</Text>
+            <Text>${item.unit_amount}</Text>
           </HStack>
         ))}
         <Divider />
@@ -50,16 +68,23 @@ const CartOrderSummary = ({ cartItems }) => {
         </HStack>
       </VStack>
       <Divider />
-      <Button
-        mt="10px"
-        color="white"
-        bg="#0a48b3"
-        size="md"
-        fontWeight="normal"
-        rightIcon={<FaArrowRight />}
-      >
-        Checkout
-      </Button>
+      <Link to="/app/checkout">
+        <Button
+          mt="10px"
+          color="white"
+          bg="#0a48b3"
+          size="md"
+          fontWeight="normal"
+          rightIcon={<FaArrowRight />}
+          onClick={handleCheckout}
+        >
+          Checkout
+        </Button>
+      </Link>
+    </Box>
+  ) : (
+    <Box w="100%" borderWidth="1px" borderRadius="md" p="4">
+      <Text>No data</Text>
     </Box>
   );
 };

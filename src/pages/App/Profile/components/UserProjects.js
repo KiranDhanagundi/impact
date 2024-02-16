@@ -9,31 +9,27 @@ import {
   Spacer,
   Stack,
   Link,
-  useDisclosure,
   Badge,
   Icon,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import EditProductModal from "../../Products/components/EditProduct";
 import { DownloadIcon } from "@chakra-ui/icons";
 import DeleteProduct from "../../Products/components/DeleteProduct";
 
 const UserProjects = ({ product }) => {
   const {
-    title,
+    // id,
+    // object,
+    // active,
+    // attributes,
+    // created,
+    // default_price,
     description,
-    imageUrl,
-    author,
-    dateTime,
-    price,
-    avatar,
-    numberOfDownloads,
+    images,
+    // metadata,
+    name,
+    prices,
   } = product;
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  // const history = useHistory();
-
-  // const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -45,55 +41,48 @@ const UserProjects = ({ product }) => {
   };
 
   const handleDeleteConfirmation = () => {
-    // Implement your delete logic here
     setIsDeleteModalOpen(false);
-  };
-
-  const handleEditClick = (event) => {
-    if (event) {
-      event.preventDefault();
-    }
-    onOpen();
-  };
-
-  const handleSaveEdit = (editedProduct) => {
-    // Handle the edited product data (e.g., update state or send to the server)
-    console.log("Edited Product:", editedProduct);
   };
 
   return (
     <Link
       as={ReactRouterLink}
-      to={`/app/productdetails`}
+      to={`/app/productdetails/${product.id}`}
       style={{ textDecoration: "none" }}
     >
       <Box
+        position="relative"
         borderWidth="1px"
         borderRadius="md"
         overflow="hidden"
         width="auto"
-        boxShadow="sm"
+        boxShadow="md"
         p="2"
-        bg="white"
+        h="170px"
+        transition="box-shadow 0.3s ease"
+        _hover={{
+          boxShadow: "xl",
+        }}
       >
-        <Stack direction="row" spacing="5" width="full">
+        <Stack direction="row" spacing="4" width="full">
           <Image
-            src={imageUrl}
-            alt={title}
+            src={images[0]}
+            alt={name}
             boxSize={{ base: "200px", md: "100", sm: "80px" }}
-            objectFit="cover"
             borderRadius="sm"
             minW={{ base: "150px", md: "100px", sm: "80px" }}
             minH={{ base: "150px", md: "100px", sm: "80px" }}
+            transition="transform 0.2s ease"
+            _hover={{ transform: "scale(1.05)" }}
           />
-          <Stack spacing="0.5">
+          <Stack align="start" spacing="0.5">
             <Box align={"start"} H={"100px"}>
               <Text
-                noOfLines="3"
+                noOfLines="2"
                 fontWeight="bold"
-                fontSize={{ base: "lg", sm: "md" }}
+                fontSize={{ base: "lg", sm: "md", md: "sm", xl: "sm" }}
               >
-                {title}
+                {name.toLowerCase()}
               </Text>
               <Text
                 noOfLines="2"
@@ -104,68 +93,74 @@ const UserProjects = ({ product }) => {
                 {description}
               </Text>
             </Box>
+            <Box mt="5px" as="button" fontWeight="bold">
+              {"$" + prices[0].unit_amount}
+            </Box>
           </Stack>
         </Stack>
-        <Flex align="center" mt="10px">
+        <Flex
+          position="absolute"
+          bottom="1px"
+          p="2"
+          left="0"
+          right="0"
+          alignItems="center"
+          mt="10px"
+        >
           <Avatar
             size="2xs"
             mr="2"
-            src={avatar ? avatar : "https://bit.ly/broken-link"}
+            // src={avatar ? avatar : "https://bit.ly/broken-link"}
+            src={"https://bit.ly/broken-link"}
           />
           <Text fontSize="xs" color="gray.500">
-            {author}
+            {/* {author} */}
+            {"Elon Musk"}
           </Text>
           <Text fontSize="xs" color="gray.500" ml="2">
-            | {dateTime}
+            {/* | {dateTime} */}
+            {"Feb 6 2024"}
           </Text>
-          <Box
-            m="10px"
-            as="button"
-            borderRadius="md"
-            bg="#0a48b3"
-            color="white"
-            px={2}
-            h={5}
-            w="60px"
-          >
-            {"$" + price}
-          </Box>
-          <Badge mr="4px" colorScheme="green">
+
+          <Badge ml="10px" colorScheme="green">
             <Icon as={DownloadIcon} me="4px" />
-            {numberOfDownloads}
+            {/* {numberOfDownloads} */}
+            {"1"}
           </Badge>
           <Spacer />
           <Flex direction={{ base: "row", sm: "column", md: "row", xl: "row" }}>
-            <Button
-              variant="outline"
-              colorScheme="blue"
-              minW="70px"
-              h="34px"
-              fontSize="xs"
-              ml="4px"
-              mb="2px"
-              onClick={handleEditClick}
+            <Link
+              as={ReactRouterLink}
+              to={`/app/productedit/${product.id}`}
+              style={{ textDecoration: "none" }}
             >
-              Edit
-            </Button>
+              <Button
+                boxShadow="sm"
+                variant="outline"
+                color={"#0a48b3"}
+                h="30px"
+                fontSize="xs"
+                ml="4px"
+                mb="2px"
+                p="8px"
+                minW="53px"
+              >
+                Edit
+              </Button>
+            </Link>
             <Button
+              boxShadow="sm"
               variant="outline"
-              colorScheme="blue"
-              minW="70px"
-              h="34px"
+              color={"#0a48b3"}
+              h="30px"
               fontSize="xs"
               ml="4px"
               onClick={handleDelete}
+              p="8px"
             >
               Delete
             </Button>
           </Flex>
-          <EditProductModal
-            isOpen={isOpen}
-            onClose={onClose}
-            product={product}
-            onSave={handleSaveEdit}
-          />
           <DeleteProduct
             isOpen={isDeleteModalOpen}
             onClose={() => setIsDeleteModalOpen(false)}

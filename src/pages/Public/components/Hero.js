@@ -23,7 +23,7 @@ const Hero = () => {
       wrap="no-wrap"
       minH="50vh"
       w="100%"
-      pl={4}
+      px={2}
     >
       <Stack
         spacing={4}
@@ -78,13 +78,15 @@ const Hero = () => {
           No credit card required
         </Text>
       </Stack>
-      <Box w="100%" align="right" mr="0px">
+      <Box w="auto" align="right" mr="0px">
         <Image
           h={{
             base: "600px",
             md: "500px",
             sm: "200px",
             xs: "100px",
+            xl: "400px",
+            lg: "600px",
           }}
           align={"right"}
           borderRadius="full"

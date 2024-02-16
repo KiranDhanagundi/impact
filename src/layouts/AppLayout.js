@@ -95,7 +95,7 @@ export default function AppLayout(props) {
     <ChakraProvider theme={theme} resetCss={false}>
       <MainPanel
         w="100%"
-        pt="15px"
+        pt="12px"
         align="center"
         overflow="hidden"
         backgroundColor="#ffffff!important"
@@ -109,7 +109,7 @@ export default function AppLayout(props) {
           />
         </Portal>
         {getRoute() ? (
-          <PanelContent p="0px" maxW={{ xl: "1270px", lg: "960px" }}>
+          <PanelContent p="10px" maxW={{ xl: "1300px" }}>
             <PanelContainer>
               <Switch>
                 {getRoutes(routes)}

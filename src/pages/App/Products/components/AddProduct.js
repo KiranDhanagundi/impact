@@ -13,7 +13,6 @@ import {
   Box,
   Spacer,
   Text,
-  Select,
   Textarea,
   // NumberInput,
   InputGroup,
@@ -25,26 +24,30 @@ import {
   Divider,
   Heading,
 } from "@chakra-ui/react";
-// import Card from "../../../../components/Card/Card";
+
 import { DownloadIcon } from "@chakra-ui/icons";
 // import SwipeableViews from "react-swipeable-views";
 // import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const AddProduct = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
+  const [prices, setPrices] = useState("");
   const toast = useToast();
   const defaultImageSrc = "https://via.placeholder.com/150";
-  const author = "Author Name";
-  const dateTime = "Jan 16,2024";
+  const author = "Elon Musk";
+  const dateTime = "Feb 6,2024";
+  const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory(); // Initialize useHistory hook
 
-  const handleSubmit = (e) => {
+  const handleCreateProductAndPublish = async (e) => {
     e.preventDefault();
 
-    if (!title || !description || !imageUrl || !category || !price) {
+    if (!title || !description || !imageUrl || !category || !prices) {
       toast({
         title: "Error creating product.",
         description: "Please fill in all the required fields.",
@@ -55,24 +58,48 @@ const AddProduct = () => {
       return;
     }
 
-    // const newProject = {
-    //   title,
-    //   imageUrl,
-    //   description,
-    //   category,
-    //   price,
-    // };
+    setIsLoading(true);
 
-    toast({
-      title: "Product created successfully.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
+    try {
+      const response = await axios.post("/create-product-and-price", {
+        title,
+        description,
+        imageUrl,
+        category,
+        prices,
+      });
+
+      console.log("Product created successfully:", response.data);
+
+      toast({
+        title: "Product created and published successfully.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      history.push(`/app/productedit/${response?.data.product?.id}`);
+    } catch (error) {
+      console.error("Error creating product:", error);
+
+      toast({
+        title: "Error creating product.",
+        description: "An error occurred while creating the product.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <Flex mt="10px" w="100%" minH="90vH" overflow="auto" direction="column">
+    <Flex w="100%" minH="90vH" overflow="auto" direction="column">
+      <Box align="start" mb="10px">
+        <Heading as="h4" size="md">
+          Create Product
+        </Heading>
+      </Box>
       <Grid
         templateColumns={{ sm: "1fr", md: "1fr", xl: "1fr 1fr" }}
         templateRows={{ sm: "1fr 1fr 1fr auto", md: "1fr 1fr", xl: "1fr" }}
@@ -85,13 +112,16 @@ const AddProduct = () => {
           width="auto"
           boxShadow="sm"
           p="2"
-          bg="white"
-          m="2px"
         >
           <Text fontWeight={"bold"} color={"#0648b3"}>
             New Product
           </Text>
-          <VStack as="form" onSubmit={handleSubmit} w="100%" spacing="4">
+          <VStack
+            as="form"
+            onSubmit={handleCreateProductAndPublish}
+            w="100%"
+            spacing="2"
+          >
             <FormControl isRequired id="title">
               <FormLabel>Product Title</FormLabel>
               <Input
@@ -101,10 +131,18 @@ const AddProduct = () => {
                 onChange={(e) => setTitle(e.target.value)}
               />
             </FormControl>
-            <FormControl isRequired id="imageUrl">
+            {/* <FormControl isRequired id="imageUrl">
               <FormLabel> Media</FormLabel>
               <Input
                 type="file"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+              />
+            </FormControl> */}
+            <FormControl isRequired id="imageUrl">
+              <FormLabel> Media</FormLabel>
+              <Input
+                type="text"
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
               />
@@ -119,7 +157,16 @@ const AddProduct = () => {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </FormControl>
-            <FormControl isRequired>
+            <FormControl isRequired id="title">
+              <FormLabel>Category</FormLabel>
+              <Input
+                type="text"
+                placeholder="Enter Category..."
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              />
+            </FormControl>
+            {/* <FormControl isRequired>
               <FormLabel>Category</FormLabel>
               <Select placeholder="Select...">
                 <option>Technology</option>
@@ -128,7 +175,7 @@ const AddProduct = () => {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               </Select>
-            </FormControl>
+            </FormControl> */}
             <FormControl isRequired id="price">
               <FormLabel>Price</FormLabel>
               <InputGroup>
@@ -142,45 +189,24 @@ const AddProduct = () => {
                 <Input
                   placeholder="Enter Price.."
                   type="number"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
+                  value={prices}
+                  onChange={(e) => setPrices(e.target.value)}
                 />
               </InputGroup>
             </FormControl>
-            <Flex>
-              <Button
-                variant="outline"
-                colorScheme="blue"
-                minW="90px"
-                h="36px"
-                fontSize="xs"
-                mr="100px"
-              >
-                Prev
-              </Button>
-              <Spacer />
-              <Button
-                variant="outline"
-                colorScheme="blue"
-                minW="90px"
-                h="36px"
-                fontSize="xs"
-                type="submit"
-              >
-                Next
-              </Button>
-            </Flex>
             <HStack>
               <Button
-                // variant="outline"
+                fontWeight="normal"
                 bg="#0a48b3"
                 color="white"
                 minW="90px"
                 h="36px"
-                fontSize="xs"
+                fontSize="sm"
                 type="submit"
+                onClick={handleCreateProductAndPublish}
+                isLoading={isLoading}
               >
-                Create Product And Publish
+                Create Product & Publish
               </Button>
             </HStack>
           </VStack>
@@ -192,8 +218,6 @@ const AddProduct = () => {
           width="auto"
           boxShadow="sm"
           p="2"
-          m="2px"
-          bg="white"
         >
           <Text fontWeight={"bold"} color={"#0648b3"}>
             Preview
@@ -204,82 +228,16 @@ const AddProduct = () => {
                 <Image
                   src={imageUrl || defaultImageSrc}
                   alt={title}
-                  boxSize="200px"
-                  objectFit="cover"
+                  boxSize={{
+                    base: "300px",
+                    md: "200px",
+                    sm: "150px",
+                    xl: "200px",
+                    lg: "300px",
+                  }}
                   borderRadius="sm"
                 />
               </Box>
-              {/* <Box align="center" position="relative">
-                <SwipeableViews
-                  index={activeImageIndex}
-                  onChangeIndex={(index) => setActiveImageIndex(index)}
-                >
-                  {product.images.map((img, index) => (
-                    <Image
-                      key={index}
-                      src={img}
-                      alt={`Image ${index + 1}`}
-                      boxSize={{ base: "400px", md: "400", sm: "270px" }}
-                      objectFit="cover"
-                      borderRadius="md"
-                    />
-                  ))}
-                </SwipeableViews>
-                <Button
-                  position="absolute"
-                  top="50%"
-                  left="2px"
-                  colorScheme="gray"
-                  onClick={handlePrevImage}
-                >
-                  <FaArrowLeft />
-                </Button>
-                <Button
-                  position="absolute"
-                  top="50%"
-                  right="2px"
-                  colorScheme="gray"
-                  onClick={handleNextImage}
-                >
-                  <FaArrowRight />
-                </Button>
-                <HStack
-                  position="absolute"
-                  bottom="10px"
-                  left="50%"
-                  transform="translateX(-50%)"
-                  spacing={1}
-                >
-                  {product.images.map((_, index) => (
-                    <Box
-                      key={index}
-                      boxSize="5px"
-                      borderRadius="full"
-                      bg={index === activeImageIndex ? "blue.500" : "white"}
-                      opacity="1"
-                    />
-                  ))}
-                </HStack>
-              </Box>
-              <SimpleGrid columns={10} spacing={2} mt="2">
-                {product.images.map((img, index) => (
-                  <Box
-                    key={index}
-                    boxSize="30px"
-                    cursor="pointer"
-                    onClick={() => setActiveImageIndex(index)}
-                    ml={index !== 0 ? 0 : 0}
-                  >
-                    <Image
-                      src={img}
-                      alt={`Thumbnail ${index + 1}`}
-                      boxSize="30px"
-                      objectFit="cover"
-                      borderRadius="lg"
-                    />
-                  </Box>
-                ))}
-              </SimpleGrid> */}
             </Flex>
           </Box>
           <Spacer />
@@ -322,13 +280,13 @@ const AddProduct = () => {
                 <Spacer />
                 <Flex mt={{ base: "10px" }} align={"center"}>
                   <Text mr="20px" fontSize="xl" fontWeight="bold">
-                    ${price}
+                    ${prices}
                   </Text>
                 </Flex>
               </Flex>
               <Divider mt="5px" orientation="horizontal" />
             </Box>
-            <VStack mt="10px" spacing="2" align="start">
+            <VStack mt="5px" spacing="2" align="start">
               <Heading as="h1" size="md">
                 {title}
               </Heading>
@@ -338,7 +296,9 @@ const AddProduct = () => {
               <Text decoration="auto" color="gray.500">
                 Description:
               </Text>
-              <Text fontSize="md">{description}</Text>
+              <Text p="2" align="left" fontSize="md">
+                {description}
+              </Text>
             </VStack>
           </Box>
         </Box>

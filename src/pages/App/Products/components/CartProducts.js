@@ -18,16 +18,18 @@ import RemoveCartItems from "./RemoveCartItems";
 import { DownloadIcon } from "@chakra-ui/icons";
 
 const CartProducts = ({ cartItem }) => {
-  const {
-    title,
-    description,
-    imageUrl,
-    author,
-    dateTime,
-    price,
-    avatar,
-    numberOfDownloads,
-  } = cartItem;
+  // const {
+  //   title,
+  //   description,
+  //   imageUrl,
+  //   author,
+  //   dateTime,
+  //   price,
+  //   avatar,
+  //   numberOfDownloads,
+  // } = cartItem;
+  const { product, prices } = cartItem;
+
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -53,86 +55,89 @@ const CartProducts = ({ cartItem }) => {
   return (
     <Link
       as={ReactRouterLink}
-      to={`/app/productdetails`}
+      to={`/app/productdetails/${product.id}`}
       style={{ textDecoration: "none" }}
     >
       <Box
+        position="relative"
         borderWidth="1px"
         borderRadius="md"
         overflow="hidden"
-        width="auto"
+        width="100%"
         boxShadow="sm"
         p="2"
-        bg="white"
         mb="4px"
+        h="130px"
       >
         <Stack direction="row" spacing="5" width="full">
           <Image
-            src={imageUrl}
-            alt={title}
+            src={product.images[0]}
+            alt={product.name}
             boxSize={{ base: "150px", md: "80px", sm: "80px" }}
-            objectFit="cover"
             borderRadius="sm"
             minW={{ base: "150px", md: "80px", sm: "80px" }}
             minH={{ base: "150px", md: "80px", sm: "80px" }}
             mr="1px"
           />
-          <Stack spacing="0.5">
+          <Stack align="start" spacing="0.5">
             <Box align={"start"} H={"100px"}>
               <Text
-                noOfLines="3"
+                noOfLines="2"
                 fontWeight="bold"
                 fontSize={{ base: "lg", sm: "md" }}
               >
-                {title}
+                {product.name}
               </Text>
               <Text
-                noOfLines="2"
+                noOfLines="1"
                 color="gray.600"
                 fontSize="sm"
                 overflow={"hidden"}
               >
-                {description}
+                {product.description}
               </Text>
+            </Box>
+            <Box mt="5px" as="button" fontWeight="bold">
+              {"$" + prices[0].unit_amount}
             </Box>
           </Stack>
         </Stack>
-        <Flex align="center" mt="10px">
+        <Flex
+          position="absolute"
+          bottom="1px"
+          p="2"
+          left="0"
+          right="0"
+          alignItems="center"
+          mt="10px"
+        >
           <Avatar
             size="2xs"
             mr="2"
-            src={avatar ? avatar : "https://bit.ly/broken-link"}
+            // src={avatar ? avatar : "https://bit.ly/broken-link"}
+            src={"https://bit.ly/broken-link"}
           />
           <Text fontSize="xs" color="gray.500">
-            {author}
+            {/* {author} */}
+            {"Elon Musk"}
           </Text>
           <Text fontSize="xs" color="gray.500" ml="2">
-            | {dateTime}
+            {/* | {dateTime} */}
+            {"Feb 6 2024"}
           </Text>
-          <Box
-            m="10px"
-            as="button"
-            borderRadius="md"
-            bg="#0a48b3"
-            color="white"
-            px={2}
-            h={5}
-            w="60px"
-          >
-            {"$" + price}
-          </Box>
-          <Badge mr="10px" colorScheme="green">
+          <Badge ml="10px" colorScheme="green">
             <Icon as={DownloadIcon} me="4px" />
-            {numberOfDownloads}
+            {/* {numberOfDownloads} */}
+            {"1"}
           </Badge>
           <Spacer />
           <Button
+            boxShadow="sm"
             variant="outline"
-            colorScheme="red"
-            minW="90px"
-            h="36px"
+            color={"red"}
+            h="30px"
             fontSize="xs"
-            ml="4px"
+            p="8px"
             onClick={handleDelete}
           >
             Remove
