@@ -15,13 +15,14 @@ import {
   Icon,
   SimpleGrid,
   Badge,
+  Link,
 } from "@chakra-ui/react";
 import Card from "../../../../components/Card/Card";
 import ProductCard from "../../Home/components/ProjectCard";
 import { DownloadIcon } from "@chakra-ui/icons";
 import SwipeableViews from "react-swipeable-views";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { Link as ReactRouterLink, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -217,10 +218,15 @@ const ProductDetails = () => {
                       mr="2"
                       src={"https://bit.ly/broken-link"}
                     />
-                    <Text fontSize="xs" color="gray.500">
-                      {/* {product.author} */}
-                      {"Elon Musk"}
-                    </Text>
+                    <Link
+                      as={ReactRouterLink}
+                      to={`/app/profile`}
+                      color="#0648b3"
+                    >
+                      <Text as="u" fontSize="xs">
+                        {"Impact Dev"}
+                      </Text>
+                    </Link>
                     <Text fontSize="xs" color="gray.500" ml="2" mr="10px">
                       {/* | {product.dateTime} */}| {"Feb 6 2024"}
                     </Text>

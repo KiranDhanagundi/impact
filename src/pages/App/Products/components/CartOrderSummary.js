@@ -42,7 +42,14 @@ const CartOrderSummary = ({ cartItems }) => {
   };
 
   return cartItem.length !== 0 ? (
-    <Box w="100%" minW={"500px"} borderWidth="1px" borderRadius="md" p="4">
+    <Box
+      w="100%"
+      minW={"500px"}
+      boxShadow="md"
+      borderWidth="1px"
+      borderRadius="md"
+      p="4"
+    >
       <Heading color={"#0a48b3"} as="h2" size="md" mb="4">
         Order Summary
       </Heading>

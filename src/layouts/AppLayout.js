@@ -98,7 +98,7 @@ export default function AppLayout(props) {
         pt="12px"
         align="center"
         overflow="hidden"
-        backgroundColor="#ffffff!important"
+        backgroundColor="#fff!important"
       >
         <Portal>
           <AppNavbar

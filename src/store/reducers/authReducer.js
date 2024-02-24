@@ -1,3 +1,5 @@
+import * as actions from "../../pages/Auth/actions";
+
 const initialState = {
   userDetails: null,
   accessToken: null,
@@ -6,24 +8,36 @@ const initialState = {
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN_SUCCESS:
+    case actions.LOGIN_SUCCESS:
       return {
         ...state,
         userDetails: action.payload.userDetails,
         // accessToken: action.payload.accessToken,
         error: null,
       };
-    case SIGNUP_SUCCESS:
+    case actions.SIGNUP_SUCCESS:
       return {
         ...state,
         error: null,
       };
-    case LOGIN_FAILURE:
-    case SIGNUP_FAILURE:
+    case actions.LOGIN_FAILURE:
+    case actions.SIGNUP_FAILURE:
       return {
         ...state,
         userDetails: null,
         accessToken: null,
+        error: action.payload,
+      };
+    case actions.GOOGLE_SIGN_IN_SUCCESS:
+      return {
+        ...state,
+        userDetails: action.payload,
+        error: null,
+      };
+    case actions.GOOGLE_SIGN_IN_FAILURE:
+      return {
+        ...state,
+        userDetails: null,
         error: action.payload,
       };
     default:

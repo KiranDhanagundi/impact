@@ -12,14 +12,36 @@ const fetchFileFromS3 = async (fileName) => {
   const params = {
     Bucket: AWSConfig.bucketName,
     Key: fileName,
+    Expression: "SELECT s.reactEnvVariables FROM S3Object s",
+    ExpressionType: "SQL",
+    InputSerialization: {
+      JSON: {
+        Type: "LINES",
+      },
+    },
+    OutputSerialization: {
+      JSON: {},
+    },
   };
 
   try {
-    const data = await s3.getObject(params).promise();
-    console.log("File content:", data.Body.toString());
-    return data.Body.toString();
+    const data = await s3.selectObjectContent(params).promise();
+    const records = [];
+
+    data.Payload.on("data", (event) => {
+      if (event.Records) {
+        records.push(event.Records.Payload);
+      }
+    });
+
+    data.Payload.on("end", () => {
+      console.log("Query results:", Buffer.concat(records).toString("utf-8"));
+    });
+
+    console.log("File content:", records);
+    return records;
   } catch (error) {
-    console.error("Error fetching file from S3:", error);
+    console.error("Error fetching object from S3:", error);
     throw error;
   }
 };

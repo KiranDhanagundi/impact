@@ -113,10 +113,11 @@ const UserProjects = ({ product }) => {
             // src={avatar ? avatar : "https://bit.ly/broken-link"}
             src={"https://bit.ly/broken-link"}
           />
-          <Text fontSize="xs" color="gray.500">
-            {/* {author} */}
-            {"Impact Dev"}
-          </Text>
+          <Link as={ReactRouterLink} to={`/app/profile`} color="#0648b3">
+            <Text as="u" fontSize="xs">
+              {"Impact Dev"}
+            </Text>
+          </Link>
           <Text fontSize="xs" color="gray.500" ml="2">
             {/* | {dateTime} */}
             {"Feb 6 2024"}

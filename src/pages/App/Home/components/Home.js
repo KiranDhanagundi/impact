@@ -5,8 +5,8 @@ import CardBody from "../../../../components/Card/CardBody";
 import ProductCard from "./ProjectCard";
 import SearchBar from "./SearchBar";
 import { useState } from "react";
-// import AWSConfig from "../../../../utils/Config";
-// import fetchFileFromS3 from "../../../../utils/Properties";
+import AWSConfig from "../../../../utils/Config";
+import fetchFileFromS3 from "../../../../utils/Properties";
 
 const Home = () => {
   const [productList, setProductList] = useState("");

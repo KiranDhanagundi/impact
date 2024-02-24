@@ -64,7 +64,7 @@ const CartProducts = ({ cartItem }) => {
         borderRadius="md"
         overflow="hidden"
         width="100%"
-        boxShadow="sm"
+        boxShadow="md"
         p="2"
         mb="4px"
         h="130px"

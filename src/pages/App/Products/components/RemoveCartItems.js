@@ -18,7 +18,7 @@ const RemoveCartItems = ({ isOpen, onClose, product, onConfirm }) => {
         <ModalHeader color={"#0648b3"}>Confirm Deletion</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          Are you sure you want to remove "{product?.title}"?
+          Are you sure you want to remove "{product?.product?.name}"?
         </ModalBody>
         <ModalFooter>
           <Button size="sm" colorScheme="red" onClick={onConfirm}>

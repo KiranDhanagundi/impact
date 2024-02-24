@@ -192,7 +192,6 @@ function EditProfile({ isOpen, onClose, profileInfo }) {
             </Flex>
           </VStack>
         </ModalBody>
-
         <ModalFooter>
           <Button fontSize="sm" h="36px" mr={3} onClick={handleCloseEditModal}>
             Cancel

@@ -41,7 +41,10 @@ const ProductCard = ({ product }) => {
 
   const dispatch = useDispatch();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (event) => {
+    if (event) {
+      event.preventDefault();
+    }
     dispatch({ type: "ADD_TO_CART", payload: product });
   };
 
@@ -109,9 +112,11 @@ const ProductCard = ({ product }) => {
           mt="10px"
         >
           <Avatar size="2xs" mr="2" src={"https://bit.ly/broken-link"} />
-          <Text fontSize="xs" color="gray.500">
-            {"Impact Dev"}
-          </Text>
+          <Link as={ReactRouterLink} to={`/app/profile`} color="#0648b3">
+            <Text as="u" fontSize="xs">
+              {"Impact Dev"}
+            </Text>
+          </Link>
           <Text fontSize="xs" color="gray.500" ml="2">
             | {"Feb 6 2024"}
           </Text>
@@ -124,7 +129,7 @@ const ProductCard = ({ product }) => {
             boxShadow="sm"
             color={"#0a48b3"}
             variant={"outline"}
-            onClick={handleAddToCart}
+            // onClick={handleAddToCart}
             fontSize="xs"
             h="30px"
             p="8px"

@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import Card from "../../../../components/Card/Card";
 import AddUser from "./AddUser";
-import { FaPencilAlt, FaPlus, FaTrashAlt } from "react-icons/fa";
+import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../actions";
@@ -239,7 +239,6 @@ const UsersList = () => {
             // onChange={handleSearchChange}
           />
           <Button
-            leftIcon={<FaPlus />}
             fontWeight="normal"
             borderRadius="md"
             bg="#0648b3"
@@ -247,7 +246,7 @@ const UsersList = () => {
             size="sm"
             onClick={onOpen}
           >
-            User
+            Add User
           </Button>
         </Box>
         <AddUser isOpen={isOpen} onClose={onClose} />

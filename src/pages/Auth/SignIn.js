@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Button,
@@ -6,27 +6,38 @@ import {
   FormLabel,
   Input,
   Link,
-  Switch,
   Text,
   HStack,
   Icon,
   useColorModeValue,
+  InputGroup,
+  InputRightElement,
+  useToast,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import axios from "axios"; // Make sure to install axios if you haven't
 import {
   GoogleIcon,
   AppleIcon,
   GithubIcon,
   StripeIcon,
 } from "../../components/Icons/Icons";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "./actions";
 
 function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const toggleShowPassword = () => setShowPassword(!showPassword);
+  const toast = useToast();
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.auth);
+  console.log("Auth", state);
+
   const textColor = useColorModeValue("gray.700", "#0648b3");
   const bgColor = useColorModeValue("white", "gray.700");
-
-  const google = () => {
-    window.open("http://localhost:5000/auth/google", "_self");
-  };
 
   const github = () => {
     window.open("http://localhost:5000/auth/github", "_self");
@@ -35,13 +46,51 @@ function SignIn() {
     // window.open("http://localhost:5000/auth/github", "_self");
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent default form submission behavior
+
+    // Simple validation
+    if (!email || !password) {
+      toast({
+        title: "Error",
+        description: "Please enter both email and password.",
+        status: "error",
+        duration: 1000,
+        isClosable: true,
+      });
+      return; // Stop the function if validation fails
+    }
+
+    try {
+      const response = await axios.post(`/auth/login/user/${email}`, {
+        email,
+        password,
+      });
+      console.log(response.data);
+      // Handle response or redirect user here
+    } catch (error) {
+      console.error("There was an error!", error);
+      toast({
+        title: "error",
+        description: "Please enter valid Email Id and Password.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const googleSignIn = () => {
+    dispatch(actions.googleSignInRequest()); // Dispatch the googleSignInRequest action
+  };
+
   return (
     <Flex
       direction="column"
       alignSelf="center"
       justifySelf="center"
       overflow="hidden"
-      bg="#ffffff!important"
+      bg="#fff!important"
       minH="90VH"
       w="auto"
       p="2"
@@ -87,7 +136,7 @@ function SignIn() {
               border="1px solid lightgray"
               cursor="pointer"
               transition="all .25s ease"
-              onClick={google}
+              onClick={googleSignIn}
             >
               <Link href="#">
                 <Icon as={GoogleIcon} w="30px" h="30px" />
@@ -148,7 +197,7 @@ function SignIn() {
           >
             or
           </Text>
-          <FormControl>
+          <FormControl onSubmit={handleSubmit}>
             <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
               Email
             </FormLabel>
@@ -158,41 +207,63 @@ function SignIn() {
               mb="5px"
               fontSize="sm"
               type="email"
-              placeholder="Your email adress"
+              placeholder="Your email address"
               size="lg"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
               Password
             </FormLabel>
-            <Input
-              id="password"
-              borderRadius="md"
-              mb="5px"
-              fontSize="sm"
-              type="password"
-              placeholder="Your password"
-              size="lg"
-            />
-            <FormControl display="flex" alignItems="center">
-              <Switch id="remember-login" colorScheme="blue" me="10px" />
-              <FormLabel
-                htmlFor="remember-login"
-                mb="0"
-                ms="1"
-                fontWeight="normal"
+            <InputGroup>
+              <Input
+                id="password"
+                borderRadius="md"
+                mb="5px"
+                fontSize="sm"
+                type={showPassword ? "text" : "password"}
+                placeholder="Your password"
+                size="lg"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <InputRightElement width="4.5rem">
+                <Button
+                  _hover={"none"}
+                  size="md"
+                  bg="none"
+                  mt="6px"
+                  onClick={toggleShowPassword}
+                >
+                  {showPassword ? (
+                    <Icon as={ViewOffIcon} />
+                  ) : (
+                    <Icon as={ViewIcon} />
+                  )}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+            <Flex justifyContent="flex-start" mb="5px">
+              <Link
+                as={ReactRouterLink}
+                to="/forgotpassword"
+                color="#0648b3"
+                fontWeight="norml"
+                fontSize="sm"
               >
-                Remember me
-              </FormLabel>
-            </FormControl>
+                Forgot Password?
+              </Link>
+            </Flex>
             <Button
               fontSize="10px"
-              type="submit"
               bg="#0648b3"
               w="100%"
               h="45"
               mb="10px"
               color="white"
               mt="10px"
+              // type="submit"
+              onClick={handleSubmit}
             >
               SIGN IN
             </Button>
