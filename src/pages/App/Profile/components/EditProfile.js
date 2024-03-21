@@ -18,8 +18,8 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 
-function EditProfile({ isOpen, onClose, profileInfo }) {
-  useEffect(() => {}, [profileInfo]);
+function EditProfile({ isOpen, onClose, profileData }) {
+  useEffect(() => {}, [profileData]);
 
   const handleCloseEditModal = () => {
     onClose();
@@ -38,8 +38,8 @@ function EditProfile({ isOpen, onClose, profileInfo }) {
                 size="2xl"
                 align="center"
                 mb="10px"
-                name={profileInfo.fullName}
-                src="https://bit.ly/sage-adebayo"
+                name={profileData?.name}
+                src={profileData?.profileImage}
               />
             </Flex>
             <Divider mb="10px" />
@@ -54,7 +54,7 @@ function EditProfile({ isOpen, onClose, profileInfo }) {
                 fontSize="sm"
                 placeholder="Enter name..."
                 size="lg"
-                defaultValue={profileInfo.about}
+                defaultValue={profileData?.about}
               />
             </FormControl>
             <FormControl>
@@ -82,7 +82,7 @@ function EditProfile({ isOpen, onClose, profileInfo }) {
                   fontSize="sm"
                   placeholder="Enter name..."
                   size="lg"
-                  defaultValue={profileInfo.fullName}
+                  defaultValue={profileData?.name}
                 />
               </FormControl>
               <FormControl>
@@ -96,37 +96,23 @@ function EditProfile({ isOpen, onClose, profileInfo }) {
                   fontSize="sm"
                   placeholder="Enter email..."
                   size="lg"
-                  defaultValue={profileInfo.email}
+                  defaultValue={profileData?.email}
                 />
               </FormControl>
             </Flex>
             <Flex w="100%">
-              <FormControl mr="10px">
-                <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                  Mobile
-                </FormLabel>
-                <Input
-                  type="tel"
-                  borderRadius="md"
-                  mb="5px"
-                  fontSize="sm"
-                  placeholder="Enter mobile..."
-                  size="lg"
-                  defaultValue={profileInfo.mobile}
-                />
-              </FormControl>
               <FormControl>
                 <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                  Location
+                  Address
                 </FormLabel>
                 <Input
                   type="text"
                   borderRadius="md"
                   mb="5px"
                   fontSize="sm"
-                  placeholder="Enter location..."
+                  placeholder="Enter address..."
                   size="lg"
-                  defaultValue={profileInfo.location}
+                  defaultValue={profileData?.address}
                 />
               </FormControl>
             </Flex>
@@ -142,7 +128,7 @@ function EditProfile({ isOpen, onClose, profileInfo }) {
                   fontSize="sm"
                   placeholder="Enter url..."
                   size="lg"
-                  defaultValue={profileInfo.socialMedia.facebookUrl}
+                  defaultValue={profileData?.facebookUrl}
                 />
               </FormControl>
               <FormControl>
@@ -156,7 +142,7 @@ function EditProfile({ isOpen, onClose, profileInfo }) {
                   fontSize="sm"
                   placeholder="Enter url..."
                   size="lg"
-                  defaultValue={profileInfo.socialMedia.instagramUrl}
+                  defaultValue={profileData?.instagramUrl}
                 />
               </FormControl>
             </Flex>
@@ -172,7 +158,7 @@ function EditProfile({ isOpen, onClose, profileInfo }) {
                   fontSize="sm"
                   placeholder="Enter url..."
                   size="lg"
-                  defaultValue={profileInfo.socialMedia.twitterUrl}
+                  defaultValue={profileData?.twitterUrl}
                 />
               </FormControl>
               <FormControl>
@@ -186,7 +172,7 @@ function EditProfile({ isOpen, onClose, profileInfo }) {
                   fontSize="sm"
                   placeholder="Enter url..."
                   size="lg"
-                  defaultValue={profileInfo.socialMedia.twitterUrl}
+                  defaultValue={profileData?.githubUrl}
                 />
               </FormControl>
             </Flex>

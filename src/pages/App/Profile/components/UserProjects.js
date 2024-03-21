@@ -54,6 +54,7 @@ const UserProjects = ({ product }) => {
         position="relative"
         borderWidth="1px"
         borderRadius="xl"
+        borderColor="lightgray"
         overflow="hidden"
         width="auto"
         boxShadow="md"

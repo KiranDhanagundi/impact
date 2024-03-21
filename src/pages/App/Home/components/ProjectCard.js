@@ -61,6 +61,7 @@ const ProductCard = ({ product }) => {
         overflow="hidden"
         width="100%"
         boxShadow="md"
+        borderColor="lightgray"
         p="2"
         h="170px"
         transition="box-shadow 0.3s ease"
@@ -129,7 +130,7 @@ const ProductCard = ({ product }) => {
             boxShadow="sm"
             color={"#0a48b3"}
             variant={"outline"}
-            // onClick={handleAddToCart}
+            //onClick={handleAddToCart}
             fontSize="xs"
             h="30px"
             p="8px"

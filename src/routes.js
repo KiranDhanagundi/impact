@@ -14,7 +14,7 @@ import { FiBell } from "react-icons/fi";
 import { HomeIcon, PersonIcon, SettingsIcon } from "./components/Icons/Icons";
 import Home from "./pages/App/Home/components/Home";
 import Dashboard from "./pages/App/Dashboard/index";
-import Product from "./pages/App/Products/components/Product";
+import MyProducts from "./pages/App/Products/components/MyProduct";
 import Order from "./pages/App/Orders/components/Order";
 import Profile from "./pages/App/Profile/components/Profile";
 import Setting from "./pages/App/Settings/components/Setting";
@@ -34,6 +34,7 @@ import Checkout from "./pages/App/Products/components/Checkout.js";
 import { StripeMessage } from "./pages/App/Products/components/StripeMessage";
 import Blogs from "./pages/App/Blogs/components/Blogs.js";
 import EditProductModal from "./pages/App/Products/components/EditProduct.js";
+
 var appRoutes = [
   {
     id: "app0",
@@ -58,7 +59,7 @@ var appRoutes = [
     path: "/products",
     name: "My Products",
     icon: <FaCartPlus color="inherit" />,
-    component: Product,
+    component: MyProducts,
     layout: "/app",
     access: true,
   },

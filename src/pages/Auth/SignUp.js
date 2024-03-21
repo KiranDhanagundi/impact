@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Flex,
@@ -25,10 +25,11 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { Link as ReactRouterLink } from "react-router-dom";
-import axios from "axios";
+import { Link as ReactRouterLink, useHistory } from "react-router-dom";
 import TermsAndPolicies from "../../assets/pdf/TermsAndPolicies.pdf";
-import { Document, Page } from "react-pdf";
+// import { Document, Page } from "react-pdf";
+import { useDispatch, useSelector } from "react-redux";
+import { sendWelcomeEmailRequest, signupRequest } from "./actions";
 
 import {
   GoogleIcon,
@@ -38,6 +39,10 @@ import {
 } from "../../components/Icons/Icons";
 
 function SignUp() {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const state = useSelector((state) => state?.toast?.toast);
+
   const textColor = useColorModeValue("gray.700", "white");
   const bgColor = useColorModeValue("white", "gray.700");
   const toast = useToast();
@@ -96,8 +101,7 @@ function SignUp() {
       !acceptedTerms
     ) {
       toast({
-        title: "error",
-        description:
+        title:
           "All fields are required and you must accept the terms and policies.",
         status: "error",
         duration: 2000,
@@ -107,21 +111,31 @@ function SignUp() {
       return;
     }
     try {
-      // API call
-      const response = await axios.put("/auth/signup/user", formData);
-      console.log(response.data);
-      // Redirect or show success message
+      dispatch(signupRequest(formData));
     } catch (error) {
       console.error("Signup error:", error);
       toast({
-        title: "error",
-        description: "There is a error while creating your account",
+        title: "There is a error while creating your account",
         status: "error",
         duration: 2000,
         isClosable: true,
       });
     }
   };
+
+  const recipient = "kirandhanagundi@gmail.com";
+  const subject = "Welcome to Impact";
+  const message = " Dear User,  Thank you for signing up!";
+
+  // Listen for changes in the Redux state
+  useEffect(() => {
+    // Check if the signin status has changed to success
+    if (state?.status === "success") {
+      // Redirect to the home page
+      history.push("/app/home");
+      dispatch(sendWelcomeEmailRequest(recipient, subject, message));
+    }
+  }, [state]); // Only re-run this effect when the status changes
 
   const google = () => {
     window.open("http://localhost:5000/auth/google", "_self");
@@ -383,15 +397,25 @@ function SignUp() {
               </FormLabel>
             </FormControl>
             {/* Terms and Policy Modal */}
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal
+              isOpen={isOpen}
+              onClose={onClose}
+              size={{ base: "md", sm: "md", lg: "xl", xl: "xl" }}
+            >
               <ModalOverlay />
               <ModalContent>
                 <ModalHeader color="#0648b3">Terms and Policies</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                  <Document file={TermsAndPolicies}>
+                  {/* <Document file={TermsAndPoliciesv2}>
                     <Page pageNumber={1} />
-                  </Document>
+                  </Document> */}
+                  <iframe
+                    src={TermsAndPolicies}
+                    width="100%"
+                    height="600px"
+                    title="Terms PDF"
+                  />
                 </ModalBody>
                 <ModalFooter>
                   <Button
@@ -410,7 +434,6 @@ function SignUp() {
               </ModalContent>
             </Modal>
             <Button
-              // type="submit"
               bg="#0648b3"
               fontSize="10px"
               color="white"

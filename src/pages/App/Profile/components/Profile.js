@@ -26,47 +26,26 @@ import UserProjects from "./UserProjects";
 import EditProfile from "./EditProfile";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { FaShareAlt } from "react-icons/fa";
-import { useState } from "react";
 import { useEffect } from "react";
+import { useSelector, connect } from "react-redux";
+import * as actions from "../../Products/actions";
 
-const Profile = () => {
+const Profile = ({ productList, fetchProducts }) => {
+  const profileData = useSelector((state) => state?.auth?.userDetails);
+
   const {
     isOpen: isEditModalOpen,
     onOpen: onEditModalOpen,
     onClose: onEditModalClose,
   } = useDisclosure();
 
-  const profileInfo = {
-    firstName: "Impact Dev",
-    lastName: " Usa",
-    fullName: "Impact Dev",
-    about:
-      "Hi, I’m Impact Dev If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term.the answer is no. If two equally difficult paths, choose the one more painful in the short term",
-    imageUrl: "https://bit.ly/sage-adebayo",
-    email: "impactdev@impact.com",
-    mobile: "8095891156",
-    location: "United States",
-    socialMedia: {
-      facebookUrl: "https://facebook",
-      instagramUrl: "https://instagram",
-      twitterUrl: "https://twitter",
-    },
-  };
-
   const profileUrl = window.location.href;
 
   const { hasCopied, onCopy } = useClipboard(profileUrl);
 
-  const [productList, setProductList] = useState("");
   useEffect(() => {
-    // fetch products on page load
-    fetch("/v1/products/search", {
-      method: "GET",
-      query: "active:'true' AND metadata['user_id']:'Kiran123'",
-    })
-      .then((res) => res.json())
-      .then((data) => setProductList(data));
-  }, []);
+    fetchProducts();
+  }, [fetchProducts]);
 
   let productsLists = {};
 
@@ -83,13 +62,7 @@ const Profile = () => {
         };
       }),
     };
-  } else {
-    // Handle the case where productList or its properties are undefined
-    console.log("Product list or its properties are undefined.");
-    // You can assign a default value or handle the situation accordingly
   }
-
-  console.log("userProdList", productsLists);
 
   return (
     <Flex w="100%" minH="90vH" overflow="auto" direction="column">
@@ -105,6 +78,7 @@ const Profile = () => {
         width="auto"
         boxShadow="xl"
         p="2"
+        borderColor="lightgray"
       >
         <Stack
           direction={{ base: "column", sm: "column", md: "row", xl: "row" }}
@@ -116,17 +90,16 @@ const Profile = () => {
               <Avatar
                 size="2xl"
                 mb="10px"
-                name={profileInfo.fullName}
-                src="https://bit.ly/sage-adebayo"
+                name={profileData?.name}
+                src={profileData?.profileImage}
               />
               <Text mb="10px" fontSize="md" fontWeight="bold" color="gray.900">
-                {profileInfo.fullName}
+                {profileData?.name}
               </Text>
             </Flex>
             <Flex justify="center" align="center" direction="row" mb="10px">
               <Button
                 variant="outline"
-                // colorScheme="blue"
                 color={"#0a48b3"}
                 W="70px"
                 h="36px"
@@ -137,7 +110,7 @@ const Profile = () => {
                 Edit Profile
               </Button>
               <EditProfile
-                profileInfo={profileInfo}
+                profileData={profileData}
                 isOpen={isEditModalOpen}
                 onClose={onEditModalClose}
               />
@@ -168,7 +141,7 @@ const Profile = () => {
                 About Me:{" "}
               </Text>
               <Text fontSize="md" color="gray.500" fontWeight="400">
-                {profileInfo.about}
+                {profileData?.about}
               </Text>
             </Box>
             <Divider />
@@ -183,7 +156,7 @@ const Profile = () => {
                   Email:{" "}
                 </Text>
                 <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {profileInfo.email}
+                  {profileData?.email}
                 </Text>
               </Flex>
               <Flex align="center">
@@ -193,23 +166,10 @@ const Profile = () => {
                   fontWeight="normal"
                   me="10px"
                 >
-                  mobile:{" "}
+                  Address:{" "}
                 </Text>
                 <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {profileInfo.mobile}
-                </Text>
-              </Flex>
-              <Flex align="center">
-                <Text
-                  fontSize="md"
-                  color="gray.700"
-                  fontWeight="normal"
-                  me="10px"
-                >
-                  Location:{" "}
-                </Text>
-                <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {profileInfo.location}
+                  {profileData?.address}
                 </Text>
               </Flex>
               <Flex align="center">
@@ -283,6 +243,7 @@ const Profile = () => {
                   color="gray.500"
                   borderWidth="1px "
                   borderRadius="xl"
+                  borderColor="lightgray"
                   h="170px"
                   mb="2px"
                   boxShadow="md"
@@ -328,4 +289,12 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+const mapStateToProps = (state) => ({
+  productList: state.product.userProductList,
+});
+
+const mapDispatchToProps = {
+  fetchProducts: actions.fetchUerProductsRequest,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

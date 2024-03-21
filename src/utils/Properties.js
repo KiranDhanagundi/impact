@@ -1,6 +1,6 @@
 import AWS from "aws-sdk";
-import AWSConfig from "./Config";
-// import CryptoJS from "crypto-js";
+import { AWSConfig } from "./Config";
+import CryptoJS from "crypto-js";
 
 const s3 = new AWS.S3({
   accessKeyId: AWSConfig.accessKeyId,
@@ -8,7 +8,7 @@ const s3 = new AWS.S3({
   region: AWSConfig.region,
 });
 
-const fetchFileFromS3 = async (fileName) => {
+export const fetchFileFromS3 = async (fileName) => {
   const params = {
     Bucket: AWSConfig.bucketName,
     Key: fileName,
@@ -28,37 +28,33 @@ const fetchFileFromS3 = async (fileName) => {
     const data = await s3.selectObjectContent(params).promise();
     const records = [];
 
-    data.Payload.on("data", (event) => {
+    // Process data directly from the Payload object
+    for await (const event of data.Payload) {
+      console.log("Received event:", event); // Log the received event
       if (event.Records) {
-        records.push(event.Records.Payload);
+        const chunk = event.Records.Payload.toString("utf-8");
+        const parsedChunk = JSON.parse(chunk); // Parse chunk as JSON
+        records.push(parsedChunk);
       }
-    });
+    }
 
-    data.Payload.on("end", () => {
-      console.log("Query results:", Buffer.concat(records).toString("utf-8"));
-    });
-
-    console.log("File content:", records);
+    console.log("Query results:", records);
     return records;
   } catch (error) {
     console.error("Error fetching object from S3:", error);
     throw error;
   }
 };
+
 // AES256 encryption function
-// const encryptAES256 = (data, key) => {
-//   const cipher = crypto.createCipher("aes256", key);
-//   let encrypted = cipher.update(data, "utf8", "hex");
-//   encrypted += cipher.final("hex");
-//   return encrypted;
-// };
+// const key = mscale@2024
+export const encryptAES256 = (data, key) => {
+  return CryptoJS.AES.encrypt(data, key).toString();
+};
 
-// // AES256 decryption function
-// const decryptAES256 = (encryptedData, key) => {
-//   const decipher = crypto.createDecipher("aes256", key);
-//   let decrypted = decipher.update(encryptedData, "hex", "utf8");
-//   decrypted += decipher.final("utf8");
-//   return decrypted;
-// };
-
-export default fetchFileFromS3;
+// AES256 decryption function
+export const decryptAES256 = (data, key) => {
+  const bytes = CryptoJS.AES.decrypt(data, key);
+  console.log("bytes", bytes);
+  return bytes.toString(CryptoJS.enc.Utf8);
+};

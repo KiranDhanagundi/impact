@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   Divider,
@@ -11,8 +10,9 @@ import {
   MenuList,
   Spacer,
   Text,
+  Avatar,
 } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FiBell, FiLogOut, FiSettings, FiUser } from "react-icons/fi";
 import { css } from "@emotion/react";
 
@@ -35,12 +35,15 @@ import Logo from "../../pages/Public/components/Logo.js";
 import { HamburgerIcon, SmallCloseIcon } from "@chakra-ui/icons";
 // import routes from "../../routes.js";
 // import AppSidebar from "./AppSidebar.js";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../../pages/Auth/actions.js";
 
 const AppNavbar = () => {
   const [show, setShow] = React.useState(false);
   const toggleMenu = () => setShow(!show);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state?.auth?.userDetails);
 
-  const [user, setUser] = useState(null);
   const customScrollbar = css`
     ::-webkit-scrollbar {
       width: 4px; /* Set the width of the scrollbar */
@@ -50,32 +53,6 @@ const AppNavbar = () => {
       border-radius: 4px; /* Set the border radius of the scrollbar thumb */
     }
   `;
-
-  useEffect(() => {
-    const getUser = () => {
-      fetch("http://localhost:5000/auth/login/success", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true,
-        },
-      })
-        .then((response) => {
-          console.log(response);
-          if (response.status === 200) return response.json();
-          throw new Error("authentication has been failed!");
-        })
-        .then((resObject) => {
-          setUser(resObject.user);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    getUser();
-  }, []);
 
   const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
     return (
@@ -88,6 +65,11 @@ const AppNavbar = () => {
         <Link to={to}>{children}</Link>
       </Text>
     );
+  };
+
+  const handleLogout = () => {
+    dispatch(actions.clearUserDetails());
+    window.location.href = "/home";
   };
 
   return (
@@ -168,9 +150,13 @@ const AppNavbar = () => {
                 cursor="pointer"
               >
                 <Flex color="white" align="center">
-                  <Avatar size="sm" src="https://bit.ly/sage-adebayo" />
+                  <Avatar
+                    size="sm"
+                    name={user?.name}
+                    src={user?.profileImage}
+                  />
                   <Box color="gray.700" ml={2}>
-                    Impact Dev
+                    {user?.name}
                   </Box>
                 </Flex>
               </MenuButton>
@@ -238,7 +224,7 @@ const AppNavbar = () => {
                       aria-label="Subscription"
                       icon={<MdOutlineSubscriptions />}
                     />
-                    Subsciption
+                    Subscription
                   </Link>
                 </MenuItem>
                 <MenuItem _hover={{ bg: "gray.100" }}>
@@ -290,7 +276,7 @@ const AppNavbar = () => {
                 </MenuItem>
                 <Divider />
                 <MenuItem _hover={{ bg: "gray.100" }}>
-                  <Link to="/home">
+                  <Link to="/home" onClick={handleLogout}>
                     <IconButton
                       bg="none"
                       aria-label="Logout"

@@ -11,20 +11,14 @@ import {
 import { FaPlus } from "react-icons/fa";
 import { Link as ReactRouterLink } from "react-router-dom";
 import UserProjects from "../../Profile/components/UserProjects";
-import { useState } from "react";
 import { useEffect } from "react";
+import { connect } from "react-redux";
+import * as actions from "../actions";
 
-const Products = () => {
-  const [productList, setProductList] = useState("");
+const MyProducts = ({ productList, fetchProducts }) => {
   useEffect(() => {
-    // fetch products on page load
-    fetch("/v1/products/search", {
-      method: "GET",
-      query: "active:'true' AND metadata['user_id']:'Kiran123'",
-    })
-      .then((res) => res.json())
-      .then((data) => setProductList(data));
-  }, []);
+    fetchProducts();
+  }, [fetchProducts]);
 
   let productsLists = {};
 
@@ -41,19 +35,13 @@ const Products = () => {
         };
       }),
     };
-  } else {
-    // Handle the case where productList or its properties are undefined
-    console.log("Product list or its properties are undefined.");
-    // You can assign a default value or handle the situation accordingly
   }
-
-  console.log("userProdList", productsLists);
 
   return (
     <Flex w="100%" minH="90vH" overflow="auto" direction="column">
       <Box align="start" mb="10px">
         <Heading as="h4" size="md">
-          My Product
+          My Products
         </Heading>
       </Box>
       <Grid
@@ -69,6 +57,7 @@ const Products = () => {
           borderRadius="xl"
           h="170px"
           boxShadow="md"
+          borderColor="lightgray"
         >
           <Flex direction="column" justifyContent="center" align="center">
             <Icon as={FaPlus} fontSize="md" mb="12px" />
@@ -97,4 +86,12 @@ const Products = () => {
   );
 };
 
-export default Products;
+const mapStateToProps = (state) => ({
+  productList: state.product.userProductList,
+});
+
+const mapDispatchToProps = {
+  fetchProducts: actions.fetchUerProductsRequest,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyProducts);

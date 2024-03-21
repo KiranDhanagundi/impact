@@ -1,23 +1,16 @@
 import React, { useEffect } from "react";
-import { Flex, Grid, Text } from "@chakra-ui/react";
+import { Flex, Grid, Spinner } from "@chakra-ui/react";
 import Card from "../../../../components/Card/Card";
 import CardBody from "../../../../components/Card/CardBody";
 import ProductCard from "./ProjectCard";
 import SearchBar from "./SearchBar";
-import { useState } from "react";
-import AWSConfig from "../../../../utils/Config";
-import fetchFileFromS3 from "../../../../utils/Properties";
+import { connect } from "react-redux";
+import * as actions from "../../Products/actions";
 
-const Home = () => {
-  const [productList, setProductList] = useState("");
+const Home = ({ productList, fetchProducts }) => {
   useEffect(() => {
-    // fetch products on page load
-    fetch("/v1/products", {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => setProductList(data));
-  }, []);
+    fetchProducts();
+  }, [fetchProducts]);
 
   let productsLists = {};
 
@@ -34,12 +27,8 @@ const Home = () => {
         };
       }),
     };
-  } else {
-    console.log("Product list or its properties are undefined.");
   }
 
-  // const config = fetchFileFromS3(AWSConfig.fileName);
-  // console.log("config", config);
   return (
     <Flex w="100%" minH="90vH" overflow="auto" direction="column">
       <Card bg="none">
@@ -62,7 +51,20 @@ const Home = () => {
               ))}
             </Grid>
           ) : (
-            <Text align="center">No data found</Text>
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              minHeight="50vh"
+              ml="600px"
+            >
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="#0648b3"
+                size="xl"
+              />
+            </Flex>
           )}
         </CardBody>
       </Card>
@@ -70,4 +72,12 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapStateToProps = (state) => ({
+  productList: state.product.productList,
+});
+
+const mapDispatchToProps = {
+  fetchProducts: actions.fetchProductsRequest,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

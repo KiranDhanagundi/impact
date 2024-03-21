@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Flex,
   Button,
@@ -14,9 +14,8 @@ import {
   InputRightElement,
   useToast,
 } from "@chakra-ui/react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import { Link as ReactRouterLink, useHistory } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import axios from "axios"; // Make sure to install axios if you haven't
 import {
   GoogleIcon,
   AppleIcon,
@@ -25,26 +24,22 @@ import {
 } from "../../components/Icons/Icons";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "./actions";
+import CookieHandler from "./CookieHandler";
+import { useSession } from "./SessionContext";
 
 function SignIn() {
+  const { signIn } = useSession();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const toggleShowPassword = () => setShowPassword(!showPassword);
   const toast = useToast();
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.auth);
-  console.log("Auth", state);
-
+  const history = useHistory();
+  const state = useSelector((state) => state?.toast?.toast);
   const textColor = useColorModeValue("gray.700", "#0648b3");
   const bgColor = useColorModeValue("white", "gray.700");
-
-  const github = () => {
-    window.open("http://localhost:5000/auth/github", "_self");
-  };
-  const stripe = () => {
-    // window.open("http://localhost:5000/auth/github", "_self");
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission behavior
@@ -62,16 +57,15 @@ function SignIn() {
     }
 
     try {
-      const response = await axios.post(`/auth/login/user/${email}`, {
-        email,
-        password,
-      });
-      console.log(response.data);
-      // Handle response or redirect user here
+      // Dispatch the signin request action
+      dispatch(actions.signinRequest(email, password));
+      // CookieHandler.setCookie("isLoggedIn", true);
+      // CookieHandler.setCookie("username", email);
+      // signIn(email);
     } catch (error) {
       console.error("There was an error!", error);
       toast({
-        title: "error",
+        title: "Error",
         description: "Please enter valid Email Id and Password.",
         status: "error",
         duration: 2000,
@@ -80,8 +74,27 @@ function SignIn() {
     }
   };
 
+  // Listen for changes in the Redux state
+  useEffect(() => {
+    // Check if the signin status has changed to success
+    if (state?.status === "success") {
+      history.push("/app/home");
+    }
+  }, [state]); // Only re-run this effect when the status changes
+
   const googleSignIn = () => {
-    dispatch(actions.googleSignInRequest()); // Dispatch the googleSignInRequest action
+    dispatch(actions.googleSignInRequest());
+  };
+
+  const githubSignIn = () => {
+    dispatch(actions.githubSignInRequest());
+  };
+  const stripeSignIn = () => {
+    dispatch(actions.stripeSignInRequest());
+  };
+
+  const appleSignIn = () => {
+    dispatch(actions.appleSignInRequest());
   };
 
   return (
@@ -151,7 +164,7 @@ function SignIn() {
               border="1px solid lightgray"
               cursor="pointer"
               transition="all .25s ease"
-              onClick={github}
+              onClick={githubSignIn}
             >
               <Link href="#">
                 <Icon as={GithubIcon} w="30px" h="30px" />
@@ -166,6 +179,7 @@ function SignIn() {
               border="1px solid lightgray"
               cursor="pointer"
               transition="all .25s ease"
+              onClick={appleSignIn}
             >
               <Link href="#">
                 <Icon as={AppleIcon} w="30px" h="30px" />
@@ -181,7 +195,7 @@ function SignIn() {
               border="1px solid lightgray"
               cursor="pointer"
               transition="all .25s ease"
-              onClick={stripe}
+              onClick={stripeSignIn}
             >
               <Link href="#">
                 <Icon as={StripeIcon} w="30px" h="30px" />
@@ -262,11 +276,11 @@ function SignIn() {
               mb="10px"
               color="white"
               mt="10px"
-              // type="submit"
               onClick={handleSubmit}
             >
               SIGN IN
             </Button>
+            <CookieHandler />
           </FormControl>
           <Flex
             flexDirection="column"

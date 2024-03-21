@@ -12,6 +12,7 @@ import {
   Input,
   Icon,
   Divider,
+  Heading,
 } from "@chakra-ui/react";
 import Card from "../../../../components/Card/Card";
 import AddUser from "./AddUser";
@@ -20,157 +21,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../actions";
 
-const usersData = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "Admin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 3,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "User",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 4,
-    name: "John Doe",
-    email: "johnDoneabc@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 5,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 6,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 7,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 8,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 9,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 10,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 11,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 12,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 13,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 14,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 15,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 16,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 17,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-  {
-    id: 18,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "SperAdmin",
-    status: "Active",
-    updatedDate: "1-1-2024",
-  },
-];
-
 const UsersList = () => {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.users);
-  console.log("user", state);
+  const userList = useSelector((state) => state?.users?.userData);
 
   useEffect(() => {
     dispatch(actions.fetchUserRequest());
@@ -184,13 +37,18 @@ const UsersList = () => {
   // Calculate current users to display based on pagination
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = usersData.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = userList.slice(indexOfFirstUser, indexOfLastUser);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <Flex mt="10px" w="100%" minH="90vH" overflow="auto">
+    <Flex w="100%" minH="90vH" overflow="auto" direction="column">
+      <Box w="100%">
+        <Heading align="left" as="h4" size="md" mb="10px">
+          Users
+        </Heading>
+      </Box>
       <Card p="2" w="100%" boxShadow="md" borderRadius="md" borderWidth="1px">
         <Box align="start" w="100%" direction="row">
           <Input
@@ -254,29 +112,28 @@ const UsersList = () => {
         <Table mt="5px" variant="simple" size="sm">
           <Thead>
             <Tr>
-              <Th>ID</Th>
               <Th>Name</Th>
               <Th>Email</Th>
               <Th>Role</Th>
+              <Th>Domain</Th>
+              <Th>Plan Type</Th>
               <Th>Status</Th>
               <Th>Updated Date</Th>
-              <Th>Action</Th>
+              <Th>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
             {currentUsers.map((user) => (
-              <Tr key={user.id}>
-                <Td>{user.id}</Td>
-                <Td>{user.name}</Td>
-                <Td>{user.email}</Td>
-                <Td>{user.role}</Td>
-                <Td>{user.status}</Td>
-                <Td>{user.updatedDate}</Td>
+              <Tr key={user?.id}>
+                <Td>{user?.name}</Td>
+                <Td>{user?.email}</Td>
+                <Td>{user?.role}</Td>
+                <Td>{user?.domain}</Td>
+                <Td>{user?.subscriptionType}</Td>
+                <Td>{user?.status}</Td>
+                <Td>{user?.updatedDate}</Td>
                 <Td>
-                  <Flex
-                    direction={{ sm: "column", md: "row" }}
-                    align="flex-start"
-                  >
+                  <Flex direction={{ sm: "column", md: "row" }} align="center">
                     <Button p="0px" bg="transparent">
                       <Flex color={"gray.900"} cursor="pointer" align="center">
                         <Icon as={FaPencilAlt} me="4px" />
@@ -305,9 +162,15 @@ const UsersList = () => {
         </Table>
         <Box align="start" mt={1}>
           {Array.from({
-            length: Math.ceil(usersData.length / usersPerPage),
+            length: Math.ceil(userList.length / usersPerPage),
           }).map((_, index) => (
-            <Button key={index} onClick={() => paginate(index + 1)} mx={1}>
+            <Button
+              colorScheme="gray"
+              borderRadius="full"
+              key={index}
+              onClick={() => paginate(index + 1)}
+              mx={1}
+            >
               {index + 1}
             </Button>
           ))}

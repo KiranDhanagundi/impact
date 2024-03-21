@@ -1,10 +1,18 @@
-const AWSConfig = {
-  accessKeyId: "AKIA4YRVISMBS7RZUXPC",
-  secretAccessKey: "VRP0nWQ5UeUcRunERKAHmPDEVY / o + FyXWKuOmSZU",
-  region: "us-west-1",
-  bucketName: "impactdevconfig",
-  fileName: "impactdevconfig.json",
-  s3URL: "s3://impactdevconfig/impactdevconfig.json",
+export const awsConfig = {
+  accessKeyId: "AKIA4YRVISMBTICVFITL",
+  secretAccessKey: "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",
+  region: "us-east-1",
+  bucketName: "impactdevconfigs",
+  fileName: "impactdevconfigs.json",
+  s3URL: "s3://impactdevconfigs/impactdevconfigs.json",
+  source: "kirandhanagundi@gmail.com",
 };
 
-export default AWSConfig;
+export const AwsUserAuthConfig = {
+  accessKeyId: "AKIA4YRVISMBTICVFITL",
+  secretAccessKey: "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",
+  region: "us-east-1",
+  bucketName: "impactdevuserauth",
+  fileName: "impactdevuserauth.json",
+  s3URL: "s3://impactdevuserauth/impactdevuserauth.json",
+};
