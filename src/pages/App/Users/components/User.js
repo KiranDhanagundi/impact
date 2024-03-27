@@ -13,6 +13,8 @@ import {
   Icon,
   Divider,
   Heading,
+  Spacer,
+  Text,
 } from "@chakra-ui/react";
 import Card from "../../../../components/Card/Card";
 import AddUser from "./AddUser";
@@ -49,133 +51,108 @@ const UsersList = () => {
           Users
         </Heading>
       </Box>
-      <Card p="2" w="100%" boxShadow="md" borderRadius="md" borderWidth="1px">
-        <Box align="start" w="100%" direction="row">
-          <Input
-            w="200px"
-            p={2}
-            mr="10px"
-            type="text"
-            placeholder="Name..."
-            // value={searchText}
-            // onChange={handleSearchChange}
-          />
-          <Input
-            w="200px"
-            p={2}
-            mr="10px"
-            type="text"
-            placeholder="Email..."
-            // value={searchText}
-            // onChange={handleSearchChange}
-          />
-          <Input
-            w="200px"
-            p={2}
-            mr="10px"
-            type="text"
-            placeholder="Role..."
-            // value={searchText}
-            // onChange={handleSearchChange}
-          />
-          <Input
-            w="200px"
-            p={2}
-            mr="10px"
-            type="text"
-            placeholder="Status.."
-            // value={searchText}
-            // onChange={handleSearchChange}
-          />
-          <Input
-            w="200px"
-            p={2}
-            mr="10px"
-            type="text"
-            placeholder="Date.."
-            // value={searchText}
-            // onChange={handleSearchChange}
-          />
-          <Button
-            fontWeight="normal"
-            borderRadius="md"
-            bg="#0648b3"
-            color="white"
-            size="sm"
-            onClick={onOpen}
-          >
-            Add User
-          </Button>
-        </Box>
-        <AddUser isOpen={isOpen} onClose={onClose} />
-        <Divider mt="5px" />
-        <Table mt="5px" variant="simple" size="sm">
-          <Thead>
-            <Tr>
-              <Th>Name</Th>
-              <Th>Email</Th>
-              <Th>Role</Th>
-              <Th>Domain</Th>
-              <Th>Plan Type</Th>
-              <Th>Status</Th>
-              <Th>Updated Date</Th>
-              <Th>Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {currentUsers.map((user) => (
-              <Tr key={user?.id}>
-                <Td>{user?.name}</Td>
-                <Td>{user?.email}</Td>
-                <Td>{user?.role}</Td>
-                <Td>{user?.domain}</Td>
-                <Td>{user?.subscriptionType}</Td>
-                <Td>{user?.status}</Td>
-                <Td>{user?.updatedDate}</Td>
-                <Td>
-                  <Flex direction={{ sm: "column", md: "row" }} align="center">
-                    <Button p="0px" bg="transparent">
-                      <Flex color={"gray.900"} cursor="pointer" align="center">
-                        <Icon as={FaPencilAlt} me="4px" />
-                      </Flex>
-                    </Button>
-                    <Button
-                      p="0px"
-                      bg="transparent"
-                      mb={{ sm: "10px", md: "0px" }}
-                      me={{ md: "12px" }}
-                    >
-                      <Flex
-                        color="red.500"
-                        cursor="pointer"
-                        align="center"
-                        p="12px"
-                      >
-                        <Icon as={FaTrashAlt} me="4px" />
-                      </Flex>
-                    </Button>
-                  </Flex>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-        <Box align="start" mt={1}>
-          {Array.from({
-            length: Math.ceil(userList.length / usersPerPage),
-          }).map((_, index) => (
+      <Box
+        mt="10px"
+        overflowY="auto"
+        boxShadow="md"
+        borderRadius="md"
+        borderWidth="1px"
+        minH="500px"
+      >
+        <Card p="2" w="100%" borderRadius="md">
+          <Flex mb="5px">
+            <Text color="#0648b3" fontWeight={"bold"}>
+              User List
+            </Text>
+            <Spacer />
             <Button
-              colorScheme="gray"
-              borderRadius="full"
-              key={index}
-              onClick={() => paginate(index + 1)}
-              mx={1}
+              fontWeight="normal"
+              borderRadius="md"
+              bg="#0648b3"
+              color="white"
+              size="sm"
+              onClick={onOpen}
             >
-              {index + 1}
+              Add User
             </Button>
-          ))}
-        </Box>
-      </Card>
+          </Flex>
+          <AddUser isOpen={isOpen} onClose={onClose} />
+          <Divider />
+          <Table size="sm" variant="simple">
+            <Thead>
+              <Tr>
+                <Th>Name</Th>
+                <Th>Email</Th>
+                <Th>Role</Th>
+                <Th>Domain</Th>
+                <Th>Plan Type</Th>
+                <Th>Status</Th>
+                <Th>Updated Date</Th>
+                <Th>Actions</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {currentUsers.map((user) => (
+                <Tr key={user?.id}>
+                  <Td>{user?.name}</Td>
+                  <Td>{user?.email}</Td>
+                  <Td>{user?.role}</Td>
+                  <Td>{user?.domain}</Td>
+                  <Td>{user?.subscriptionType}</Td>
+                  <Td>{user?.status}</Td>
+                  <Td>{user?.updatedDate}</Td>
+                  <Td>
+                    <Flex
+                      direction={{ sm: "column", md: "row" }}
+                      align="center"
+                    >
+                      <Button p="0px" bg="transparent">
+                        <Flex
+                          color={"gray.900"}
+                          cursor="pointer"
+                          align="center"
+                        >
+                          <Icon as={FaPencilAlt} me="4px" />
+                        </Flex>
+                      </Button>
+                      <Button
+                        p="0px"
+                        bg="transparent"
+                        mb={{ sm: "10px", md: "0px" }}
+                        me={{ md: "12px" }}
+                      >
+                        <Flex
+                          color="red.500"
+                          cursor="pointer"
+                          align="center"
+                          p="12px"
+                        >
+                          <Icon as={FaTrashAlt} me="4px" />
+                        </Flex>
+                      </Button>
+                    </Flex>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+          <Box align="start" mt={1}>
+            {Array.from({
+              length: Math.ceil(userList.length / usersPerPage),
+            }).map((_, index) => (
+              <Button
+                size="sm"
+                colorScheme="gray"
+                key={index}
+                onClick={() => paginate(index + 1)}
+                mx={1}
+              >
+                {index + 1}
+              </Button>
+            ))}
+          </Box>
+        </Card>
+      </Box>
     </Flex>
   );
 };

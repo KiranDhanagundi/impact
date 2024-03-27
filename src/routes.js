@@ -22,7 +22,7 @@ import User from "./pages/App/Users/components/User";
 import Payments from "./pages/App/Payments/index.js";
 import Notification from "./pages/App/Notifications/components/Notification";
 import Subscription from "./pages/App/Subscriptions/components/Subscription";
-import AccessManagement from "./pages/App/AccessManagement/components/Access";
+import AccessManagement from "./pages/App/AccessManagement/index";
 import AddProduct from "./pages/App/Products/components/AddProduct.js";
 import EditProduct from "./pages/App/Products/components/EditProduct.js";
 import ProductDetails from "./pages/App/Products/components/ProductDetails.js";
@@ -124,7 +124,7 @@ var appRoutes = [
   {
     id: "app10",
     path: "/access",
-    name: "Access",
+    name: "Access Management",
     icon: <FaTools />,
     component: AccessManagement,
     layout: "/app",

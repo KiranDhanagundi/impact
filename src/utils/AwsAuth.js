@@ -1,4 +1,9 @@
-import { AwsUserAuthConfig, awsConfig } from "./Config";
+import {
+  AwsUserAuthConfig,
+  awsConfig,
+  AwsResourceConfig,
+  AwsRolesConfig,
+} from "./Config";
 import { memoize } from "lodash";
 
 const AWS = require("aws-sdk");
@@ -16,7 +21,6 @@ const ses = new AWS.SES({
 
 // Function to store all users' login details in a single JSON file in S3 bucket
 export const storeUsersLoginDetails = async (args) => {
-  console.log("aws args", args);
   const newUserDetails = {
     id: args?.email,
     name: args?.name + " " + args?.lastname,
@@ -157,6 +161,261 @@ export const fetchAwsS3Config = async () => {
     return awsConfig;
   } catch (error) {
     console.error("Error fetching aws config:", error);
+    throw error;
+  }
+};
+
+export const fetchAwsS3ResourceList = async () => {
+  const params = {
+    Bucket: AwsResourceConfig.bucketName,
+    Key: AwsResourceConfig.fileName,
+    ExpressionType: "SQL",
+    Expression: "SELECT s.resourcesList FROM S3Object s",
+    InputSerialization: {
+      JSON: {
+        Type: "DOCUMENT",
+      },
+    },
+    OutputSerialization: {
+      JSON: {},
+    },
+  };
+
+  try {
+    const data = await s3.selectObjectContent(params).promise();
+    let resourcesList = [];
+    // Process the response data
+    for await (const event of data.Payload) {
+      if (event.Records) {
+        // Parse each record and extract resourcesList
+        const records = event.Records.Payload.toString("utf-8");
+        const parsedRecords = JSON.parse(records);
+        resourcesList.push(...parsedRecords.resourcesList);
+      }
+    }
+    return resourcesList;
+  } catch (error) {
+    console.error("Error fetching resourceList:", error);
+    throw error;
+  }
+};
+
+export const fetchAwsS3AccessConfig = async () => {
+  const params = {
+    Bucket: AwsResourceConfig.bucketName,
+    Key: AwsResourceConfig.fileName, // Specify the file name for storing all users' login details
+  };
+  try {
+    const response = await s3.getObject(params).promise();
+    const awsConfig = await JSON.parse(response.Body.toString());
+    console.log("Aws S3 Access Config fetched successfully:", awsConfig);
+    return awsConfig;
+  } catch (error) {
+    console.error("Error fetching aws S3 Access config:", error);
+    throw error;
+  }
+};
+
+export const addResourcetoAwsS3 = async (args) => {
+  try {
+    // Fetch existing resource list from AWS S3
+    let accessConfig = await fetchAwsS3AccessConfig();
+
+    // Add the new resource to the existing list
+    await accessConfig.resourcesList.push(args);
+
+    const params = {
+      Bucket: AwsResourceConfig.bucketName,
+      Key: AwsResourceConfig.fileName,
+      Body: JSON.stringify(accessConfig),
+      ContentType: "application/json",
+    };
+
+    const data = await s3.upload(params).promise();
+    console.log("Resource added successfully to  AWS S3 :", data.Location);
+    return data.Location;
+  } catch (error) {
+    console.error("Error while adding resource to AWS S3:", error);
+    throw error;
+  }
+};
+
+export const editResourcetoAwsS3 = async (args) => {
+  try {
+    // Fetch existing resource list from AWS S3
+    let accessConfig = await fetchAwsS3AccessConfig();
+
+    // Find the index of the resource to be edited in the existing list
+    const resourceIndex = accessConfig.resourcesList.findIndex(
+      (resource) => resource.name === args?.name
+    );
+
+    // If the resource is found, update its properties
+    if (resourceIndex !== -1) {
+      accessConfig.resourcesList[resourceIndex].description = args.description;
+    } else {
+      // If the resource is not found, throw an error or handle it as needed
+      throw new Error(`Resource with name ${args?.name} not found.`);
+    }
+
+    const params = {
+      Bucket: AwsResourceConfig.bucketName,
+      Key: AwsResourceConfig.fileName,
+      Body: JSON.stringify(accessConfig),
+      ContentType: "application/json",
+    };
+
+    const data = await s3.upload(params).promise();
+    console.log("Resource added successfully to  AWS S3 :", data.Location);
+    return data.Location;
+  } catch (error) {
+    console.error("Error while adding resource to AWS S3:", error);
+    throw error;
+  }
+};
+
+export const deleteResourceFromAwsS3 = async (args) => {
+  try {
+    // Fetch existing resource list from AWS S3
+    let accessConfig = await fetchAwsS3AccessConfig();
+
+    // Find the index of the resource to be deleted in the existing list
+    const resourceIndex = accessConfig.resourcesList.findIndex(
+      (resource) => resource.name === args?.name
+    );
+
+    // If the resource is found, remove it from the list
+    if (resourceIndex !== -1) {
+      accessConfig.resourcesList.splice(resourceIndex, 1);
+    } else {
+      // If the resource is not found, throw an error or handle it as needed
+      throw new Error(`Resource with name ${args.name} not found.`);
+    }
+
+    // Upload the updated resource list back to AWS S3
+    const params = {
+      Bucket: AwsResourceConfig.bucketName,
+      Key: AwsResourceConfig.fileName,
+      Body: JSON.stringify(accessConfig),
+      ContentType: "application/json",
+    };
+
+    const data = await s3.upload(params).promise();
+    console.log("Resource deleted successfully from AWS S3 :", data.Location);
+    return data.Location;
+  } catch (error) {
+    console.error("Error while deleting resource from AWS S3:", error);
+    throw error;
+  }
+};
+
+export const fetchAwsS3RolesConfig = async () => {
+  const params = {
+    Bucket: AwsRolesConfig.bucketName,
+    Key: AwsRolesConfig.fileName, // Specify the file name for storing all users' login details
+  };
+  try {
+    const response = await s3.getObject(params).promise();
+    const awsConfig = await JSON.parse(response.Body.toString());
+    console.log("Aws S3 role config fetched successfully:", awsConfig);
+    return awsConfig;
+  } catch (error) {
+    console.error("Error fetching aws S3 role config:", error);
+    throw error;
+  }
+};
+
+export const addRoletoAwsS3 = async (args) => {
+  try {
+    // Fetch existing resource list from AWS S3
+    let accessConfig = await fetchAwsS3RolesConfig();
+
+    // Add the new resource to the existing list
+    await accessConfig.roles.push(args);
+
+    const params = {
+      Bucket: AwsRolesConfig.bucketName,
+      Key: AwsRolesConfig.fileName,
+      Body: JSON.stringify(accessConfig),
+      ContentType: "application/json",
+    };
+
+    console.log("aws add role", accessConfig);
+    const data = await s3.upload(params).promise();
+    console.log("Role added successfully to  AWS S3 :", data.Location);
+    return data.Location;
+  } catch (error) {
+    console.error("Error while adding role to AWS S3:", error);
+    throw error;
+  }
+};
+
+export const editRoleToAwsS3 = async (args) => {
+  try {
+    // Fetch existing role list from AWS S3
+    let rolesData = await fetchAwsS3RolesConfig();
+
+    // Find the index of the role to be edited in the existing list
+    const roleIndex = rolesData.roles.findIndex(
+      (role) => role.roleName === args.roleName
+    );
+
+    // If the role is found, update its properties
+    if (roleIndex !== -1) {
+      rolesData.roles[roleIndex].roleDescription = args.roleDescription;
+      rolesData.roles[roleIndex].resources = args.resources;
+    } else {
+      // If the role is not found, throw an error or handle it as needed
+      throw new Error(`Role with name ${args.roleName} not found.`);
+    }
+
+    // Upload the updated roles data back to AWS S3
+    const params = {
+      Bucket: AwsRolesConfig.bucketName,
+      Key: AwsRolesConfig.fileName,
+      Body: JSON.stringify(rolesData),
+      ContentType: "application/json",
+    };
+
+    const data = await s3.upload(params).promise();
+    console.log("Role updated successfully in AWS S3:", data.Location);
+    return data.Location;
+  } catch (error) {
+    console.error("Error while updating role in AWS S3:", error);
+    throw error;
+  }
+};
+
+export const deleteRoleFromAwsS3 = async (args) => {
+  try {
+    // Fetch existing role list from AWS S3
+    let rolesData = await fetchAwsS3RolesConfig();
+
+    // Find the index of the role to be deleted in the existing list
+    const roleIndex = rolesData.roles.findIndex(
+      (role) => role.roleName === args.roleName
+    );
+
+    // If the role is found, remove it from the roles array
+    if (roleIndex !== -1) {
+      rolesData.roles.splice(roleIndex, 1);
+    } else {
+      // If the role is not found, throw an error or handle it as needed
+      throw new Error(`Role with name ${args.roleName} not found.`);
+    }
+
+    // Upload the updated roles data back to AWS S3
+    const params = {
+      Bucket: AwsRolesConfig.bucketName,
+      Key: AwsRolesConfig.fileName,
+      Body: JSON.stringify(rolesData),
+      ContentType: "application/json",
+    };
+    const data = await s3.upload(params).promise();
+    console.log("Role deleted successfully in AWS S3:", data.Location);
+    return data.Location;
+  } catch (error) {
+    console.error("Error while deleting role in AWS S3:", error);
     throw error;
   }
 };

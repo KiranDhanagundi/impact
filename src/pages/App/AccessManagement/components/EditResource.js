@@ -12,27 +12,25 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import * as actions from "../actions";
+import { useDispatch } from "react-redux";
 
-const EditResource = ({ isOpen, onClose, onEditResource, resource }) => {
+const EditResource = ({ isOpen, onClose, resource }) => {
   const [editedName, setEditedName] = useState("");
   const [editedDescription, setEditedDescription] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // Set initial values when the modal is opened
     setEditedName(resource?.name || "");
     setEditedDescription(resource?.description || "");
   }, [isOpen, resource]);
 
   const handleEditResource = () => {
-    // Perform the edit resource logic and pass the edited values to the parent component
-    onEditResource({
-      id: resource.id,
+    const editedResource = {
       name: editedName,
       description: editedDescription,
-    });
-    // Reset the input fields and close the modal
-    setEditedName("");
-    setEditedDescription("");
+    };
+    dispatch(actions.editResourceRequest(editedResource));
     onClose();
   };
 
@@ -47,11 +45,12 @@ const EditResource = ({ isOpen, onClose, onEditResource, resource }) => {
             <FormLabel>Resource Name</FormLabel>
             <Input
               type="text"
+              disabled="true"
               value={editedName}
               onChange={(e) => setEditedName(e.target.value)}
             />
           </FormControl>
-          <FormControl mt={4}>
+          <FormControl mt={2}>
             <FormLabel>Resource Description</FormLabel>
             <Input
               type="text"
@@ -62,6 +61,7 @@ const EditResource = ({ isOpen, onClose, onEditResource, resource }) => {
         </ModalBody>
         <ModalFooter>
           <Button
+            fontWeight="normal"
             size="sm"
             bg="#0648b3"
             color={"white"}
@@ -69,7 +69,7 @@ const EditResource = ({ isOpen, onClose, onEditResource, resource }) => {
           >
             Save
           </Button>
-          <Button size="sm" ml={3} onClick={onClose}>
+          <Button size="sm" fontWeight="normal" ml={3} onClick={onClose}>
             Cancel
           </Button>
         </ModalFooter>

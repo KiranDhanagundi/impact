@@ -2,6 +2,16 @@ import { all } from "redux-saga/effects";
 import { watchFetchUsers } from "./UserSaga";
 import { watchFecthProducts, watchFecthUserProducts } from "./productSaga";
 import {
+  watchFetchResource,
+  watchAddResource,
+  watchDeleteResource,
+  watchEditResource,
+  watchFetchRolesRequest,
+  watchAddRoleRequest,
+  watchEditRoleRequest,
+  watchDeleteRoleRequest,
+} from "./accessSaga";
+import {
   watchSignupUser,
   watchSigninUser,
   watchGoogleSignIn,
@@ -23,6 +33,14 @@ function* rootSaga() {
     watchFetchAwsConfig(),
     watchFecthProducts(),
     watchFecthUserProducts(),
+    watchFetchResource(),
+    watchAddResource(),
+    watchEditResource(),
+    watchDeleteResource(),
+    watchFetchRolesRequest(),
+    watchAddRoleRequest(),
+    watchEditRoleRequest(),
+    watchDeleteRoleRequest(),
   ]);
 }
 

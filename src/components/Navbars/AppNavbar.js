@@ -271,7 +271,7 @@ const AppNavbar = () => {
                       aria-label="Access"
                       icon={<FaTools />}
                     />
-                    Access
+                    Access Management
                   </Link>
                 </MenuItem>
                 <Divider />

@@ -12,16 +12,22 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import * as actions from "../actions";
+import { useDispatch } from "react-redux";
 
-const AddResource = ({ isOpen, onClose, onAddResource }) => {
+const AddResource = ({ isOpen, onClose }) => {
   const [resourceName, setResourceName] = useState("");
   const [resourceDescription, setResourceDescription] = useState("");
+  const dispatch = useDispatch();
 
   const handleAddResource = () => {
-    // Add resource logic, and pass the resource name to the parent component
-    onAddResource(resourceName, resourceDescription);
-    // Reset the input field and close the modal
+    const newResource = {
+      name: resourceName,
+      description: resourceDescription,
+    };
+    dispatch(actions.addResourceRequest(newResource));
     setResourceName("");
+    setResourceDescription("");
     onClose();
   };
 
@@ -39,7 +45,7 @@ const AddResource = ({ isOpen, onClose, onAddResource }) => {
               value={resourceName}
               onChange={(e) => setResourceName(e.target.value)}
             />
-            <FormLabel>Resource Description</FormLabel>
+            <FormLabel mt={2}>Resource Description</FormLabel>
             <Input
               type="text"
               value={resourceDescription}
@@ -50,13 +56,14 @@ const AddResource = ({ isOpen, onClose, onAddResource }) => {
         <ModalFooter>
           <Button
             size="sm"
+            fontWeight="normal"
             bg="#0648b3"
             color={"white"}
             onClick={handleAddResource}
           >
             Save
           </Button>
-          <Button size="sm" ml={3} onClick={onClose}>
+          <Button size="sm" fontWeight="normal" ml={3} onClick={onClose}>
             Cancel
           </Button>
         </ModalFooter>

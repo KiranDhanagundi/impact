@@ -19,83 +19,86 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Card from "../../../../components/Card/Card";
 import { FaPencilAlt, FaTrashAlt, FaPlus } from "react-icons/fa";
 import { useState } from "react";
 import AddResource from "./AddResource";
 import EditResource from "./EditResource";
+import { connect, useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import * as actions from "../actions";
 
-const resourcesData = [
-  { id: 1, name: "Dashboard", description: "App Dashboard" },
-  { id: 2, name: "Home1", description: "App Home" },
-  { id: 3, name: "Settings", description: "App Settings" },
-  { id: 4, name: "Access", description: "App Access" },
-  { id: 5, name: "Subscription", description: "App Subscription" },
-  { id: 6, name: "Payments", description: "App Payments" },
-];
-const itemsPerPage = 5;
-
-const ResourceListTable = () => {
+const Resource = () => {
+  const itemsPerPage = 10;
+  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedResource, setSelectedResourcs] = useState(null);
+  const [selectedResource, setSelectedResource] = useState(null);
+  const resourceList = useSelector((state) => state?.access?.resourceList);
 
-  const [resources, setResources] = useState(resourcesData);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isAddResourceModalOpen, setIsAddResourceModalOpen] = useState(false);
-  const [isEditResourceModalOpen, setIsEditResourceModalOpen] = useState(false);
+  useEffect(() => {
+    dispatch(actions.fetchResourceRequest());
+  }, [dispatch]);
+
+  const {
+    isOpen: isEditModalOpen,
+    onOpen: onEditModalOpen,
+    onClose: onEditModalClose,
+  } = useDisclosure();
+
   const [editedResource, setEditedResource] = useState(null);
 
-  const handleEdit = (resource) => {
-    console.log("Edit resource with id", resource);
-    setEditedResource(resource);
-    setIsEditResourceModalOpen(true);
-  };
+  const {
+    isOpen: isAddModalOpen,
+    onOpen: onAddModalOpen,
+    onClose: onAddModalClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isDeleteModalOpen,
+    onOpen: onDeleteModalOpen,
+    onClose: onDeleteModalClose,
+  } = useDisclosure();
 
   const handleDelete = (resource) => {
-    console.log("you clicked delete", resource);
-    setSelectedResourcs(resource);
-    setIsDeleteModalOpen(resource);
-  };
-  const handleDeleteConfirmation = () => {
-    console.log("Deleting role", selectedResource);
-    setIsDeleteModalOpen(false);
-  };
-
-  const handleEditResource = (editedResource) => {
-    // Update the resource in the resources array
-    setResources((prevResources) =>
-      prevResources.map((resource) =>
-        resource.id === editedResource.id ? editedResource : resource
-      )
-    );
-    setIsEditResourceModalOpen(false);
-  };
-
-  const handleAddResource = (resourceName, resourceDescription) => {
-    // Add the new resource to the resources array
-    const newResource = {
-      id: resources.length + 1,
-      name: resourceName,
-      description: resourceDescription,
-    };
-    setResources([...resources, newResource]);
+    setSelectedResource(resource); // Set selected resource for deletion
+    onDeleteModalOpen(); // Open delete modal
   };
 
   const indexOfLastResource = currentPage * itemsPerPage;
   const indexOfFirstResource = indexOfLastResource - itemsPerPage;
-  const currentResources = resources.slice(
+  const currentResources = resourceList.slice(
     indexOfFirstResource,
     indexOfLastResource
   );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const handleEdit = (resource) => {
+    setSelectedResource(resource);
+    setEditedResource(resource);
+    onEditModalOpen();
+  };
+
+  const handleDeleteConfirmation = () => {
+    dispatch(actions.deleteResourceRequest(selectedResource));
+    setSelectedResource(null);
+    onDeleteModalClose();
+  };
+
   return (
-    <Box mt="10px" overflowY="auto">
-      <Card w="100%" p="22px">
+    <Box
+      mt="10px"
+      overflowY="auto"
+      boxShadow="md"
+      borderRadius="md"
+      borderWidth="1px"
+      minH="500px"
+    >
+      <Card w="100%" p={2}>
         <Flex mb="5px">
-          <Text color="#0648b3" fontWeight={"bold"}>
+          <Text color="#0648b3" fontWeight="bold">
             Resources
           </Text>
           <Spacer />
@@ -106,11 +109,12 @@ const ResourceListTable = () => {
             px={2}
             h={8}
             size="sm"
+            fontWeight="normal"
             w="auto"
-            leftIcon={<FaPlus />}
-            onClick={() => setIsAddResourceModalOpen(true)}
+            // leftIcon={<FaPlus />}
+            onClick={() => onAddModalOpen(true)}
           >
-            Resource
+            Add Resource
           </Button>
         </Flex>
         <Divider />
@@ -118,7 +122,8 @@ const ResourceListTable = () => {
           <Thead>
             <Tr>
               <Th>S.No</Th>
-              <Th>Resource Name</Th>
+              <Th>Name</Th>
+              <Th>description</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
@@ -127,32 +132,22 @@ const ResourceListTable = () => {
               <Tr key={resource.id}>
                 <Td>{index + 1 + indexOfFirstResource}</Td>
                 <Td>{resource.name}</Td>
+                <Td>{resource.description}</Td>
                 <Td>
-                  <Flex direction={{ sm: "row", md: "row" }} align="flex-start">
+                  <Flex direction="row">
                     <Button
                       p="0px"
                       bg="transparent"
                       onClick={() => handleEdit(resource)}
                     >
-                      <Flex color={"gray.900"} cursor="pointer" align="center">
-                        <Icon as={FaPencilAlt} me="4px" />
-                      </Flex>
+                      <Icon as={FaPencilAlt} />
                     </Button>
                     <Button
                       p="0px"
                       bg="transparent"
-                      mb={{ sm: "10px", md: "0px" }}
-                      me={{ md: "12px" }}
                       onClick={() => handleDelete(resource)}
                     >
-                      <Flex
-                        color="red.500"
-                        cursor="pointer"
-                        align="center"
-                        p="12px"
-                      >
-                        <Icon as={FaTrashAlt} me="4px" />
-                      </Flex>
+                      <Icon color="red.500" as={FaTrashAlt} />
                     </Button>
                   </Flex>
                 </Td>
@@ -160,55 +155,60 @@ const ResourceListTable = () => {
             ))}
           </Tbody>
         </Table>
-        <Box mt={2}>
+        <Box align="start" mt={1}>
           {Array.from({
-            length: Math.ceil(resources.length / itemsPerPage),
+            length: Math.ceil(resourceList.length / itemsPerPage),
           }).map((_, index) => (
-            <Button key={index} onClick={() => paginate(index + 1)} mx={1}>
+            <Button
+              size="sm"
+              key={index}
+              onClick={() => paginate(index + 1)}
+              mx={1}
+            >
               {index + 1}
             </Button>
           ))}
         </Box>
         <Modal
           isOpen={isDeleteModalOpen}
-          onClose={() => setIsDeleteModalOpen(false)}
-          isCentered={true}
+          onClose={onDeleteModalClose}
+          isCentered
         >
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader color={"#0648b3"}>Confirm Deletion</ModalHeader>
+            <ModalHeader color="#0648b3">Confirm Deletion</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              Are you sure you want to delete the role "{selectedResource?.name}
+              Are you sure you want to delete the resource "
+              {selectedResource?.name}
               "?
             </ModalBody>
             <ModalFooter>
               <Button
                 size="sm"
                 colorScheme="red"
+                fontSize="xs"
+                fontWeight="normal"
                 onClick={handleDeleteConfirmation}
               >
                 Delete
               </Button>
               <Button
                 size="sm"
+                fontSize="xs"
+                fontWeight="normal"
                 ml={3}
-                onClick={() => setIsDeleteModalOpen(false)}
+                onClick={onDeleteModalClose}
               >
                 Cancel
               </Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
-        <AddResource
-          isOpen={isAddResourceModalOpen}
-          onClose={() => setIsAddResourceModalOpen(false)}
-          onAddResource={handleAddResource}
-        />
+        <AddResource isOpen={isAddModalOpen} onClose={onAddModalClose} />
         <EditResource
-          isOpen={isEditResourceModalOpen}
-          onClose={() => setIsEditResourceModalOpen(false)}
-          onEditResource={handleEditResource}
+          isOpen={isEditModalOpen}
+          onClose={onEditModalClose}
           resource={editedResource}
         />
       </Card>
@@ -216,4 +216,4 @@ const ResourceListTable = () => {
   );
 };
 
-export default ResourceListTable;
+export default Resource;
