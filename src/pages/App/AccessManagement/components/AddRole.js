@@ -44,7 +44,6 @@ const AddRole = ({ isOpen, onClose }) => {
   const totalPages = Math.ceil(resourceList.length / resourcesPerPage);
 
   const handleAddRole = () => {
-    console.log("selected res", selectedResources);
     const payload = {
       roleName: roleName,
       roleDescription: roleDescription,

@@ -19,13 +19,12 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-  Heading,
   useDisclosure,
   Spinner,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import Card from "../../../../components/Card/Card";
-import { FaPencilAlt, FaTrashAlt, FaPlus } from "react-icons/fa";
+import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import AddRole from "./AddRole";
 import EditRole from "./EditRole";
 import { useDispatch, useSelector } from "react-redux";

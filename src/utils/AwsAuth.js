@@ -19,7 +19,6 @@ const ses = new AWS.SES({
   region: awsConfig.region,
 });
 
-// Function to store all users' login details in a single JSON file in S3 bucket
 export const storeUsersLoginDetails = async (args) => {
   const newUserDetails = {
     id: args?.email,
@@ -55,7 +54,7 @@ export const storeUsersLoginDetails = async (args) => {
     };
 
     const data = await s3.upload(params).promise();
-    console.log("All users login details stored successfully:", data.Location);
+
     return data.Location;
   } catch (error) {
     console.error("Error storing users login details:", error);
@@ -63,16 +62,14 @@ export const storeUsersLoginDetails = async (args) => {
   }
 };
 
-// Function to fetch all users' login details from the single JSON file in S3 bucket
 export const fetchAwsS3UserList = async () => {
   const params = {
     Bucket: AwsUserAuthConfig.bucketName,
-    Key: AwsUserAuthConfig.fileName, // Specify the file name for storing all users' login details
+    Key: AwsUserAuthConfig.fileName,
   };
   try {
     const response = await s3.getObject(params).promise();
     const userList = JSON.parse(response.Body.toString());
-
     return userList;
   } catch (error) {
     console.error("Error fetching users list from AWS S3:", error);
@@ -84,7 +81,7 @@ export const isUserExists = async (args) => {
   try {
     const params = {
       Bucket: AwsUserAuthConfig.bucketName,
-      Key: AwsUserAuthConfig.fileName, // Specify the file name for storing all users' login details
+      Key: AwsUserAuthConfig.fileName,
     };
 
     const data = await s3.getObject(params).promise();
@@ -100,7 +97,6 @@ export const isUserExists = async (args) => {
 };
 
 export const sendEmail = async (recipient, subject, message) => {
-  console.log("inside aws send email");
   const params = {
     Destination: {
       ToAddresses: [recipient],
@@ -115,7 +111,7 @@ export const sendEmail = async (recipient, subject, message) => {
         Data: subject,
       },
     },
-    Source: awsConfig.source, // Replace with the sender email address verified in AWS SES
+    Source: awsConfig.source,
   };
 
   try {
@@ -131,7 +127,7 @@ const fetchUserDetailsFromS3 = async (args) => {
   try {
     const params = {
       Bucket: AwsUserAuthConfig.bucketName,
-      Key: AwsUserAuthConfig.fileName, // Specify the file name for storing all users' login details
+      Key: AwsUserAuthConfig.fileName,
     };
 
     const response = await s3.getObject(params).promise();
@@ -141,7 +137,6 @@ const fetchUserDetailsFromS3 = async (args) => {
     const user = userDetails.find(
       (user) => user.email === args.email && user.password === args.password
     );
-
     return user;
   } catch (error) {
     console.error("Error fetching user details:", error);
@@ -152,12 +147,12 @@ const fetchUserDetailsFromS3 = async (args) => {
 export const fetchAwsS3Config = async () => {
   const params = {
     Bucket: awsConfig.bucketName,
-    Key: awsConfig.fileName, // Specify the file name for storing all users' login details
+    Key: awsConfig.fileName,
   };
   try {
     const response = await s3.getObject(params).promise();
     const awsConfig = await JSON.parse(response.Body.toString());
-    console.log("Aws S3 Config fetched successfully:", awsConfig);
+
     return awsConfig;
   } catch (error) {
     console.error("Error fetching aws config:", error);
@@ -203,12 +198,12 @@ export const fetchAwsS3ResourceList = async () => {
 export const fetchAwsS3AccessConfig = async () => {
   const params = {
     Bucket: AwsResourceConfig.bucketName,
-    Key: AwsResourceConfig.fileName, // Specify the file name for storing all users' login details
+    Key: AwsResourceConfig.fileName,
   };
   try {
     const response = await s3.getObject(params).promise();
     const awsConfig = await JSON.parse(response.Body.toString());
-    console.log("Aws S3 Access Config fetched successfully:", awsConfig);
+
     return awsConfig;
   } catch (error) {
     console.error("Error fetching aws S3 Access config:", error);
@@ -232,7 +227,7 @@ export const addResourcetoAwsS3 = async (args) => {
     };
 
     const data = await s3.upload(params).promise();
-    console.log("Resource added successfully to  AWS S3 :", data.Location);
+
     return data.Location;
   } catch (error) {
     console.error("Error while adding resource to AWS S3:", error);
@@ -254,7 +249,6 @@ export const editResourcetoAwsS3 = async (args) => {
     if (resourceIndex !== -1) {
       accessConfig.resourcesList[resourceIndex].description = args.description;
     } else {
-      // If the resource is not found, throw an error or handle it as needed
       throw new Error(`Resource with name ${args?.name} not found.`);
     }
 
@@ -266,7 +260,7 @@ export const editResourcetoAwsS3 = async (args) => {
     };
 
     const data = await s3.upload(params).promise();
-    console.log("Resource added successfully to  AWS S3 :", data.Location);
+
     return data.Location;
   } catch (error) {
     console.error("Error while adding resource to AWS S3:", error);
@@ -312,12 +306,12 @@ export const deleteResourceFromAwsS3 = async (args) => {
 export const fetchAwsS3RolesConfig = async () => {
   const params = {
     Bucket: AwsRolesConfig.bucketName,
-    Key: AwsRolesConfig.fileName, // Specify the file name for storing all users' login details
+    Key: AwsRolesConfig.fileName,
   };
   try {
     const response = await s3.getObject(params).promise();
     const awsConfig = await JSON.parse(response.Body.toString());
-    console.log("Aws S3 role config fetched successfully:", awsConfig);
+
     return awsConfig;
   } catch (error) {
     console.error("Error fetching aws S3 role config:", error);
@@ -339,10 +333,7 @@ export const addRoletoAwsS3 = async (args) => {
       Body: JSON.stringify(accessConfig),
       ContentType: "application/json",
     };
-
-    console.log("aws add role", accessConfig);
     const data = await s3.upload(params).promise();
-    console.log("Role added successfully to  AWS S3 :", data.Location);
     return data.Location;
   } catch (error) {
     console.error("Error while adding role to AWS S3:", error);
@@ -378,7 +369,6 @@ export const editRoleToAwsS3 = async (args) => {
     };
 
     const data = await s3.upload(params).promise();
-    console.log("Role updated successfully in AWS S3:", data.Location);
     return data.Location;
   } catch (error) {
     console.error("Error while updating role in AWS S3:", error);
@@ -412,7 +402,6 @@ export const deleteRoleFromAwsS3 = async (args) => {
       ContentType: "application/json",
     };
     const data = await s3.upload(params).promise();
-    console.log("Role deleted successfully in AWS S3:", data.Location);
     return data.Location;
   } catch (error) {
     console.error("Error while deleting role in AWS S3:", error);

@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from "redux-saga/effects";
+import { takeLatest, put } from "redux-saga/effects";
 import * as actions from "../../pages/App/AccessManagement/actions";
 
 import {
@@ -134,7 +134,6 @@ function* fetchRoles() {
         },
       });
     }
-    console.log("fectch roles saga", rolesList);
   } catch (error) {
     yield put(actions.fetchRolesFailure(error));
     yield put({
@@ -174,7 +173,6 @@ function* addRole(args) {
   }
 }
 
-// Worker saga for editing a role
 function* editRole(args) {
   try {
     const response = yield editRoleToAwsS3(args.payload);
@@ -200,7 +198,6 @@ function* editRole(args) {
   }
 }
 
-// Worker saga for deleting a role
 function* deleteRole(args) {
   try {
     const response = yield deleteRoleFromAwsS3(args.payload);

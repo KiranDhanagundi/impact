@@ -18,10 +18,8 @@ function* SignupUser(args) {
     const isUserExist = yield isUserExists(args.payload);
     if (!isUserExist) {
       const response = yield storeUsersLoginDetails(args.payload);
-
       if (response) {
         yield put(actions.signupSuccess(args.payload, null));
-
         yield put({
           type: "SHOW_TOAST",
           payload: {
@@ -41,7 +39,6 @@ function* SignupUser(args) {
     }
   } catch (error) {
     console.error("Signup error:", error);
-
     yield put({
       type: "SHOW_TOAST",
       payload: {
@@ -55,9 +52,6 @@ function* SignupUser(args) {
 function* SigninUser(args) {
   try {
     const response = yield fetchUserDetails(args.payload);
-    console.log(response);
-
-    // Show success toast
     if (response) {
       yield put(actions.signinSuccess(response, null));
       yield put({
@@ -78,7 +72,6 @@ function* SigninUser(args) {
     }
   } catch (error) {
     console.error("Signin error:", error);
-
     yield put({
       type: "SHOW_TOAST",
       payload: {
@@ -135,12 +128,9 @@ function* AppleSignIn() {
 function* sendWelcomeEmail(action) {
   const { recipient, subject, message } = action.payload;
   try {
-    // Call the API function to send email
     yield sendEmail(recipient, subject, message);
-    // Dispatch success action if email is sent successfully
     yield put(actions.sendWelcomeEmailSuccess());
   } catch (error) {
-    // Dispatch failure action if there's an error
     yield put(actions.sendWelcomeEmailFailure(error));
   }
 }
@@ -188,7 +178,6 @@ function* fetchAwsConfig() {
       });
     }
   } catch (error) {
-    // Dispatch failure action if there's an error
     yield put(awsActions.awsConfigFailure(error));
   }
 }

@@ -22,11 +22,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import Card from "../../../../components/Card/Card";
-import { FaPencilAlt, FaTrashAlt, FaPlus } from "react-icons/fa";
+import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { useState } from "react";
 import AddResource from "./AddResource";
 import EditResource from "./EditResource";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 import * as actions from "../actions";
 
