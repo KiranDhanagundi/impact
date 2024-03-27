@@ -14,6 +14,13 @@ import {
   Heading,
   Spacer,
   Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react";
 import Card from "../../../../components/Card/Card";
 import AddUser from "./AddUser";
@@ -21,6 +28,7 @@ import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../actions";
+import EditUser from "./EditUser";
 
 const UsersList = () => {
   const dispatch = useDispatch();
@@ -31,9 +39,39 @@ const UsersList = () => {
   }, [dispatch]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 10; // Set the number of users per page
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  // const [selectedUser, setSelectedUser] = useState(null);
+  const usersPerPage = 10;
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const {
+    isOpen: isAddUserOpen,
+    onOpen: onAddUserOpen,
+    onClose: onAddUserClose,
+  } = useDisclosure();
+  const {
+    isOpen: isEditUserOpen,
+    onOpen: onEditUserOpen,
+    onClose: onEditUserClose,
+  } = useDisclosure();
+  const {
+    isOpen: isDeleteUserOpen,
+    onOpen: onDeleteUserOpen,
+    onClose: onDeleteUserClose,
+  } = useDisclosure();
+
+  const handleEdit = (user) => {
+    setSelectedUser(user);
+    onEditUserOpen();
+  };
+
+  const handleDelete = (user) => {
+    setSelectedUser(user);
+    onDeleteUserOpen();
+  };
+
+  const handleDeleteSubmit = () => {
+    dispatch(actions.deleteUserRequest(selectedUser));
+    onDeleteUserClose();
+  };
 
   // Calculate current users to display based on pagination
   const indexOfLastUser = currentPage * usersPerPage;
@@ -70,16 +108,17 @@ const UsersList = () => {
               bg="#0648b3"
               color="white"
               size="sm"
-              onClick={onOpen}
+              onClick={onAddUserOpen}
             >
               Add User
             </Button>
           </Flex>
-          <AddUser isOpen={isOpen} onClose={onClose} />
+          <AddUser isOpen={isAddUserOpen} onClose={onAddUserClose} />
           <Divider />
           <Table size="sm" variant="simple">
             <Thead>
               <Tr>
+                <Th>S.No</Th>
                 <Th>Name</Th>
                 <Th>Email</Th>
                 <Th>Role</Th>
@@ -91,8 +130,9 @@ const UsersList = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {currentUsers.map((user) => (
+              {currentUsers.map((user, index) => (
                 <Tr key={user?.id}>
+                  <Td>{index + 1 + indexOfFirstUser}</Td>
                   <Td>{user?.name}</Td>
                   <Td>{user?.email}</Td>
                   <Td>{user?.role}</Td>
@@ -110,6 +150,7 @@ const UsersList = () => {
                           color={"gray.900"}
                           cursor="pointer"
                           align="center"
+                          onClick={() => handleEdit(user)}
                         >
                           <Icon as={FaPencilAlt} me="4px" />
                         </Flex>
@@ -125,6 +166,7 @@ const UsersList = () => {
                           cursor="pointer"
                           align="center"
                           p="12px"
+                          onClick={() => handleDelete(user)}
                         >
                           <Icon as={FaTrashAlt} me="4px" />
                         </Flex>
@@ -152,6 +194,39 @@ const UsersList = () => {
           </Box>
         </Card>
       </Box>
+      <EditUser
+        isOpen={isEditUserOpen}
+        onClose={onEditUserClose}
+        user={selectedUser}
+      />
+      <Modal
+        isOpen={isDeleteUserOpen}
+        onClose={onDeleteUserClose}
+        isCentered="true"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm Deletion</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            Are you sure you want to delete user "{selectedUser?.name}"?
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              size="sm"
+              colorScheme="red"
+              fontWeight="normal"
+              mr={3}
+              onClick={handleDeleteSubmit}
+            >
+              Delete
+            </Button>
+            <Button size="sm" fontWeight="normal" onClick={onDeleteUserClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Flex>
   );
 };

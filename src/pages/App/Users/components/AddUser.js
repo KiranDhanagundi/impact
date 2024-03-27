@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Modal,
   ModalCloseButton,
@@ -6,23 +7,72 @@ import {
   FormLabel,
   Input,
   Button,
-  // useDisclosure,
   ModalHeader,
   ModalOverlay,
   ModalContent,
   ModalBody,
   ModalFooter,
+  Select,
 } from "@chakra-ui/react";
+import * as actions from "../actions";
+import { fetchRolesRequest } from "../../AccessManagement/actions";
 
 function AddUser({ isOpen, onClose }) {
-  // const { isOpen, onOpen, onClose } = useDisclosure();
+  const dispatch = useDispatch();
+  const rolesList = useSelector((state) => state?.access?.rolesList);
+  const [roleList, setRoleList] = useState([]);
 
-  const initialRef = React.useRef(null);
-  // const finalRef = React.useRef(null);
+  useEffect(() => {
+    dispatch(fetchRolesRequest());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (Array.isArray(rolesList)) {
+      setRoleList(rolesList);
+    }
+  }, [rolesList]);
+
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "role") {
+      // Find the selected role object from roleList
+      const selectedRole = roleList.find((role) => role.roleName === value);
+      setUserData((prevUserData) => ({
+        ...prevUserData,
+        [name]: selectedRole, // Update role to be the entire role object
+      }));
+    } else {
+      // For other input fields, update as before
+      setUserData((prevUserData) => ({
+        ...prevUserData,
+        [name]: value,
+      }));
+    }
+  };
+
+  // Function to handle adding a new user
+  const handleAddUser = () => {
+    dispatch(actions.addUserRequest(userData));
+    setUserData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      role: "",
+    });
+
+    onClose();
+  };
 
   return (
     <>
-      <Modal borderRadious="md" size="lg" isOpen={isOpen} onClose={onClose}>
+      <Modal borderRadius="md" size="lg" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader color="#0648b3">Add User</ModalHeader>
@@ -30,32 +80,60 @@ function AddUser({ isOpen, onClose }) {
           <ModalBody pb={6}>
             <FormControl>
               <FormLabel>First name</FormLabel>
-              <Input ref={initialRef} placeholder="First name" />
+              <Input
+                name="firstName"
+                placeholder="First name"
+                value={userData.firstName}
+                onChange={handleInputChange}
+              />
             </FormControl>
-            <FormControl mt={4}>
+            <FormControl mt={2}>
               <FormLabel>Last name</FormLabel>
-              <Input placeholder="Last name" />
+              <Input
+                name="lastName"
+                placeholder="Last name"
+                value={userData.lastName}
+                onChange={handleInputChange}
+              />
             </FormControl>
-            <FormControl mt={4}>
+            <FormControl mt={2}>
               <FormLabel>Email</FormLabel>
-              <Input placeholder="Email" />
+              <Input
+                name="email"
+                placeholder="Email"
+                value={userData.email}
+                onChange={handleInputChange}
+              />
             </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Phone</FormLabel>
-              <Input placeholder="Phone" />
-            </FormControl>
-            <FormControl mt={4}>
+            <FormControl mt={2}>
               <FormLabel>Role</FormLabel>
-              <Input placeholder="Role" />
+              <Select
+                name="role"
+                placeholder="Select role"
+                value={userData.role ? userData.role.roleName : ""}
+                onChange={handleInputChange}
+              >
+                {roleList.map((role) => (
+                  <option key={role.roleName} value={role.roleName}>
+                    {role.roleDescription}
+                  </option>
+                ))}
+              </Select>
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button size="sm" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button size="sm" rounded="md" bg="#0648b3" color="white">
+            <Button
+              fontWeight="normal"
+              size="sm"
+              bg="#0648b3"
+              color="white"
+              onClick={handleAddUser} // Call handleAddUser function on Save button click
+            >
               Save
+            </Button>
+            <Button size="sm" fontWeight="normal" ml={3} onClick={onClose}>
+              Cancel
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -63,4 +141,5 @@ function AddUser({ isOpen, onClose }) {
     </>
   );
 }
+
 export default AddUser;

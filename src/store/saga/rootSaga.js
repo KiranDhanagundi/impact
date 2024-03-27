@@ -1,5 +1,10 @@
 import { all } from "redux-saga/effects";
-import { watchFetchUsers } from "./UserSaga";
+import {
+  watchFetchUsers,
+  watchAddUser,
+  watchEditUser,
+  watchDeleteUser,
+} from "./UserSaga";
 import { watchFecthProducts, watchFecthUserProducts } from "./productSaga";
 import {
   watchFetchResource,
@@ -41,6 +46,9 @@ function* rootSaga() {
     watchAddRoleRequest(),
     watchEditRoleRequest(),
     watchDeleteRoleRequest(),
+    watchAddUser(),
+    watchEditUser(),
+    watchDeleteUser(),
   ]);
 }
 

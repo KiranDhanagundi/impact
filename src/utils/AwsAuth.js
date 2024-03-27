@@ -32,10 +32,9 @@ export const storeUsersLoginDetails = async (args) => {
     subscriptionType: "Free",
     domain: "impact",
     createdDate: new Date().toLocaleDateString("en-GB"),
-    updatedDate: null,
+    updatedDate: new Date().toLocaleDateString("en-GB"),
     about: null,
-    access:
-      "['app_home','app_profie',app_myproducts',app_myblogs','app_dashboard','app_cart',app_subscription']",
+    access: `['app_home','app_profie',app_myproducts',app_myblogs','app_dashboard','app_cart',app_subscription']`,
   };
 
   try {
@@ -48,7 +47,7 @@ export const storeUsersLoginDetails = async (args) => {
 
     const params = {
       Bucket: AwsUserAuthConfig.bucketName,
-      Key: AwsUserAuthConfig.fileName, // Specify the file name for storing all users' login details
+      Key: AwsUserAuthConfig.fileName,
       Body: JSON.stringify(updatedUserDetails),
       ContentType: "application/json",
     };
@@ -58,6 +57,129 @@ export const storeUsersLoginDetails = async (args) => {
     return data.Location;
   } catch (error) {
     console.error("Error storing users login details:", error);
+    throw error;
+  }
+};
+
+export const addUsertoAwsS3 = async (args) => {
+  const newUserDetails = {
+    id: args?.email,
+    name: args?.firstName + " " + args?.lastName,
+    firstName: args?.firstName,
+    lastName: args?.lastName,
+    email: args?.email,
+    password: "Password@1100",
+    role: args.role?.roleName,
+    status: "active",
+    subscriptionType: "Free",
+    domain: "impact",
+    createdDate: new Date().toLocaleDateString("en-GB"),
+    updatedDate: new Date().toLocaleDateString("en-GB"),
+    about: null,
+    access: args?.role?.resources,
+  };
+  try {
+    // Fetch existing user details from S3
+    const existingUserDetails = await fetchAwsS3UserList();
+    // Append new user details to the existing array
+    const updatedUserDetails = [...existingUserDetails, newUserDetails];
+    const params = {
+      Bucket: AwsUserAuthConfig.bucketName,
+      Key: AwsUserAuthConfig.fileName,
+      Body: JSON.stringify(updatedUserDetails),
+      ContentType: "application/json",
+    };
+    const data = await s3.upload(params).promise();
+    return data.Location;
+  } catch (error) {
+    console.error("Error while adding user to Aws S3 :", error);
+    throw error;
+  }
+};
+
+export const editUsertoAwsS3 = async (args) => {
+  const editedUserDetails = {
+    id: args?.email, // Assuming email is the unique identifier
+    name: args?.firstName + " " + args?.lastName,
+    firstName: args?.firstName,
+    lastName: args?.lastName,
+    email: args?.email,
+    password: args?.password,
+    role: args?.role?.roleName ? args?.role?.roleName : args?.role,
+    status: args?.status,
+    subscriptionType: args?.subscriptionType,
+    domain: "impact",
+    createdDate: args?.createdDate,
+    updatedDate: new Date().toLocaleDateString("en-GB"),
+    about: args?.about,
+    access: args?.role?.resources ? args?.role?.resources : args?.access,
+  };
+
+  try {
+    // Fetch existing user details from S3
+    const existingUserDetails = await fetchAwsS3UserList();
+
+    // Find the index of the user to be edited in the existing list
+    const userIndex = existingUserDetails.findIndex(
+      (user) => user.id === args.email
+    );
+
+    // If the user is found, update its details
+    if (userIndex !== -1) {
+      existingUserDetails[userIndex] = editedUserDetails;
+    } else {
+      // If the user is not found, throw an error or handle it as needed
+      throw new Error(`User with email ${args.email} not found.`);
+    }
+
+    // Upload the updated user details back to AWS S3
+    const params = {
+      Bucket: AwsUserAuthConfig.bucketName,
+      Key: AwsUserAuthConfig.fileName,
+      Body: JSON.stringify(existingUserDetails),
+      ContentType: "application/json",
+    };
+
+    const data = await s3.upload(params).promise();
+    console.log("User details updated successfully in AWS S3:", data.Location);
+    return data.Location;
+  } catch (error) {
+    console.error("Error while updating user details in AWS S3:", error);
+    throw error;
+  }
+};
+
+export const inactivateUserfromAwsS3 = async (args) => {
+  try {
+    // Fetch existing user details from S3
+    const existingUserDetails = await fetchAwsS3UserList();
+
+    // Find the index of the user to be inactivated in the existing list
+    const userIndex = existingUserDetails.findIndex(
+      (user) => user.id === args.email
+    );
+
+    // If the user is found, update its status to "inactive"
+    if (userIndex !== -1) {
+      existingUserDetails[userIndex].status = "inactive";
+    } else {
+      // If the user is not found, throw an error or handle it as needed
+      throw new Error(`User with email ${args.email} not found.`);
+    }
+
+    // Upload the updated user details back to AWS S3
+    const params = {
+      Bucket: AwsUserAuthConfig.bucketName,
+      Key: AwsUserAuthConfig.fileName,
+      Body: JSON.stringify(existingUserDetails),
+      ContentType: "application/json",
+    };
+
+    const data = await s3.upload(params).promise();
+    console.log("User status updated successfully in AWS S3:", data.Location);
+    return data.Location;
+  } catch (error) {
+    console.error("Error while updating user status in AWS S3:", error);
     throw error;
   }
 };
