@@ -44,9 +44,9 @@ const Cart = () => {
         </Flex>
       ) : (
         <Box>
-          <Icon as={FaShoppingCart} boxSize={10} mr="5px" color="gray.500" />
-          <Text fontSize="md" fontWeight="normal" mb="5px">
-            No products in the cart
+          <Icon as={FaShoppingCart} boxSize={50} mr="5px" color="#0a48b3" />
+          <Text fontSize="md" fontWeight="bold" mb="5px">
+            Your Cart is Empty!
           </Text>
           <Link to="/app/home">
             <Button

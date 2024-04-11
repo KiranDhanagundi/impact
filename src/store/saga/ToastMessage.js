@@ -15,6 +15,7 @@ const ToastMessage = () => {
         status: toastState?.toast?.status,
         duration: 3000,
         isClosable: true,
+        // position: "bottom-right",
       });
     }
   }, [toastState]); // Only re-run the effect when toastState changes

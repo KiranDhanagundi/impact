@@ -91,7 +91,7 @@ const Role = () => {
       <Card w="100%" p={2}>
         <Flex mb="5px">
           <Text color="#0648b3" fontWeight={"bold"}>
-            Access
+            Roles
           </Text>
           <Spacer />
           <Button

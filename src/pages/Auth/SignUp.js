@@ -27,7 +27,6 @@ import {
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Link as ReactRouterLink, useHistory } from "react-router-dom";
 import TermsAndPolicies from "../../assets/pdf/TermsAndPolicies.pdf";
-// import { Document, Page } from "react-pdf";
 import { useDispatch, useSelector } from "react-redux";
 import { sendWelcomeEmailRequest, signupRequest } from "./actions";
 
@@ -407,9 +406,6 @@ function SignUp() {
                 <ModalHeader color="#0648b3">Terms and Policies</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                  {/* <Document file={TermsAndPoliciesv2}>
-                    <Page pageNumber={1} />
-                  </Document> */}
                   <iframe
                     src={TermsAndPolicies}
                     width="100%"
