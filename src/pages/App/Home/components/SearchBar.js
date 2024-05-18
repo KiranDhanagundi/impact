@@ -27,24 +27,13 @@ const SearchBar = () => {
     setSearchTerm(event.target.value);
   };
 
-  const categories = [
-    "All",
-    "Technology",
-    "Art",
-    "Books",
-    "News",
-    "Business",
-    "Development",
-    "Media",
-    "Dev",
-  ];
-
   return (
     <Flex
       justify={{ base: "center", sm: "center", md: "start", xl: "center" }}
       align={"center"}
+      mb='20px'
     >
-      <VStack spacing={2} align="stretch" ml="5px" mb="10px">
+      <VStack spacing={2} align="stretch"  w='100%'>
         <Box display="flex" alignItems="center">
           <InputGroup>
             <InputLeftElement pointerEvents="none">
@@ -52,7 +41,7 @@ const SearchBar = () => {
                 borderRadius="md"
                 aria-label="Search"
                 background={"transparent"}
-                icon={<FaSearch />}
+                icon={<FaSearch size='20px' />}
               />
             </InputLeftElement>
             <Input
@@ -61,46 +50,10 @@ const SearchBar = () => {
               placeholder="Search..."
               value={searchTerm}
               onChange={handleSearchChange}
-              mr="10px"
+              h='50px'
             />
           </InputGroup>
         </Box>
-        <Flex>
-          <Menu p="0px">
-            <MenuButton
-              as={Button}
-              size="sm"
-              rightIcon={<ChevronDownIcon />}
-              mr="10px"
-            >
-              Sort
-            </MenuButton>
-            <MenuList>
-              <MenuItem>Price: Low to High</MenuItem>
-              <Divider />
-              <MenuItem>Price: High to Low</MenuItem>
-              <Divider />
-            </MenuList>
-          </Menu>
-          <Box
-            Direction="row"
-            display="flex"
-            alignItems="center"
-            overflow="hidden"
-          >
-            {/* <SwipeableViews enableMouseEvents> */}
-            <Wrap spacing={2}>
-              {categories.map((category, index) => (
-                <WrapItem key={index}>
-                  <Button size="sm" colorScheme="gray">
-                    {category}
-                  </Button>
-                </WrapItem>
-              ))}
-            </Wrap>
-            {/* </SwipeableViews> */}
-          </Box>
-        </Flex>
       </VStack>
     </Flex>
   );

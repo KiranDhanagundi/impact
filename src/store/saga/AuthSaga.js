@@ -125,6 +125,20 @@ function* AppleSignIn() {
   }
 }
 
+function* handleResetPassword(args) {
+  const { email, newPassword } = args.payload;
+  try {
+    // Call your API function to reset the password
+    // yield call(resetPasswordAPI, email, newPassword);
+
+    // Dispatch a success action upon successful password reset
+    yield put(actions.resetPasswordSuccess());
+  } catch (error) {
+    // Dispatch a failure action if an error occurs
+    yield put(actions.resetPasswordFailure(error.message));
+  }
+}
+
 function* sendWelcomeEmail(action) {
   const { recipient, subject, message } = action.payload;
   try {
@@ -157,6 +171,10 @@ export function* watchStripeSignIn() {
 
 export function* watchAppleSignIn() {
   yield takeLatest(actions.APPLE_SIGN_IN_REQUEST, AppleSignIn);
+}
+
+export function* watchResetPasswordRequest() {
+  yield takeLatest(actions.RESET_PASSWORD_REQUEST, handleResetPassword);
 }
 
 export function* watchSendWelcomeEmail() {

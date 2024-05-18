@@ -9,10 +9,10 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
-import globe from "../../../assets/img/globe-bg3.png";
+import Iamhero from "../../assets/img/Iamhero.png";
 import { useSelector } from "react-redux";
 
-const Hero = () => {
+const IamHero = () => {
   const user = useSelector((state) => state.users.userData);
 
   return (
@@ -39,7 +39,7 @@ const Hero = () => {
         fontSize={["2xl", "3xl", "4xl", "5xl"]}
         mb={2}
       >
-        {"Impact a Platform Provider..!"}
+        {"IAM Security Provider..!"}
       </Heading>
         {!user ? (
           <Link to={"/app/signup"}>
@@ -80,12 +80,12 @@ const Hero = () => {
             lg: "600px",
           }}
           align={"right"}
-          borderRadius="full"
-          src={globe}
+          borderRadius="lg"
+          src={Iamhero}
         />
       </Box>
     </Flex>
   );
 };
 
-export default Hero;
+export default IamHero;

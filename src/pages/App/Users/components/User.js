@@ -206,7 +206,7 @@ const UsersList = () => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Confirm Deletion</ModalHeader>
+          <ModalHeader color="#0648b3">Confirm Deletion</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             Are you sure you want to delete user "{selectedUser?.name}"?

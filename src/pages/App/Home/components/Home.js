@@ -6,6 +6,8 @@ import ProductCard from "./ProjectCard";
 import SearchBar from "./SearchBar";
 import { connect } from "react-redux";
 import * as actions from "../../Products/actions";
+import Banner from "../../../Market/MarketBanner";
+import Categories from "./Category";
 
 const Home = ({ productList, fetchProducts }) => {
   useEffect(() => {
@@ -14,37 +16,27 @@ const Home = ({ productList, fetchProducts }) => {
 
   let productsLists = {};
 
-  // Check if productList and its properties are defined
   if (productList && productList.products && productList.prices) {
-    // Map over productList.products and combine prices
     productsLists = {
-      products: productList.products.map((product) => {
-        return {
-          ...product,
-          prices: productList.prices.filter(
-            (price) => price.product === product.id
-          ),
-        };
-      }),
+      products: productList.products.map((product) => ({
+        ...product,
+        prices: productList.prices.filter((price) => price.product === product.id),
+      })),
     };
   }
 
   return (
-    <Flex w="100%" minH="90vH" overflow="auto" direction="column">
+    <Flex w="100%" minH="90vh" overflow="auto" direction="column">
+      <Banner />
+      <SearchBar />
       <Card bg="none">
-        <SearchBar />
+        <Categories />
         <CardBody>
-          {productsLists &&
-          productsLists.products &&
-          productsLists.products.length > 0 ? (
+          {productsLists && productsLists.products && productsLists.products.length > 0 ? (
             <Grid
-              templateColumns={{ sm: "1fr", md: "1fr 1fr", xl: "1fr 1fr 1fr" }}
-              templateRows={{
-                sm: "1fr 1fr 1fr auto",
-                md: "1fr 1fr",
-                xl: "1fr",
-              }}
-              gap="8px"
+              templateColumns={{ sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)",lg:"repeat(5, 1fr)", xl: "repeat(5, 1fr)" }}
+              gap={4}
+              justifyContent="center"
             >
               {productsLists.products.map((product, index) => (
                 <ProductCard key={index} product={product} />
@@ -55,7 +47,6 @@ const Home = ({ productList, fetchProducts }) => {
               alignItems="center"
               justifyContent="center"
               minHeight="50vh"
-              ml="600px"
             >
               <Spinner
                 thickness="4px"

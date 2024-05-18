@@ -24,6 +24,7 @@ import {
   watchStripeSignIn,
   watchAppleSignIn,
   watchFetchAwsConfig,
+  watchResetPasswordRequest
 } from "./AuthSaga";
 
 function* rootSaga() {
@@ -49,6 +50,7 @@ function* rootSaga() {
     watchAddUser(),
     watchEditUser(),
     watchDeleteUser(),
+    watchResetPasswordRequest()
   ]);
 }
 

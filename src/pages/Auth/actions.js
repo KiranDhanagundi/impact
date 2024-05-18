@@ -28,6 +28,10 @@ export const SEND_WELCOME_EMAIL_REQUEST = "SEND_WELCOME_EMAIL_REQUEST";
 export const SEND_WELCOME_EMAIL_SUCCESS = "SEND_WELCOME_EMAIL_SUCCESS";
 export const SEND_WELCOME_EMAIL_FAILURE = "SEND_WELCOME_EMAIL_FAILURE";
 
+export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
+export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
+export const RESET_PASSWORD_FAILURE = "RESET_PASSWORD_FAILURE";
+
 export const clearUserDetails = () => ({
   type: CLEAR_USER_DETAILS,
 });
@@ -137,4 +141,19 @@ export const sendWelcomeEmailSuccess = () => ({
 export const sendWelcomeEmailFailure = (error) => ({
   type: SEND_WELCOME_EMAIL_FAILURE,
   payload: error,
+});
+
+// For Password Reset
+export const resetPasswordRequest = (email, newPassword) => ({
+  type: RESET_PASSWORD_REQUEST,
+  payload: { email, newPassword },
+});
+
+export const resetPasswordSuccess = () => ({
+  type: RESET_PASSWORD_SUCCESS,
+});
+
+export const resetPasswordFailure = (error) => ({
+  type: RESET_PASSWORD_FAILURE,
+  payload: { error },
 });

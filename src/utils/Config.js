@@ -34,3 +34,13 @@ export const AwsRolesConfig = {
   fileName: "impact_dev_roles_config.json",
   s3URL: "s3://impactdevaccess/impact_dev_roles_config.json",
 };
+
+export const AwsProductConfig = {
+  accessKeyId: "AKIA4YRVISMBTICVFITL",
+  secretAccessKey: "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",
+  region: "us-east-1",
+  bucketName: "impactdevproducts",
+  fileName: "impact_dev_products.json",
+  s3URL: "s3://impactdevproducts/impact_dev_products.json",
+};
+

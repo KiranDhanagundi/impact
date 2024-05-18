@@ -30,6 +30,7 @@ import { DownloadIcon } from "@chakra-ui/icons";
 // import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { addProductstoAwsS3 } from "../../../../utils/AwsAuth";
 
 const AddProduct = () => {
   const [title, setTitle] = useState("");
@@ -68,6 +69,14 @@ const AddProduct = () => {
         category,
         prices,
       });
+      
+       const awsresponse =  addProductstoAwsS3(
+        title,
+        description,
+        imageUrl,
+        category,
+        prices,
+      );
 
       console.log("Product created successfully:", response.data);
 

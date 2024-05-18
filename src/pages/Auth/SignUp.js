@@ -29,6 +29,7 @@ import { Link as ReactRouterLink, useHistory } from "react-router-dom";
 import TermsAndPolicies from "../../assets/pdf/TermsAndPolicies.pdf";
 import { useDispatch, useSelector } from "react-redux";
 import { sendWelcomeEmailRequest, signupRequest } from "./actions";
+import { sendVerificationEmail } from "../../utils/AwsAuth";
 
 import {
   GoogleIcon,
@@ -36,6 +37,11 @@ import {
   GithubIcon,
   StripeIcon,
 } from "../../components/Icons/Icons";
+
+// Function to generate a random 6-digit OTP
+const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString(); // Generate random 6-digit number
+};
 
 function SignUp() {
   const dispatch = useDispatch();
@@ -55,6 +61,12 @@ function SignUp() {
     lastname: "",
     email: "",
     password: "",
+  });
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [otpData, setOtpData] = useState({
+    otp: "",
+    expiresAt: null,
   });
   const [validation, setValidation] = useState({
     emailValid: true,
@@ -110,29 +122,66 @@ function SignUp() {
       return;
     }
     try {
-      dispatch(signupRequest(formData));
+      await dispatch(signupRequest(formData));
+      setUserEmail(formData.email); // Store email for verification modal
+      const otp = generateOTP(); // Generate OTP
+      setOtpData({
+        otp,
+        expiresAt: new Date(Date.now() + 10 * 60 * 1000), // Set expiration time to 10 minutes from now
+      });
+      setShowOtpModal(true); // Show OTP verification modal on successful signup
     } catch (error) {
       console.error("Signup error:", error);
       toast({
-        title: "There is a error while creating your account",
+        title: "Error",
+        description: "Failed to create account",
         status: "error",
-        duration: 2000,
+        duration: 3000,
         isClosable: true,
       });
     }
   };
 
-  const recipient = "kirandhanagundi@gmail.com";
-  const subject = "Welcome to Impact";
-  const message = " Dear User,  Thank you for signing up!";
-
+ 
   // Listen for changes in the Redux state
   useEffect(() => {
+    
     // Check if the signin status has changed to success
-    if (state?.status === "success") {
+    if (state?.status != "success") {
       // Redirect to the home page
-      history.push("/app/home");
+      // history.push("/app/home");
+       const recipient = "kirandhanagundi@gmail.com";
+       const subject = "Welcome to Impact";
+       const message = " Dear User,  Thank you for signing up!";
+
       dispatch(sendWelcomeEmailRequest(recipient, subject, message));
+      
+
+      try {
+      const recipient = "kirandhanagundi@gmail.com";
+      const subject = "Email Verification";
+      const message = `Your OTP: ${otpData?.otp}`;
+      // Send verification email using AWS SES (replace with your implementation)
+      dispatch(sendVerificationEmail(recipient, subject, message));
+        if (otpData?.otp) {
+          toast({
+            title: "Email Sent",
+            description: "Verification email sent successfully",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+    } catch (error) {
+      
+      // toast({
+      //   title: "Error",
+      //   description: "Failed to send verification email",
+      //   status: "error",
+      //   duration: 3000,
+      //   isClosable: true,
+      // });
+    }
     }
   }, [state]); // Only re-run this effect when the status changes
 
@@ -147,6 +196,50 @@ function SignUp() {
     // window.open("http://localhost:5000/auth/github", "_self");
   };
 
+  const handleVerifyEmail = async (enteredOtp) => {
+    if (enteredOtp === otpData.otp && new Date() < otpData.expiresAt) {
+      // OTP matches and is not expired
+      const recipient = userEmail;
+      const subject = "Email Verification";
+      const message = `Your email has been verified successfully.`;
+
+      // Implement logic to send email with verification message
+      try {
+        // Send verification email using AWS SES (replace with your implementation)
+        // Assuming sendVerificationEmail function sends the verification email with the message
+        const result = await sendVerificationEmail(recipient, subject, message);
+
+        if (result) {
+          toast({
+            title: "Email Verification successfully",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+          setShowOtpModal(false); // Close modal after sending email
+          history.push("/app/signin")
+        } else {
+          throw new Error("Failed to send verification email");
+        }
+      } catch (error) {
+        toast({
+          title: "Failed to send verification email",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } else {
+      // Invalid OTP or OTP expired
+      toast({
+        title: "Please enter a valid OTP",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+  
   return (
     <Flex
       direction="column"
@@ -179,6 +272,7 @@ function SignUp() {
           mx={{ base: "100px" }}
           bg={bgColor}
           boxShadow="md"
+          borderWidth='1px'
         >
           <Text
             fontSize="xl"
@@ -462,6 +556,34 @@ function SignUp() {
               </Link>
             </Text>
           </Flex>
+           {/* Email Verification Modal */}
+          <Modal isCentered="true" isOpen={showOtpModal} onClose={() => setShowOtpModal(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Email Verification</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>Verification email sent to:</Text>
+            <Text fontWeight="bold">{userEmail}</Text>
+            <FormControl mt={4}>
+              <FormLabel>Enter OTP</FormLabel>
+              <Input id="otp" type="text" />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              size="sm"
+                mt="4"
+                              colorScheme="green"
+                              fontSize="sm"
+                  boxShadow="sm"
+              onClick={() => handleVerifyEmail(document.getElementById("otp").value)}
+            >
+              Verify Email
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
         </Flex>
       </Flex>
     </Flex>

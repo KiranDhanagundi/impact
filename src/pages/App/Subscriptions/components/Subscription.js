@@ -33,6 +33,7 @@ const Subscription = () => {
               textAlign="center"
               borderRadius="md"
               boxShadow="md"
+              borderWidth='1px'
             >
               <Heading as="h3" size="lg" mb={5}>
                 Free Plan
@@ -95,6 +96,7 @@ const Subscription = () => {
               textAlign="center"
               borderRadius="md"
               boxShadow="md"
+              borderWidth='1px'
             >
               <Heading as="h3" size="lg" mb={5}>
                 Premium Plan
@@ -156,6 +158,7 @@ const Subscription = () => {
               textAlign="center"
               borderRadius="md"
               boxShadow="md"
+              borderWidth='1px'
             >
               <Heading as="h3" size="lg" mb={5}>
                 Enterprise Plan

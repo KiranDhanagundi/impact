@@ -34,6 +34,7 @@ import Checkout from "./pages/App/Products/components/Checkout.js";
 import { StripeMessage } from "./pages/App/Products/components/StripeMessage";
 import Blogs from "./pages/App/Blogs/components/Blogs.js";
 import EditProductModal from "./pages/App/Products/components/EditProduct.js";
+import IamHomePage from "./pages/IAM/IamHomePage";
 
 var appRoutes = [
   {
@@ -216,6 +217,14 @@ var appRoutes = [
     name: "Edit Product",
     icon: <FaBlog color="inherit" />,
     component: EditProductModal,
+    layout: "/app",
+  },
+  {
+    id: "app18",
+    path: "/iam/home",
+    name: "Edit Product",
+    icon: <FaBlog color="inherit" />,
+    component: IamHomePage,
     layout: "/app",
   },
 ];

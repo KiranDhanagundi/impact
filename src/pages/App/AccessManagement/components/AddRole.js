@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Modal,
@@ -15,8 +16,8 @@ import {
   Divider,
   Stack,
   Box,
+  Text,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../actions";
 
@@ -25,9 +26,9 @@ const AddRole = ({ isOpen, onClose }) => {
 
   const [roleName, setRoleName] = useState("");
   const [roleDescription, setRoleDescription] = useState("");
-  const [selectedResources, setSelectedResources] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [resourcePermissions, setResourcePermissions] = useState({});
   const resourceList = useSelector((state) => state?.access?.resourceList);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     dispatch(actions.fetchResourceRequest());
@@ -47,23 +48,23 @@ const AddRole = ({ isOpen, onClose }) => {
     const payload = {
       roleName: roleName,
       roleDescription: roleDescription,
-      resources: selectedResources,
+      resourcePermissions: resourcePermissions,
     };
     dispatch(actions.addRoleRequest(payload));
     setRoleName("");
     setRoleDescription("");
-    setSelectedResources([]);
+    setResourcePermissions({});
     onClose();
   };
 
-  const handleCheckboxChange = (resourceName) => {
-    if (selectedResources.includes(resourceName)) {
-      setSelectedResources(
-        selectedResources.filter((res) => res !== resourceName)
-      );
-    } else {
-      setSelectedResources([...selectedResources, resourceName]);
-    }
+  const handlePermissionChange = (resourceName, permission, isChecked) => {
+    setResourcePermissions((prevPermissions) => ({
+      ...prevPermissions,
+      [resourceName]: {
+        ...prevPermissions[resourceName],
+        [permission]: isChecked,
+      },
+    }));
   };
 
   const handlePrevPage = () => {
@@ -88,6 +89,7 @@ const AddRole = ({ isOpen, onClose }) => {
           <FormControl>
             <FormLabel>Role Name</FormLabel>
             <Input
+              required
               type="text"
               value={roleName}
               onChange={(e) => setRoleName(e.target.value)}
@@ -103,19 +105,66 @@ const AddRole = ({ isOpen, onClose }) => {
           </FormControl>
           <FormControl mt={2}>
             <FormLabel>Permissions</FormLabel>
-            <Divider mb="5px"></Divider>
+            <Divider mb="5px" />
             <Box borderWidth="1px" p="2" borderRadius="md" minH="300px">
-              <Stack spacing={1.5} minH="300px">
+              <Stack spacing={2}>
                 {currentResources.map((resource) => (
-                  <Checkbox
-                    key={resource.name}
-                    value={resource.name}
-                    isChecked={selectedResources.includes(resource.name)}
-                    onChange={() => handleCheckboxChange(resource.name)}
-                    colorScheme="green"
-                  >
-                    {resource.name}
-                  </Checkbox>
+                  <HStack key={resource.name} alignItems="center">
+                    <Text fontWeight="bold" >{resource.name}</Text>
+                    <Divider/>
+                    <Checkbox
+                      isChecked={resourcePermissions[resource.name]?.view || false}
+                      onChange={(e) =>
+                        handlePermissionChange(
+                          resource.name,
+                          "view",
+                          e.target.checked
+                        )
+                      }
+                       colorScheme="green"
+                    >
+                      View
+                    </Checkbox>
+                    <Checkbox
+                      isChecked={resourcePermissions[resource.name]?.create || false}
+                      onChange={(e) =>
+                        handlePermissionChange(
+                          resource.name,
+                          "create",
+                          e.target.checked
+                        )
+                      }
+                       colorScheme="green"
+                    >
+                      Create
+                    </Checkbox>
+                    <Checkbox
+                       colorScheme="green"
+                      isChecked={resourcePermissions[resource.name]?.edit || false}
+                      onChange={(e) =>
+                        handlePermissionChange(
+                          resource.name,
+                          "edit",
+                          e.target.checked
+                        )
+                      }
+                    >
+                      Edit
+                    </Checkbox>
+                    <Checkbox
+                       colorScheme="green"
+                      isChecked={resourcePermissions[resource.name]?.delete || false}
+                      onChange={(e) =>
+                        handlePermissionChange(
+                          resource.name,
+                          "delete",
+                          e.target.checked
+                        )
+                      }
+                    >
+                      Delete
+                    </Checkbox>
+                  </HStack>
                 ))}
               </Stack>
               <Divider mt="10px" />

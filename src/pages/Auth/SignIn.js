@@ -27,13 +27,17 @@ import * as actions from "./actions";
 import CookieHandler from "./CookieHandler";
 import { useSession } from "./SessionContext";
 
+// Import the ResetPasswordModal component
+import ResetPassword from "./ResetPassword";
+
 function SignIn() {
   const { signIn } = useSession();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const toggleShowPassword = () => setShowPassword(!showPassword);
+    const toggleShowPassword = () => setShowPassword(!showPassword);
+  const [showResetModal, setShowResetModal] = useState(false); // State for showing the reset password modal
   const toast = useToast();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -59,9 +63,6 @@ function SignIn() {
     try {
       // Dispatch the signin request action
       dispatch(actions.signinRequest(email, password));
-      // CookieHandler.setCookie("isLoggedIn", true);
-      // CookieHandler.setCookie("username", email);
-      // signIn(email);
     } catch (error) {
       console.error("There was an error!", error);
       toast({
@@ -72,6 +73,11 @@ function SignIn() {
         isClosable: true,
       });
     }
+  };
+
+  // Function to handle opening the reset password modal
+  const handleForgotPassword = () => {
+    setShowResetModal(true); // Show the reset password modal when "Forgot Password?" is clicked
   };
 
   // Listen for changes in the Redux state
@@ -89,6 +95,7 @@ function SignIn() {
   const githubSignIn = () => {
     dispatch(actions.githubSignInRequest());
   };
+
   const stripeSignIn = () => {
     dispatch(actions.stripeSignInRequest());
   };
@@ -114,6 +121,7 @@ function SignIn() {
         justifyContent="center"
         align="center"
         mt="20px"
+        
       >
         <Text fontSize="3xl" color="#0648b3" fontWeight="bold">
           Welcome Back!
@@ -129,6 +137,7 @@ function SignIn() {
           mx={{ base: "100px" }}
           bg={bgColor}
           boxShadow="md"
+          borderWidth='1px'
         >
           <Text
             fontSize="xl"
@@ -185,7 +194,6 @@ function SignIn() {
                 <Icon as={AppleIcon} w="30px" h="30px" />
               </Link>
             </Flex>
-
             <Flex
               justify="center"
               align="center"
@@ -260,10 +268,11 @@ function SignIn() {
             <Flex justifyContent="flex-start" mb="5px">
               <Link
                 as={ReactRouterLink}
-                to="/forgotpassword"
+                to="#"
                 color="#0648b3"
                 fontWeight="norml"
                 fontSize="sm"
+                onClick={handleForgotPassword} // Call handleForgotPassword to show the reset modal
               >
                 Forgot Password?
               </Link>
@@ -304,6 +313,12 @@ function SignIn() {
           </Flex>
         </Flex>
       </Flex>
+
+      {/* Render the ResetPasswordModal when showResetModal is true */}
+      <ResetPassword
+        showResetModal={showResetModal}
+        setShowResetModal={setShowResetModal}
+      />
     </Flex>
   );
 }

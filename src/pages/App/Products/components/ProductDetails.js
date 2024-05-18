@@ -143,6 +143,7 @@ const ProductDetails = () => {
                     position="absolute"
                     top="50%"
                     left="2px"
+                    borderRadius='full'
                     colorScheme="gray"
                     onClick={handlePrevImage}
                   >
@@ -152,6 +153,7 @@ const ProductDetails = () => {
                     position="absolute"
                     top="50%"
                     right="2px"
+                    borderRadius='full'
                     colorScheme="gray"
                     onClick={handleNextImage}
                   >
@@ -198,9 +200,9 @@ const ProductDetails = () => {
             </Box>
 
             <Spacer />
-            <Box ml="50px" mt="9px" mb="50px" w="100%">
+            <Box ml={{ lg: "50px" }} mt="9px" mb="50px" w="100%">
               <Box>
-                <Divider mt="20px" orientation="horizontal" />
+                <Divider mt="10px" orientation="horizontal" />
                 <Flex
                   direction={{
                     base: "column",
@@ -249,7 +251,7 @@ const ProductDetails = () => {
                     align={"center"}
                   >
                     <Text mr="20px" fontSize="xl" fontWeight="bold">
-                      ${productData.prices[0].unit_amount}
+                      {"$" + (productData.prices[0].unit_amount / 100).toFixed(2)}
                     </Text>
                     <Box>
                       <Button
@@ -290,9 +292,9 @@ const ProductDetails = () => {
         productsLists.products &&
         productsLists.products.length > 0 ? (
           <Grid
-            templateColumns={{ sm: "1fr", md: "1fr 1fr", xl: "1fr 1fr 1fr" }}
+            templateColumns={{ sm: "1fr 1fr", md: "1fr 1fr 1fr 1fr",lg:"1fr 1fr 1fr 1fr 1fr", xl: " 1fr 1fr 1fr 1fr 1fr" }}
             templateRows={{ sm: "1fr 1fr 1fr auto", md: "1fr 1fr", xl: "1fr" }}
-            gap="8px"
+            gap={4}
           >
             {productsLists.products.map((product, index) => (
               <ProductCard key={index} product={product} />

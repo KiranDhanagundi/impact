@@ -3,6 +3,7 @@ import {
   awsConfig,
   AwsResourceConfig,
   AwsRolesConfig,
+  AwsProductConfig
 } from "./Config";
 import { memoize } from "lodash";
 
@@ -218,33 +219,6 @@ export const isUserExists = async (args) => {
   }
 };
 
-export const sendEmail = async (recipient, subject, message) => {
-  const params = {
-    Destination: {
-      ToAddresses: [recipient],
-    },
-    Message: {
-      Body: {
-        Text: {
-          Data: message,
-        },
-      },
-      Subject: {
-        Data: subject,
-      },
-    },
-    Source: awsConfig.source,
-  };
-
-  try {
-    const data = await ses.sendEmail(params).promise();
-    console.log("Email sent:", data.MessageId);
-  } catch (error) {
-    console.error("Error sending email:", error);
-    throw error;
-  }
-};
-
 const fetchUserDetailsFromS3 = async (args) => {
   try {
     const params = {
@@ -337,9 +311,9 @@ export const addResourcetoAwsS3 = async (args) => {
   try {
     // Fetch existing resource list from AWS S3
     let accessConfig = await fetchAwsS3AccessConfig();
-
+    console.log("aws add resor" ,args)
     // Add the new resource to the existing list
-    await accessConfig.resourcesList.push(args);
+     await accessConfig.resourcesList.push(args);
 
     const params = {
       Bucket: AwsResourceConfig.bucketName,
@@ -531,6 +505,98 @@ export const deleteRoleFromAwsS3 = async (args) => {
   }
 };
 
+export const sendEmail = async (recipient, subject, message) => {
+  const params = {
+    Destination: {
+      ToAddresses: [recipient],
+    },
+    Message: {
+      Body: {
+        Text: {
+          Data: message,
+        },
+      },
+      Subject: {
+        Data: subject,
+      },
+    },
+    Source: awsConfig.source,
+  };
+
+  try {
+    const data = await ses.sendEmail(params).promise();
+    console.log("Email sent:", data.MessageId);
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw error;
+  }
+};
+
+export const addProductstoAwsS3 = async (args) => {
+ 
+  try {
+    // Fetch existing products details from S3
+    const existingProductList = await fetchAwsS3ProductsList();
+    // Append new user details to the existing array
+    const updatedProductList = [...existingProductList, args];
+    const params = {
+      Bucket: AwsProductConfig.bucketName,
+      Key: AwsProductConfig.fileName,
+      Body: JSON.stringify(updatedProductList),
+      ContentType: "application/json",
+    };
+    const data = await s3.upload(params).promise();
+    return data.Location;
+  } catch (error) {
+    console.error("Error while adding products to Aws S3 :", error);
+    throw error;
+  }
+};
+
+export const fetchAwsS3ProductsList = async () => {
+  const params = {
+    Bucket: AwsProductConfig.bucketName,
+    Key: AwsProductConfig.fileName,
+  };
+  try {
+    const response = await s3.getObject(params).promise();
+    const userList = JSON.parse(response.Body.toString());
+    return userList;
+  } catch (error) {
+    console.error("Error fetching users list from AWS S3:", error);
+    throw error;
+  }
+};
+
+export const sendVerificationEmail = async (recipient, subject, message) => {
+  const params = {
+    Destination: {
+      ToAddresses: [recipient],
+    },
+    Message: {
+      Body: {
+        Text: {
+          Charset: "UTF-8",
+          Data: message,
+        },
+      },
+      Subject: {
+        Charset: "UTF-8",
+        Data: subject,
+      },
+    },
+    Source: awsConfig.source, // Update with your verified sender email
+  };
+
+  try {
+    const data = await ses.sendEmail(params).promise();
+    console.log("Email sent:", data.MessageId);
+    return true;
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return false;
+  }
+};
 // Memoize the fetchUserDetails function to cache results
 const fetchUserDetails = memoize(fetchUserDetailsFromS3);
 

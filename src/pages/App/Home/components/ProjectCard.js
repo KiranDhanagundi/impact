@@ -3,49 +3,22 @@ import {
   Flex,
   Image,
   Text,
-  Avatar,
-  Stack,
-  Link,
-  Icon,
-  Badge,
   Button,
-  Spacer,
+  Icon,
+  Link,
+  HStack,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { DownloadIcon } from "@chakra-ui/icons";
-import { useDispatch } from "react-redux";
-import { FaCartPlus } from "react-icons/fa";
+import { FaCartPlus, FaStar } from "react-icons/fa";
 
 const ProductCard = ({ product }) => {
-  const {
-    // id,
-    // object,
-    // active,
-    // attributes,
-    // created,
-    // default_price,
-    description,
-    images,
-    // metadata,
-    name,
-    // package_dimensions,
-    // shippable,
-    // statement_descriptor,
-    // tax_code,
-    // type,
-    // unit_label,
-    // updated,
-    // url,
-    prices,
-  } = product;
-
-  const dispatch = useDispatch();
+  const { images, name, prices, rating = 4.5, numPurchases = 100 } = product;
 
   const handleAddToCart = (event) => {
     if (event) {
       event.preventDefault();
     }
-    dispatch({ type: "ADD_TO_CART", payload: product });
+    // dispatch({ type: "ADD_TO_CART", payload: product });
   };
 
   return (
@@ -56,87 +29,79 @@ const ProductCard = ({ product }) => {
     >
       <Box
         borderWidth="1px"
-        position="relative"
-        borderRadius="xl"
+        borderRadius="lg"
         overflow="hidden"
         width="100%"
+        maxW="240px"
         boxShadow="md"
-        borderColor="lightgray"
-        p="2"
-        h="170px"
         transition="box-shadow 0.3s ease"
         _hover={{
           boxShadow: "xl",
         }}
       >
-        <Stack direction="row" spacing="4" width="full">
+        <Box
+          width="100%"
+          height={{ base: "140px", md: "160px" }}
+          overflow="hidden"
+          position="relative"
+        >
           <Image
             src={images[0]}
             alt={name}
-            boxSize={{ base: "200px", md: "100", sm: "80px" }}
-            borderRadius="md"
-            minW={{ base: "150px", md: "100px", sm: "80px" }}
-            minH={{ base: "150px", md: "100px", sm: "80px" }}
+            width="100%"
+            height="100%"
+            objectFit="cover"
             transition="transform 0.2s ease"
             _hover={{ transform: "scale(1.05)" }}
           />
-          <Stack align="start" spacing="0.5">
-            <Box align={"start"} H={"100px"}>
-              <Text
-                noOfLines="2"
-                fontWeight="bold"
-                fontSize={{ base: "lg", sm: "xs", md: "sm", xl: "sm" }}
-              >
-                {name.toLowerCase()}
-              </Text>
-              <Text
-                noOfLines="2"
-                color="gray.600"
-                fontSize="sm"
-                overflow={"hidden"}
-              >
-                {description}
-              </Text>
-            </Box>
-            <Box align="start" mt="5px" as="button" fontWeight="bold">
-              {"$" + prices[0].unit_amount}
-            </Box>
-          </Stack>
-        </Stack>
+        </Box>
         <Flex
-          position="absolute"
-          bottom="1px"
+          direction="column"
+          alignItems="start"
           p="2"
-          left="0"
-          right="0"
-          alignItems="center"
-          mt="10px"
+          justifyContent="space-between"
+          height={{ base: "100px", md: "120px" }}
         >
-          <Avatar size="2xs" mr="2" src={"https://bit.ly/broken-link"} />
-          <Link as={ReactRouterLink} to={`/app/profile`} color="#0648b3">
-            <Text as="u" fontSize="xs">
-              {"Impact Dev"}
+          <Box>
+            <Text
+              fontWeight="bold"
+              fontSize={{ base: "xs", md: "sm"}}
+              noOfLines={1}
+              mb={2}
+            >
+              {name}
             </Text>
-          </Link>
-          <Text fontSize="xs" color="gray.500" ml="2">
-            | {"Feb 6 2024"}
-          </Text>
-          <Badge ml="10px" colorScheme="green">
-            <Icon as={DownloadIcon} me="4px" />
-            {"1"}
-          </Badge>
-          <Spacer />
-          <Button
-            boxShadow="sm"
-            color={"#0a48b3"}
-            variant={"outline"}
-            //onClick={handleAddToCart}
-            fontSize="xs"
-            h="30px"
-            p="8px"
+            <HStack>
+              <Icon as={FaStar} color="green.500" />
+              <Text fontSize="xs" color="gray.600">
+                {rating} ({numPurchases})
+              </Text>
+            </HStack>
+          </Box>
+          <Flex
+            alignItems="center"
+            width="100%"
+            justifyContent="space-between"
+            mb='5px'
           >
-            <Icon as={FaCartPlus} boxSize={4} />
-          </Button>
+            <Text
+              fontWeight="bold"
+              fontSize={{ base: "md", md: "xl" }}
+              mr="2"
+            >
+              {"$" + (prices[0].unit_amount / 100).toFixed(2)}
+            </Text>
+            <Button
+              boxShadow="sm"
+              color={"#0a48b3"}
+              variant={"outline"}
+              onClick={handleAddToCart}
+              fontSize={{ base: "sm", md: "md" }}
+              h={{ base: "30px", md: "35px" }}
+            >
+              <Icon as={FaCartPlus} boxSize={{ base: 3, md: 4 }} />
+            </Button>
+          </Flex>
         </Flex>
       </Box>
     </Link>
