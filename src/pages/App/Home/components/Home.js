@@ -34,8 +34,8 @@ const Home = ({ productList, fetchProducts }) => {
         <CardBody>
           {productsLists && productsLists.products && productsLists.products.length > 0 ? (
             <Grid
-              templateColumns={{ sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)",lg:"repeat(5, 1fr)", xl: "repeat(5, 1fr)" }}
-              gap={4}
+              templateColumns={{ sm:"repeat(2, 1fr)", md: "repeat(5, 1fr)",lg:"repeat(6, 1fr)", xl: "repeat(6, 1fr)" }}
+              gap={2}
               justifyContent="center"
             >
               {productsLists.products.map((product, index) => (

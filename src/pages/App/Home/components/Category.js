@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Image, Text, Link, Heading, Flex } from '@chakra-ui/react';
+import { Box, Image, Text, Link, Heading, Flex, Divider } from '@chakra-ui/react';
 
 const Category = ({ name, imageSrc, route }) => (
   <Link to={route} _focus={{ boxShadow: 'none' }}>
@@ -8,13 +8,14 @@ const Category = ({ name, imageSrc, route }) => (
       borderRadius="md"
       overflow="hidden"
       cursor="pointer"
+      
       transition="transform 0.2s ease-in-out"
       _hover={{ transform: 'scale(1.05)' }}
-      width={{ base: '120px', md: '150px' }} // Adjusted width for responsiveness
+      width={{ base: '90px', md: '120px' }} 
       
     >
-      <Image src={imageSrc} alt={name} width="100%" height="80px" objectFit="cover" /> {/* Adjusted height of the image */}
-      <Text fontWeight="bold" textAlign="center" p={2} fontSize="sm"> {/* Adjusted font size */}
+      <Image src={imageSrc} alt={name} width="100%" height="80px" objectFit="cover" /> 
+      <Text fontWeight="bold" textAlign="center" p={1} fontSize="sm"> 
         {name}
       </Text>
     </Box>
@@ -32,9 +33,9 @@ const Categories = () => {
   ];
 
   return (
-    <Flex direction='column'>
-      <Heading bg='gray.100' textAlign="center" py="2" fontSize="lg">Explore Categories</Heading> {/* Added padding for spacing */}
-      <Flex flexWrap="wrap" justifyContent="space-around" p="20px"> {/* Added padding */}
+    <Flex direction='column' mb='2'>
+      <Heading bg='gray.100' textAlign="center" py="2" fontSize="lg">Shop by Categories</Heading> 
+      <Flex flexWrap="wrap" justifyContent="space-around" p={2} gap={2}> 
         {categoryData.map((category, index) => (
           <Category key={index} {...category} />
         ))}

@@ -292,7 +292,7 @@ const ProductDetails = () => {
         productsLists.products &&
         productsLists.products.length > 0 ? (
           <Grid
-            templateColumns={{ sm: "1fr 1fr", md: "1fr 1fr 1fr 1fr",lg:"1fr 1fr 1fr 1fr 1fr", xl: " 1fr 1fr 1fr 1fr 1fr" }}
+            templateColumns={{ sm: "1fr 1fr", md: "1fr 1fr 1fr 1fr",lg:"1fr 1fr 1fr 1fr 1fr 1fr", xl: " 1fr 1fr 1fr 1fr 1fr 1fr" }}
             templateRows={{ sm: "1fr 1fr 1fr auto", md: "1fr 1fr", xl: "1fr" }}
             gap={4}
           >

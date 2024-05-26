@@ -6,6 +6,8 @@ import FeedBack from "./FeedBack.js";
 import { Flex } from "@chakra-ui/react";
 import Banner from "../../Market/MarketBanner";
 import OurProduct from "./OurProducts";
+import ContactUs from "./ContactUs";
+import About from "./About";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -21,9 +23,11 @@ export default function Home() {
   return (
     <Flex direction={"column"}>
       <Hero />
+      <About/>
       <OurProduct/>
       {/* <Banner/> */}
       <FeedBack />
+      <ContactUs/>
     </Flex>
   );
 }

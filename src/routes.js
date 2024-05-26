@@ -16,7 +16,7 @@ import Home from "./pages/App/Home/components/Home";
 import Dashboard from "./pages/App/Dashboard/index";
 import MyProducts from "./pages/App/Products/components/MyProduct";
 import Order from "./pages/App/Orders/components/Order";
-import Profile from "./pages/App/Profile/components/Profile";
+import UserProfile from "./pages/App/Profile/components/UserProfile";
 import Setting from "./pages/App/Settings/components/Setting";
 import User from "./pages/App/Users/components/User";
 import Payments from "./pages/App/Payments/index.js";
@@ -78,7 +78,7 @@ var appRoutes = [
     path: "/profile",
     name: "Profile",
     icon: <PersonIcon color="inherit" />,
-    component: Profile,
+    component: UserProfile,
     layout: "/app",
     access: true,
   },

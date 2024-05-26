@@ -32,7 +32,7 @@ const ProductCard = ({ product }) => {
         borderRadius="lg"
         overflow="hidden"
         width="100%"
-        maxW="240px"
+        maxW="200px"
         boxShadow="md"
         transition="box-shadow 0.3s ease"
         _hover={{
@@ -41,7 +41,7 @@ const ProductCard = ({ product }) => {
       >
         <Box
           width="100%"
-          height={{ base: "140px", md: "160px" }}
+          height={{ base: "120px", sm: "130px", md: "140px", lg: "150px" }}
           overflow="hidden"
           position="relative"
         >
@@ -51,6 +51,7 @@ const ProductCard = ({ product }) => {
             width="100%"
             height="100%"
             objectFit="cover"
+            objectPosition="center"
             transition="transform 0.2s ease"
             _hover={{ transform: "scale(1.05)" }}
           />
@@ -60,14 +61,14 @@ const ProductCard = ({ product }) => {
           alignItems="start"
           p="2"
           justifyContent="space-between"
-          height={{ base: "100px", md: "120px" }}
+          height={{ base: "90px", md: "100px" }}
         >
           <Box>
             <Text
               fontWeight="bold"
-              fontSize={{ base: "xs", md: "sm"}}
+              fontSize={{ base: "xs", md: "sm" }}
               noOfLines={1}
-              mb={2}
+              mb={1}
             >
               {name}
             </Text>
@@ -82,11 +83,11 @@ const ProductCard = ({ product }) => {
             alignItems="center"
             width="100%"
             justifyContent="space-between"
-            mb='5px'
+            mb="5px"
           >
             <Text
               fontWeight="bold"
-              fontSize={{ base: "md", md: "xl" }}
+              fontSize={{ base: "sm", md: "md" }}
               mr="2"
             >
               {"$" + (prices[0].unit_amount / 100).toFixed(2)}
@@ -96,8 +97,9 @@ const ProductCard = ({ product }) => {
               color={"#0a48b3"}
               variant={"outline"}
               onClick={handleAddToCart}
-              fontSize={{ base: "sm", md: "md" }}
-              h={{ base: "30px", md: "35px" }}
+              fontSize={{ base: "xs", md: "sm" }}
+              h={{ base: "25px", md: "30px" }}
+              w="30px"
             >
               <Icon as={FaCartPlus} boxSize={{ base: 3, md: 4 }} />
             </Button>

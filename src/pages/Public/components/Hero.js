@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   Box,
+  useBreakpointValue 
 } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -14,14 +15,20 @@ import { useSelector } from "react-redux";
 
 const Hero = () => {
   const user = useSelector((state) => state.users.userData);
-
+const imageHeight = useBreakpointValue({
+    base: "300px",
+    sm: "200px",
+    md: "200px",
+    lg: "400px",
+    xl: "600px",
+  });
   return (
     <Flex
       align="center"
       justify={{ base: "center", md: "space-around", xl: "space-between" }}
       direction={{ base: "column-reverse", md: "row" }}
       wrap="no-wrap"
-      minH="50vh"
+      // minH="40vh"
       w="100%"
       px={2}
     >
@@ -32,14 +39,25 @@ const Hero = () => {
       >
         <Heading
         as="h1"
-        size="xl"
+        size="lg"
         fontWeight="bold"
         color="#0648b3"
         textAlign={["center", "center", "left", "left"]}
-        fontSize={["2xl", "3xl", "4xl", "5xl"]}
-        mb={2}
+          fontSize={{ sm: "3xl", md: "4xl", lg: "5xl", xl: "6xl" }}
+        mb={1}
       >
-        {"Impact a Platform Provider..!"}
+        {"Impact a Platform Provider"}
+        </Heading>
+        <Heading
+        as="h3"
+        size="md"
+        fontWeight="bold"
+        color="#0648b3"
+        textAlign={["center", "center", "left", "left"]}
+        fontSize={["lg", "xl", "2xl", "3xl"]}
+        mb={1}
+      >
+        {"Market Place | IAM Security"}
       </Heading>
         {!user ? (
           <Link to={"/app/signup"}>
@@ -69,16 +87,9 @@ const Hero = () => {
           </Link>
         )}
       </Stack>
-      <Box w="auto" align="right" mr="0px">
+      <Box w={imageHeight} align="right" mr="0px">
         <Image
-          h={{
-            base: "600px",
-            md: "500px",
-            sm: "200px",
-            xs: "100px",
-            xl: "400px",
-            lg: "600px",
-          }}
+          h={imageHeight}
           align={"right"}
           borderRadius="full"
           src={globe}

@@ -36,10 +36,10 @@ const Banner = () => {
   };
 
   return (
-    <Box position="relative" borderRadius='lg' mt='10px' width="100%" height="300px" overflow="hidden">
+    <Box position="relative" borderRadius='lg' mt='10px' width="100%" height={{base:"200px",md:'300px'} } overflow="hidden">
       <Slider {...settings}>
         {banners.map((banner, index) => (
-          <Box key={index} position="relative" width="100%" height="250px">
+          <Box key={index} position="relative" width="100%"  height={{base:"150px",md:'250px'} }>
             <Image
               src={banner.image}
               alt={banner.alt}

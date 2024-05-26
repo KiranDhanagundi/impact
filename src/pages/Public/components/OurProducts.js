@@ -29,8 +29,8 @@ const OurProduct = () => {
   ];
 
   return (
-    <Flex direction="column"  align="center" justify="center" minH="30vh" p={4} mb='10px' bg="gray.50">
-          <Heading  w='100%'>Our Products</Heading>
+    <Flex direction="column"  align="center" justify="center" minH="30vh" p={4} mb='4px' bg="gray.50">
+          <Heading  as="h2" size="xl" color={'#0648b3'} mb={1} >Our Products</Heading>
           <Divider mb={4}/>
       <Center w="100%">
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5} maxW="1200px" w="100%">
@@ -47,7 +47,7 @@ const OurProduct = () => {
               mx="auto"
             >
               <Image src={product.image} alt={product.alt} w="100%" h='80%'  objectFit="cover" />
-              <Box textAlign="center">
+              <Box textAlign="center" justifyContent={'center'}>
                 <Button
                   borderTopRadius="0px"
                   fontWeight="normal"

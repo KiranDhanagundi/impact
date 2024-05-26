@@ -10,7 +10,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { FaCartPlus, FaStar } from "react-icons/fa";
+import {FaStar } from "react-icons/fa";
 import DeleteProduct from "../../Products/components/DeleteProduct";
 
 const UserProjects = ({ product }) => {
@@ -82,7 +82,7 @@ const UserProjects = ({ product }) => {
             <Text
               fontWeight="bold"
               fontSize={{ base: "xs", md: "sm" }}
-              noOfLines={1}
+              noOfLines={2}
               mb={2}
             >
               {name}
@@ -109,7 +109,7 @@ const UserProjects = ({ product }) => {
       <Flex
         direction="row"
         justify="space-between"
-        p="2"
+        p="1"
         borderTopWidth="1px"
       >
         <Link
@@ -123,7 +123,7 @@ const UserProjects = ({ product }) => {
             variant={"outline"}
             fontSize={{ base: "sm", md: "md" }}
             h={{ base: "30px", md: "35px" }}
-            // Remove w="100%"
+           
           >
             Edit
           </Button>
