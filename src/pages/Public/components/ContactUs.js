@@ -11,6 +11,7 @@ import {
   VStack,
   Link,
   Icon,
+  HStack,
 } from "@chakra-ui/react";
 import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 
@@ -43,12 +44,12 @@ const ContactUs = () => {
       <Flex
         
               w='100%'
-        direction={{ base: "column", md: "row" }}
+        direction='column'
               gap={2}
               p={2}
       >
         <Box
-          width={{ base: "100%", md: "50%" }}
+          width='100%'
           p={2}
           bg="white"
           borderRadius="md"
@@ -122,14 +123,14 @@ const ContactUs = () => {
                   size="sm"
                 />
               </FormControl>
-              <Button type="submit" size='md'bg="#0648b3" fontWeight='normal'color="white" width="full">
+              <Button type="submit" size='md'bg="#0648b3" fontWeight='normal'color="white" >
                 Submit
               </Button>
             </VStack>
           </form>
         </Box>
         <Box
-          width={{ base: "100%", md: "50%" }}
+          width='100%'
           p={3}
           bg="white"
           borderRadius="md"
@@ -139,7 +140,7 @@ const ContactUs = () => {
           <Heading as="h2" size="md" mb={3} textAlign="center">
             Follow Us On
           </Heading>
-          <VStack spacing={3}>
+          <HStack spacing={3}>
             <Button
               as={Link}
               href="https://www.instagram.com"
@@ -184,7 +185,7 @@ const ContactUs = () => {
             >
               LinkedIn
             </Button>
-          </VStack>
+          </HStack>
         </Box>
       </Flex>
     </Flex>

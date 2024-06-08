@@ -3,7 +3,6 @@ import {
   Flex,
   Heading,
   Stack,
-  Text,
   Image,
   Box,
   useBreakpointValue 
@@ -16,11 +15,10 @@ import { useSelector } from "react-redux";
 const Hero = () => {
   const user = useSelector((state) => state.users.userData);
 const imageHeight = useBreakpointValue({
-    base: "300px",
     sm: "200px",
     md: "200px",
-    lg: "400px",
-    xl: "600px",
+    lg: "300px",
+    xl: "300px",
   });
   return (
     <Flex
@@ -34,7 +32,7 @@ const imageHeight = useBreakpointValue({
     >
       <Stack
         spacing={4}
-        w={{ base: "80%", md: "40%" }}
+        w={{ base: "80%", md: "60%" }}
         align={["center", "center", "flex-start", "flex-start"]}
       >
         <Heading
@@ -43,7 +41,7 @@ const imageHeight = useBreakpointValue({
         fontWeight="bold"
         color="#0648b3"
         textAlign={["center", "center", "left", "left"]}
-          fontSize={{ sm: "3xl", md: "4xl", lg: "5xl", xl: "6xl" }}
+          fontSize={{ sm: "3xl", md: "3xl", lg: "4xl", xl: "5xl" }}
         mb={1}
       >
         {"Impact a Platform Provider"}
@@ -54,7 +52,7 @@ const imageHeight = useBreakpointValue({
         fontWeight="bold"
         color="#0648b3"
         textAlign={["center", "center", "left", "left"]}
-        fontSize={["lg", "xl", "2xl", "3xl"]}
+        fontSize={["md", "lg", "2xl", "3xl"]}
         mb={1}
       >
         {"Market Place | IAM Security"}
